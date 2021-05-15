@@ -1,8 +1,5 @@
 package me.leon
 
-import me.leon.support.b64Decode
-import me.leon.support.b64SafeDecode
-import me.leon.support.readFromNet
 import org.junit.jupiter.api.Test
 
 class NetworkSubTest {
@@ -15,25 +12,14 @@ class NetworkSubTest {
         val subUrlSs = "https://proxy.51798.xyz/sip002/sub"
 
         listOf(
-            subUrl,
-            subUrlSs,
+//            subUrl,
+//            subUrlSs,
             subUrlSsr,
-            subUrlTr,
-            subUrlV2
+//            subUrlTr,
+//            subUrlV2
         ).forEach {
             kotlin.runCatching {
-                it.readFromNet()
-//                    .also { println(it) }
-                    .b64SafeDecode()
-//                    .also { println(it) }
-                    .split("\r\n|\n".toRegex())
-                    .asSequence()
-                    .filter { it.isNotEmpty() }
-                    .map { Parser.parse(it.replace("/#", "#")) }
-                    .filter { it !is NoSub }
-                    .fold(linkedSetOf<Sub>()) { acc, sub ->
-                        acc.also { acc.add(sub!!) }
-                    }
+                Parser.parseFromNetwork(it)
                     .joinToString(
 //                        "|",
                         "\r\n",

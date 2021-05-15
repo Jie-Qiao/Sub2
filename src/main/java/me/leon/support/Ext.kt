@@ -23,12 +23,14 @@ fun String.readFromNet() = String(
 
 fun String.b64Decode() = String(Base64.getDecoder().decode(this))
 fun String.b64SafeDecode() =
-    String(
-        Base64.getDecoder().decode(
-            this.replace("_", "/")
-                .replace("-", "+")
+    if (this.contains(":")) this
+    else
+        String(
+            Base64.getDecoder().decode(
+                this.replace("_", "/")
+                    .replace("-", "+")
+            )
         )
-    )
 
 
 fun String.b64Encode() = Base64.getEncoder().encodeToString(this.toByteArray())
@@ -46,6 +48,7 @@ fun String.queryParamMapB64() =
         .findAll(this)
         ?.fold(mutableMapOf<String, String>()) { acc, matchResult ->
             acc.apply {
-                acc[matchResult.groupValues[1]] = matchResult.groupValues[2].b64SafeDecode()
+//                println(matchResult.groupValues[2].urlDecode().b64SafeDecode())
+                acc[matchResult.groupValues[1]] = matchResult.groupValues[2].urlDecode().b64SafeDecode()
             }
         }

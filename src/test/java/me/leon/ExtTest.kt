@@ -41,11 +41,14 @@ class ExtTest {
             "ssr://bjU3LmJvb20ucGFydHk6MjUwMDA6YXV0aF9hZXMxMjhfc2hhMTphZXMtMjU2LWNmYjpodHRwX3NpbXBsZTpWV3M1TWtOVC8_b2Jmc3BhcmFtPVpHOTNibXh2WVdRdWQybHVaRzkzYzNWd1pHRjBaUzVqYjIwJnByb3RvcGFyYW09TVRRek1EY3pPa042T0dGUGFRJnJlbWFya3M9NmFhWjVyaXZMVVEmZ3JvdXA9TVE"
         println(Parser.parseSsr(url2)?.toUri())
     }
- @Test
+
+    @Test
     fun trojanTest() {
-     val url = "trojan://4806bfec-c8ca-4688-b513-f6214ea52e58@32vus.ednovas.me:443#Relay_%F0%9F%87%BA%F0%9F%87%B8US-%F0%9F%87%BA%F0%9F%87%B8US_320\n"
-        val url2 = "trojan://qN7AKCF3@t6.ssrsub.one:8443#Relay_%F0%9F%87%B7%F0%9F%87%BARU-%F0%9F%87%B7%F0%9F%87%BARU_192"
-            println(Parser.parse(url2)?.toUri())
+        val url =
+            "trojan://4806bfec-c8ca-4688-b513-f6214ea52e58@32vus.ednovas.me:443#Relay_%F0%9F%87%BA%F0%9F%87%B8US-%F0%9F%87%BA%F0%9F%87%B8US_320\n"
+        val url2 =
+            "trojan://qN7AKCF3@t6.ssrsub.one:8443#Relay_%F0%9F%87%B7%F0%9F%87%BARU-%F0%9F%87%B7%F0%9F%87%BARU_192"
+        println(Parser.parse(url2)?.toUri())
     }
 
     @Test
