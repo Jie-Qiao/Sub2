@@ -1,10 +1,16 @@
 package me.leon
 
-import com.google.gson.annotations.SerializedName
-
 
 data class Clash(
+    var port: Int = 7890,
+    var `socks-port`: Int = 7891,
+    var `allow-lan`: Boolean = false,
+    var `log-level`: String = "info",
+    var `external-controller`: String = "info",
+    var mode: String = "Rule",
+    var `proxy-groups`: List<Group> = mutableListOf(),
     var proxies: List<Node> = mutableListOf(),
+    var rules: List<String> = mutableListOf(),
 )
 
 data class Node(
@@ -65,3 +71,12 @@ data class Node(
         }
     }
 }
+
+data class Group(
+    var name: String = "",
+    var type: String = "",
+    var url: String = "",
+    var interval: Int = 0,
+    var tolerance: Int = 0,
+    var proxies: List<String> = mutableListOf(),
+)
