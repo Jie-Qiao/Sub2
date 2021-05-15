@@ -15,7 +15,6 @@ object GsonUtils {
     fun <D> jsonToList(json: String, clazz: Class<Array<D>>): List<D> = listOf(*gson.fromJson(json, clazz))
 
     fun <D> jsonToArrayList(json: String, clazz: Class<D>): List<D> {
-
         return gson.fromJson<List<JsonObject>>(json, object : TypeToken<List<JsonObject>>() {}.type)
             .map { gson.fromJson(it, clazz) }
             .toList()

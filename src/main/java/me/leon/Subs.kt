@@ -11,7 +11,7 @@ interface Uri {
 
 sealed class Sub : Uri
 object NoSub : Sub() {
-    override fun toUri()="nosub"
+    override fun toUri() = "nosub"
 }
 
 data class V2ray(
@@ -56,4 +56,13 @@ data class SSR(
     override fun toUri() =
         "ssr://${"$server:$port:$protocol:$method:$obfs:${password.b64Encode()}/?obfsparam=${obfs_param.b64EncodeNoEqual()}&protoparam=${protocol_param.b64EncodeNoEqual()}&remarks=${remarks.b64EncodeNoEqual()}&group=${group.b64EncodeNoEqual()}".b64Encode()}"
 
+}
+
+data class Trojan(
+    val password: String = "",
+    val server: String = "",
+    val port: String = ""
+) : Sub() {
+    var remark: String = ""
+    override fun toUri() = "trojan://${"${password}@$server:$port"}#${remark.urlEncode()}"
 }

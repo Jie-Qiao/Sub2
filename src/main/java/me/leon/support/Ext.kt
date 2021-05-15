@@ -10,6 +10,7 @@ import java.util.*
 
 
 fun String.readText() = File(this).readText()
+fun String.readLines() = File(this).readLines()
 fun String.readFromNet() = String(
     (URL(this)
         .openConnection().apply {
@@ -21,10 +22,13 @@ fun String.readFromNet() = String(
 )
 
 fun String.b64Decode() = String(Base64.getDecoder().decode(this))
-fun String.b64SafeDecode()=
-     String(Base64.getDecoder().decode(this.replace("_","/")
-        .replace("-","+")))
-
+fun String.b64SafeDecode() =
+    String(
+        Base64.getDecoder().decode(
+            this.replace("_", "/")
+                .replace("-", "+")
+        )
+    )
 
 
 fun String.b64Encode() = Base64.getEncoder().encodeToString(this.toByteArray())
@@ -38,6 +42,10 @@ fun String.queryParamMap() =
     }
 
 fun String.queryParamMapB64() =
-    "(\\w+)=([^&]*)".toRegex().findAll(this)?.fold(mutableMapOf<String, String>()) { acc, matchResult ->
-        acc.apply { acc[matchResult.groupValues[1]] = matchResult.groupValues[2].b64Decode() }
-    }
+    "(\\w+)=([^&]*)".toRegex()
+        .findAll(this)
+        ?.fold(mutableMapOf<String, String>()) { acc, matchResult ->
+            acc.apply {
+                acc[matchResult.groupValues[1]] = matchResult.groupValues[2].b64SafeDecode()
+            }
+        }
