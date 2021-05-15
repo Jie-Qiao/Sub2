@@ -83,7 +83,7 @@ object Parser {
         return null
     }
 
-    fun parseFromFileSub(path: String) =
+    private fun parseFromFileSub(path: String) =
         path.readText()
             .b64SafeDecode()
             .split("\r\n|\n".toRegex())
@@ -98,7 +98,7 @@ object Parser {
                 acc
             }
 
-    fun parseFromNetwork(url: String) =
+    private fun parseFromNetwork(url: String) =
         url.readFromNet()
 //                    .also { println(it) }
             .b64SafeDecode()

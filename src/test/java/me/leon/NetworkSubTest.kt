@@ -14,12 +14,13 @@ class NetworkSubTest {
         listOf(
 //            subUrl,
 //            subUrlSs,
-            subUrlSsr,
+//            subUrlSsr,
 //            subUrlTr,
 //            subUrlV2
+        "https://raw.fastgit.org/Leon406/jsdelivr/master/subscribe/ss2"
         ).forEach {
             kotlin.runCatching {
-                Parser.parseFromNetwork(it)
+                Parser.parseFromSub(it)
                     .joinToString(
 //                        "|",
                         "\r\n",

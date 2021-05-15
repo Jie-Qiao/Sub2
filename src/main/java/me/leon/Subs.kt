@@ -7,27 +7,55 @@ import me.leon.support.urlEncode
 
 interface Uri {
     fun toUri(): String
+    fun info(): String
 }
 
 sealed class Sub : Uri
 object NoSub : Sub() {
     override fun toUri() = "nosub"
+    override fun info() = "nosub"
 }
 
 data class V2ray(
+    /**
+     * address  服务器
+     */
     val add: String = "",
-    val aid: String = "",
-    val host: String = "",
-    val id: String = "",
-    val net: String = "",
-    val path: String = "",
     val port: String = "",
-    val type: String = "",
-    val v: String = "",
-    val tls: String = ""
-) : Sub() {
+    /**
+     * uuid
+     */
+    val id: String = "",
+    /**
+     * alertId
+     */
+    val aid: String = "0",
+    val scy: String = "auto",
+    /**
+     * network
+     */
+    val net: String = "tcp",
+
+    /**
+     * 伪装域名
+     */
+    val host: String = "",
+    /**
+     * 伪装路径
+     */
+    val path: String = "",
+    /**
+     * 伪装类型 tcp/kcp/QUIC 默认none
+     */
+    val type: String = "none",
+    val tls: String = "",
+    val sni: String = "",
+
+    ) : Sub() {
+    var v: String = "2"
     var ps: String = ""
     override fun toUri() = "vmess://${this.toJson().b64Encode()}"
+    override fun info() = "$ps vmess $add:$port"
 }
 
 data class SS(
@@ -39,6 +67,7 @@ data class SS(
     var remark: String = ""
 
     override fun toUri() = "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${remark.urlEncode()}"
+    override fun info() = "$remark ss $server:$port"
 }
 
 data class SSR(
@@ -56,6 +85,8 @@ data class SSR(
     override fun toUri() =
         "ssr://${"$server:$port:$protocol:$method:$obfs:${password.b64Encode()}/?obfsparam=${obfs_param.b64EncodeNoEqual()}&protoparam=${protocol_param.b64EncodeNoEqual()}&remarks=${remarks.b64EncodeNoEqual()}&group=${group.b64EncodeNoEqual()}".b64Encode()}"
 
+    override fun info() = "$remarks ssr $server:$port"
+
 }
 
 data class Trojan(
@@ -65,4 +96,5 @@ data class Trojan(
 ) : Sub() {
     var remark: String = ""
     override fun toUri() = "trojan://${"${password}@$server:$port"}#${remark.urlEncode()}"
+    override fun info() = "$remark trojan $server:$port"
 }
