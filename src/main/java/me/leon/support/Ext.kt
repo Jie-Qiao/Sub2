@@ -1,6 +1,7 @@
 package me.leon.support
 
 import java.io.File
+import java.lang.Exception
 import java.lang.StringBuilder
 import java.net.HttpURLConnection
 import java.net.URL
@@ -10,27 +11,44 @@ import java.util.*
 
 
 fun String.readText() = File(this).readText()
+fun String.writeLine(txt: String = "") =
+    if (txt.isEmpty()) File(this).writeText("") else File(this).appendText("$txt\n")
+
 fun String.readLines() = File(this).readLines()
-fun String.readFromNet() = String(
-    (URL(this)
-        .openConnection().apply {
-            setRequestProperty(
-                "user-agent",
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"
-            )
-        } as HttpURLConnection).inputStream.readBytes()
-)
+fun String.readFromNet() = try {
+    String(
+        (URL(this)
+            .openConnection().apply {
+                setRequestProperty(
+                    "user-agent",
+                    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"
+                )
+            } as HttpURLConnection).takeIf {
+//            println("$this __ ${it.responseCode}")
+            it.responseCode == 200
+        }?.inputStream?.readBytes() ?: "".toByteArray()
+    )
+} catch (e: Exception) {
+    println("$this read err ${e.message}")
+    ""
+}
+
 
 fun String.b64Decode() = String(Base64.getDecoder().decode(this))
 fun String.b64SafeDecode() =
     if (this.contains(":")) this
     else
-        String(
-            Base64.getDecoder().decode(
-                this.replace("_", "/")
-                    .replace("-", "+")
+        try {
+            String(
+                Base64.getDecoder().decode(
+                    this.trim().replace("_", "/")
+                        .replace("-", "+")
+                )
             )
-        )
+        } catch (e: Exception) {
+            println("failed: $this ${e.message}")
+            ""
+        }
 
 
 fun String.b64Encode() = Base64.getEncoder().encodeToString(this.toByteArray())
@@ -49,6 +67,7 @@ fun String.queryParamMapB64() =
         ?.fold(mutableMapOf<String, String>()) { acc, matchResult ->
             acc.apply {
 //                println(matchResult.groupValues[2].urlDecode().b64SafeDecode())
-                acc[matchResult.groupValues[1]] = matchResult.groupValues[2].urlDecode().b64SafeDecode()
+                acc[matchResult.groupValues[1]] =
+                    matchResult.groupValues[2].urlDecode().replace(" ", "+").b64SafeDecode()
             }
         }

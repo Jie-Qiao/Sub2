@@ -4,12 +4,14 @@ https://github.com/JACKUSR2089/v2ray-subscribed
 https://github.com/clashconfig/online
 https://github.com/coolapijust/cxkv2-
 https://github.com/fly0426/fj
+https://github.com/zyzmzyz/free-nodes
 
 ## 节点池
 
 https://233660.xyz/
 https://6166888.xyz/
 https://clashpool.ml
+https://etproxypool.ga/
 https://fq.lonxin.net/
 https://free.dswang.ga/
 https://free.kingfu.cf/
@@ -18,17 +20,12 @@ https://free886.herokuapp.com/
 https://fu.stgod.com/
 https://hello.stgod.com/
 https://hm2019721.ml/
-https://hm2019721.ml/
-https://proxy.51798.xyz/
 https://proxy.51798.xyz/
 https://proxy.purel.in/
-https://proxy.purel.in/
-https://proxypool-guest997.herokuapp.com/
 https://proxypool-guest997.herokuapp.com/
 https://proxypool.fly.dev/
 https://proxypoolv2.herokuapp.com/
 https://sspool.herokuapp.com/
-https://sspool.nl/
 https://sspool.nl/
 https://upan.tk/
 https://www.linbaoz.com/

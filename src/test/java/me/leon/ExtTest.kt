@@ -53,9 +53,12 @@ class ExtTest {
 
     @Test
     fun queryParse() {
-        val q =
-            "obfsparam=ZG93bmxvYWQud2luZG93c3VwZGF0ZS5jb20&protoparam=MTQzMDczOkN6OGFPaQ&remarks=6aaZ5rivLUI&group=MQ"
-        println(q.queryParamMap())
+//        val q =
+//            "obfsparam=ZG93bmxvYWQud2luZG93c3VwZGF0ZS5jb20&protoparam=MTQzMDczOkN6OGFPaQ&remarks=6aaZ5rivLUI&group=MQ"
+//        println(q.queryParamMap())
+
+        val q2= "obfsparam=&protoparam=dC5tZS9TU1JTVUI&remarks=UmVsYXlf8J+HqPCfh6ZDQS3wn4eo8J+HpkNBXzQxOSB8IDMuNTNNYg&group="
+        println(q2.queryParamMapB64())
     }
 
 }

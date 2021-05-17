@@ -26,6 +26,7 @@ data class Node(
     var alterId: String = "",
     var network: String = "",
     var `protocol-param`: String = "",
+    var `protocol_param`: String = "",
     var server: String = "",
     var servername: String = "",
 
@@ -37,6 +38,7 @@ data class Node(
     var `ws-path`: String = ""
     var `obfs-param`: String = ""
     var plugin: String = ""
+    var sni: String = ""
     var udp: Boolean = false
     var tls: Boolean = false
     var `skip-cert-verify`: Boolean = false
@@ -53,7 +55,7 @@ data class Node(
                 obfs,
                 password,
                 if (obfs == "plain") "" else "",
-                `protocol-param`
+                `protocol-param`.takeUnless { it.isEmpty() }?:`protocol_param`
             ).apply { remarks = name }
 //            TODO()
             "vmess" -> V2ray(

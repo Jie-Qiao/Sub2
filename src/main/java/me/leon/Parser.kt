@@ -1,6 +1,8 @@
 package me.leon
 
 import me.leon.support.*
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.Constructor
 
 object Parser {
     private val REG_SCHEMA_HASH = "(\\w+)://([^ #]+)(?:#([^#]+))?".toRegex()
@@ -83,26 +85,47 @@ object Parser {
         return null
     }
 
-    private fun parseFromFileSub(path: String) =
-        path.readText()
+    private fun parseFromFileSub(path: String): LinkedHashSet<Sub> {
+        val data = path.readText()
             .b64SafeDecode()
-            .split("\r\n|\n".toRegex())
-            .asSequence()
-            .filter { it.isNotEmpty() }
-            .map { Pair(it, parse(it)) }
-            .filter { it.second !is NoSub }
-            .fold(linkedSetOf<Sub>()) { acc, sub ->
-                sub.second?.let { acc.add(it) } ?: kotlin.run {
-                    println("parse failed: $sub")
+        return if (data.contains("proxies:"))
+            (Yaml(Constructor(Clash::class.java)).load(data) as Clash).proxies
+                .asSequence()
+                .map(Node::node)
+                .filterNotNull()
+                .fold(linkedSetOf<Sub>()) { acc, sub ->
+                     acc.apply { acc.add(sub) }
                 }
-                acc
-            }
+        else
+            data
+//                .also { println(it) }
+                .split("\r\n|\n".toRegex())
+                .asSequence()
+                .filter { it.isNotEmpty() }
+                .map { Pair(it, parse(it)) }
+                .filter { it.second !is NoSub }
+                .fold(linkedSetOf<Sub>()) { acc, sub ->
+                    sub.second?.let { acc.add(it) } ?: kotlin.run {
+                        println("parse failed: $sub")
+                    }
+                    acc
+                }
+    }
 
-    private fun parseFromNetwork(url: String) =
-        url.readFromNet()
-//                    .also { println(it) }
+    private fun parseFromNetwork(url: String): LinkedHashSet<Sub>  {
+        val data = url.readFromNet()
             .b64SafeDecode()
-            .also { println(it) }
+
+        return if (data.contains("proxies:"))
+            (Yaml(Constructor(Clash::class.java)).load(data) as Clash).proxies
+                .asSequence()
+                .map(Node::node)
+                .filterNotNull()
+                .fold(linkedSetOf<Sub>()) { acc, sub ->
+                    acc.apply { acc.add(sub) }
+                }
+        else
+            data.also { println(it) }
             .split("\r\n|\n".toRegex())
             .asSequence()
             .filter { it.isNotEmpty() }
@@ -112,7 +135,7 @@ object Parser {
                 sub?.let { acc.add(it) }
                 acc
             }
-
+    }
     fun parseFromSub(uri: String) =
         when {
             uri.startsWith("http") -> parseFromNetwork(uri)
