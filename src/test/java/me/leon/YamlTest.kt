@@ -55,10 +55,8 @@ class YamlTest {
     fun pool() {
         pool.writeLine()
         pool2.readLines().also { println(it.size) }
-        Parser.parseFromSub(pool2).also { println(it.size) }.map {
+        Parser.parseFromSub(pool2).also { println(it.size) }.sortedBy { it.toUri() }.map {
             pool.writeLine(it.toUri())
         }
-
-
     }
 }
