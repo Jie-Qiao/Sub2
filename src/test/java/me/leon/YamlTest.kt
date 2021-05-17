@@ -42,6 +42,7 @@ class YamlTest {
     @Test
     fun sublistParse() {
         var subs = "E:\\github\\Sub\\sub\\sublist".readLines()
+        pool2.writeLine()
         println(subs)
         subs.map { sub ->
             Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
