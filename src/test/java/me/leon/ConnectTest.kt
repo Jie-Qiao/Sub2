@@ -34,7 +34,7 @@ class ConnectTest {
             .filterIndexed { index, sub ->
 
                 if (sub.info() == lastSub || index == resumeIndex) {
-                    println("${"bypass".takeIf { index != 0 }?:""} ${index + 1}/$poolSize ")
+                    println("${"bypass".takeIf { index != 0 } ?: ""} ${index + 1}/$poolSize ")
                     resume = true
                     return@filterIndexed index == 0
                 }
@@ -93,6 +93,7 @@ class ConnectTest {
 }
 
 fun String.connect(port: Int = 80, timeout: Int = 1000) =
+    //todo 失败的 服务器 端口缓存
     try {
         var start = System.currentTimeMillis()
         Socket().connect(InetSocketAddress(this, port), timeout)
