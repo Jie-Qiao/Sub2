@@ -46,7 +46,7 @@ data class Node(
     fun node(): Sub? {
         return when (type) {
             //            {"name":"Pool_🇦🇱AL_04","server":"31.171.154.221","type":"ss","country":"🇦🇱AL","port":39772,"password":"CUndSZnYsPKcu6Kj8THVMBHD","cipher":"aes-256-gcm"}
-            "ss" -> SS(cipher, password, server, port.toString()).apply {  remark = this@Node.name }
+            "ss" -> SS(cipher, password, server, port.toString()).apply { remark = this@Node.name }
             "ssr" -> SSR(
                 server,
                 port.toString(),
@@ -55,7 +55,7 @@ data class Node(
                 obfs,
                 password,
                 if (obfs == "plain") "" else "",
-                `protocol-param`.takeUnless { it.isEmpty() }?:`protocol_param`
+                `protocol-param`.takeUnless { it.isEmpty() } ?: `protocol_param`
             ).apply { remarks = this@Node.name }
 //
             "vmess" -> V2ray(
@@ -64,9 +64,12 @@ data class Node(
                 port = port.toString(),
                 id = uuid,
                 net = network,
-                host = servername,
                 tls = tls.toString()
-            ).apply { ps = this@Node.name }
+            ).apply {
+                path = if (network == "ws") `ws-path` else ""
+                host = if (network == "ws") `ws-headers`["Host"] ?: "" else ""
+                ps = this@Node.name
+            }
 //            {"name":"Relay_🇨🇦CA-🇨🇦CA_30","server":"t3.ssrsub.one","type":"trojan","country":"🇨🇦CA","port":443,"password":"a0Ndyox5","skip-cert-verify":true,"udp":true}
             "trojan" -> Trojan(password, server, port.toString()).apply { this.remark = this@Node.name }
             else -> NoSub

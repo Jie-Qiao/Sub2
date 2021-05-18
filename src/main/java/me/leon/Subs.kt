@@ -55,7 +55,7 @@ data class V2ray(
      */
     var path: String = "",
 
-    var tls: String = "",
+    var tls: String = "false",
     var sni: String = "",
 ) : Sub() {
     var v: String = "2"

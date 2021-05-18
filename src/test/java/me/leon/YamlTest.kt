@@ -3,6 +3,7 @@ package me.leon
 
 import me.leon.support.readFromNet
 import me.leon.support.readLines
+import me.leon.support.readText
 import me.leon.support.writeLine
 import org.junit.jupiter.api.Test
 import org.yaml.snakeyaml.Yaml
@@ -17,10 +18,27 @@ class YamlTest {
 
         //        本地节点池
         val pool = "$ROOT\\pools.txt"
+        val bihai = "$ROOT\\bihai.yaml"
         val pool2 = "$ROOT\\pools2.txt"
         val speed = "$ROOT\\speedtest.txt"
         val share = "$ROOT\\share.txt"
         val available = "$ROOT\\available.txt"
+    }
+
+    @Test
+    fun yamlLocalTest() {
+
+        with(Yaml(Constructor(Clash::class.java)).load(bihai.readText()) as Clash) {
+            println(this.proxies.map(Node::node)
+//                    .filterIsInstance<V2ray>()
+                .joinToString("|") { sub ->
+                    sub?.also {
+//                        println(it.info())
+                    }?.toUri().also {
+//                        println(it)
+                    } ?: ""
+                })
+        }
     }
 
     @Test
@@ -31,7 +49,8 @@ class YamlTest {
         }
 //        val url = "http://buliang0.tk/tool/freeproxy/05-06/clash-27.yml".readFromNet()
 //        val url = "https://suo.yt/E80gdbo".readFromNet()
-        val url = "https://www.233660.xyz/clash/proxies".readFromNet()
+//        val url = "https://www.233660.xyz/clash/proxies".readFromNet()
+        val url = "https://pub-api-1.bianyuan.xyz/sub?target=clash&url=https%3A%2F%2Ffzusrs.xyz%2F%2Flink%2FtOHiqgwTT7OkFiDR%3Fsub%3D3%26extend%3D1&insert=false&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true".readFromNet()
 //        println("__ $url")
         if (url.isNotEmpty()) {
             with(Yaml(Constructor(Clash::class.java)).load(url) as Clash) {
@@ -40,7 +59,9 @@ class YamlTest {
                     .joinToString("|") { sub ->
 
                         sub?.also { println(it.info()) }?.toUri()
-                            ?.also { if (!curList.contains(sub)) pool.writeLine(it) } ?: ""
+                            ?.also {
+//                                if (!curList.contains(sub)) pool.writeLine(it)
+                            } ?: ""
                     })
             }
         } else {
@@ -60,9 +81,11 @@ class YamlTest {
         subs.map { sub ->
             Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
         }.flatMap {
-            it.map { it.toUri().also {
-                pool2.writeLine(it)
-            } }
+            it.map {
+                it.toUri().also {
+                    pool2.writeLine(it)
+                }
+            }
         }
     }
 

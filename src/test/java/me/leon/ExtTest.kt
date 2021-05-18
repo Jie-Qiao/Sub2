@@ -21,8 +21,8 @@ class ExtTest {
     @Test
     fun v2rayTest() {
         val url =
-            "vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIkhLIEVDMiAwOSIsDQogICJhZGQiOiAiMTguMTYzLjEwNS4yMTkiLA0KICAicG9ydCI6ICI0NDgiLA0KICAiaWQiOiAiY2E3ODQwNWUtZTU1NC0zY2QzLTliNmQtMmVjOThlMjFjOGYxIiwNCiAgImFpZCI6ICIxIiwNCiAgIm5ldCI6ICJ3cyIsDQogICJ0eXBlIjogIm5vbmUiLA0KICAiaG9zdCI6ICIiLA0KICAicGF0aCI6ICIvaGxzL2NjdHY1cGhkLm0zdTgiLA0KICAidGxzIjogIiINCn0="
-        println(Parser.parseV2ray(url))
+            "vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIvCfh7rwn4e4576O5Zu9IOKYhuKYhiAgMDEg4piGTlRU4piGICAgMS4y5YCN546HIiwNCiAgImFkZCI6ICJiai5rZWFpeXVuLnh5eiIsDQogICJwb3J0IjogIjMxMTAzIiwNCiAgImlkIjogIjQ0MTg5MzQxLTJjYzktM2JlOS1iYjEwLWMxMzVlOThjZDhlYiIsDQogICJhaWQiOiAiMiIsDQogICJzY3kiOiAiYXV0byIsDQogICJuZXQiOiAid3MiLA0KICAidHlwZSI6ICJub25lIiwNCiAgImhvc3QiOiAid3d3LmJhaWR1LmNvbSIsDQogICJwYXRoIjogIi92MnJheSIsDQogICJ0bHMiOiAiIiwNCiAgInNuaSI6ICIiDQp9"
+        println(Parser.parseV2ray(url)?.toUri())
 
     }
 
