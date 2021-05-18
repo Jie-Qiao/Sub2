@@ -14,7 +14,6 @@ object Parser {
     private var debug = false
 
     fun parse(uri: String): Sub? {
-//        println(uri.matches(URI_PAT))
         REG_SCHEMA.matchEntire(uri)?.run {
             return when (groupValues[1]) {
                 "vmess" -> parseV2ray(uri)
@@ -24,38 +23,47 @@ object Parser {
                 else -> NoSub
             }
         }
-//        println("${uri.length}  ${uri.isBlank()} " + URI_PAT.matches(uri))
+        "parse failed $uri ${uri.length}  ${uri.isBlank()}".debug()
         return NoSub
     }
 
     fun parseV2ray(uri: String): V2ray? {
+        "parseV2ray ".debug(uri)
         REG_SCHEMA_HASH.matchEntire(uri)?.run {
-            return groupValues[2].b64Decode().fromJson<V2ray>()
+            return groupValues[2].b64Decode()
+                .also { "parseV2ray base64 decode: ".debug(it) }
+                .fromJson<V2ray>()
         } ?: return null
     }
 
     fun parseSs(uri: String): SS? {
+        "parseSs ".debug(uri)
         REG_SCHEMA_HASH.matchEntire(uri)?.run {
             val remark = groupValues[3].urlDecode()
+            "parseSs match".debug(groupValues[2])
             groupValues[2].b64Decode()?.also {
+                "parseSs b64 decode".debug(it)
                 REG_SS.matchEntire(it)?.run {
+                    "parseSs ss match".debug(this.groupValues.toString())
                     return SS(groupValues[1], groupValues[2], groupValues[3], groupValues[4]).apply {
                         this.remark = remark
                     }
                 }
             }
         }
+        "parseSs failed".debug(uri)
         return null
     }
 
     fun parseSsr(uri: String): SSR? {
+        "parseSsr ".debug(uri)
         REG_SCHEMA_HASH.matchEntire(uri)?.run {
             groupValues[2].b64SafeDecode().split(":").run {
-//                println(this[5])
+                "parseSsr query".debug(this[5])
                 REG_SSR_PARAM.matchEntire(this[5])?.let {
-//                    println("parse params ${it.groupValues[2]}")
+                    "parseSsr query match".debug(it.groupValues[2])
                     val q = it.groupValues[2].queryParamMapB64()
-//                    println("parse maps ${q}")
+                    "parseSsr query maps".debug(q.toString())
                     return SSR(
                         this[0], this[1], this[2], this[3], this[4],
                         it.groupValues[1].b64SafeDecode(),
@@ -68,24 +76,30 @@ object Parser {
                 }
             }
         }
+        "parseSsr err not match".debug(uri)
         return null
     }
 
     fun parseTrojan(uri: String): Trojan? {
+        "parseTrojan ".debug(uri)
         REG_SCHEMA_HASH.matchEntire(uri)?.run {
             val remark = groupValues[3].urlDecode()
-            groupValues[2]?.also {
+            "parseTrojan ".debug(remark)
+            groupValues[2].also {
+                "parseTrojan ".debug(it)
                 REG_TROJAN.matchEntire(it)?.run {
-                    return Trojan(groupValues      [1], groupValues[2], groupValues[3]).apply {
+                    return Trojan(groupValues[1], groupValues[2], groupValues[3]).apply {
                         this.remark = remark
                     }
                 }
             }
         }
+        "parseTrojan ".debug("failed")
         return null
     }
 
     private fun parseFromFileSub(path: String): LinkedHashSet<Sub> {
+        "parseFromSub Local".debug(path)
         val data = path.readText()
             .b64SafeDecode()
         return if (data.contains("proxies:"))
@@ -93,9 +107,7 @@ object Parser {
                 .asSequence()
                 .map(Node::node)
                 .filterNotNull()
-                .fold(linkedSetOf<Sub>()) { acc, sub ->
-                     acc.apply { acc.add(sub) }
-                }
+                .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
         else
             data
 //                .also { println(it) }
@@ -104,7 +116,7 @@ object Parser {
                 .filter { it.isNotEmpty() }
                 .map { Pair(it, parse(it)) }
                 .filter { it.second !is NoSub }
-                .fold(linkedSetOf<Sub>()) { acc, sub ->
+                .fold(linkedSetOf()) { acc, sub ->
                     sub.second?.let { acc.add(it) } ?: kotlin.run {
                         println("parse failed: $sub")
                     }
@@ -112,7 +124,8 @@ object Parser {
                 }
     }
 
-    private fun parseFromNetwork(url: String): LinkedHashSet<Sub>  {
+    private fun parseFromNetwork(url: String): LinkedHashSet<Sub> {
+        "parseFromNetwork".debug(url)
         val data = url.readFromNet()
             .b64SafeDecode()
 
@@ -121,26 +134,27 @@ object Parser {
                 .asSequence()
                 .map(Node::node)
                 .filterNotNull()
-                .fold(linkedSetOf<Sub>()) { acc, sub ->
-                    acc.apply { acc.add(sub) }
-                }
+                .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
         else
-            data.also { println(it) }
-            .split("\r\n|\n".toRegex())
-            .asSequence()
-            .filter { it.isNotEmpty() }
-            .map { parse(it.replace("/#", "#")) }
-            .filter { it !is NoSub }
-            .fold(linkedSetOf<Sub>()) { acc, sub ->
-                sub?.let { acc.add(it) }
-                acc
-            }
+            data.also { "parseFromNetwork".debug(it) }
+                .split("\r\n|\n".toRegex())
+                .asSequence()
+                .filter { it.isNotEmpty() }
+                .map { parse(it.replace("/#", "#")) }
+                .filter { it !is NoSub }
+                .filterNotNull()
+                .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
     }
+
     fun parseFromSub(uri: String) =
         when {
             uri.startsWith("http") -> parseFromNetwork(uri)
             uri.startsWith("/") -> parseFromFileSub(uri)
             else -> parseFromFileSub(uri)
         }
+
+    fun String.debug(extra: String = "") {
+        if (debug) println("$this $extra")
+    }
 
 }

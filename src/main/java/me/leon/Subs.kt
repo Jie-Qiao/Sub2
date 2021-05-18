@@ -54,15 +54,16 @@ data class V2ray(
      * 伪装路径
      */
     var path: String = "",
-    /**
-     * 伪装类型 tcp/kcp/QUIC 默认none
-     */
-    var type: String = "none",
+
     var tls: String = "",
     var sni: String = "",
 ) : Sub() {
     var v: String = "2"
     var ps: String = ""
+    /**
+     * 伪装类型 tcp/kcp/QUIC 默认none
+     */
+    var type: String = "none"
     override fun toUri() = "vmess://${this.toJson().b64Encode()}"
     override fun info() = "$ps vmess $add:$port"
     override var name: String
