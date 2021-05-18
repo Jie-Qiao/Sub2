@@ -48,6 +48,10 @@ class YamlTest {
         }
     }
 
+    /**
+     *
+     * 1.爬取配置文件的订阅
+     */
     @Test
     fun sublistParse() {
         var subs = "$ROOT\\sublist".readLines()
@@ -56,12 +60,17 @@ class YamlTest {
         subs.map { sub ->
             Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
         }.flatMap {
-            it.map { it.toUri().also { pool2.writeLine(it) } }
+            it.map { it.toUri().also {
+                pool2.writeLine(it)
+            } }
         }
     }
 
+    /**
+     *
+     * 2.去重
+     */
     @Test
-
     fun pool() {
         pool.writeLine()
         pool2.readLines().also { println(it.size) }
@@ -70,15 +79,21 @@ class YamlTest {
         }
     }
 
+
+    /**
+     * 连通性测试 完成后，进行测速，将测速后的结果复制到 speedtest.txt
+     * 最后进行分享链接生成
+     */
     @Test
-    fun speedTest() {
-        val map = Parser.parseFromSub(available).also { println(it.size) } .fold(mutableMapOf<String, Sub>()) { acc, sub ->
-            acc.apply { acc[sub.name] = sub }
-        }
+    fun speedTestResultParse() {
+        val map =
+            Parser.parseFromSub(available).also { println(it.size) }.fold(mutableMapOf<String, Sub>()) { acc, sub ->
+                acc.apply { acc[sub.name] = sub }
+            }
 //        println(map)
         share.writeLine()
         speed.readLines()
-            .map { it.slice(0 until it.lastIndexOf('|')) to  it.slice(it.lastIndexOf('|')+1 until  it.length) }
+            .map { it.slice(0 until it.lastIndexOf('|')) to it.slice(it.lastIndexOf('|') + 1 until it.length) }
             .sortedBy { -it.second.replace("Mb|MB".toRegex(), "").toFloat() }
 //            .forEach {
 //                println(it)

@@ -70,4 +70,10 @@ class ExtTest {
         println(this.javaClass.classLoader.getResource(""))
         println(this.javaClass.classLoader.getResource("/"))
     }
+
+    @Test
+    fun sliceTest() {
+        println(7.slice(3))
+        println(9.slice(3))
+    }
 }

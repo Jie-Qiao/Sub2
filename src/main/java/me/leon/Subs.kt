@@ -84,7 +84,7 @@ data class SS(
 ) : Sub() {
     var remark: String = ""
 
-    override fun toUri() = "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${remark.urlEncode()}"
+    override fun toUri() = "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${(name.takeUnless { it.isEmpty() }?:hashCode().toString()).urlEncode()}"
     override fun info() = "$remark ss $server:$port"
     override var name: String
         get() = remark
@@ -110,7 +110,7 @@ data class SSR(
     var remarks: String = ""
     var group: String = ""
     override fun toUri() =
-        "ssr://${"$server:$port:$protocol:$method:$obfs:${password.b64Encode()}/?obfsparam=${obfs_param.b64EncodeNoEqual()}&protoparam=${protocol_param.b64EncodeNoEqual()}&remarks=${remarks.b64EncodeNoEqual()}&group=${group.b64EncodeNoEqual()}".b64Encode()}"
+        "ssr://${"$server:$port:$protocol:$method:$obfs:${password.b64Encode()}/?obfsparam=${obfs_param.b64EncodeNoEqual()}&protoparam=${protocol_param.b64EncodeNoEqual()}&remarks=${name.b64EncodeNoEqual()}&group=${group.b64EncodeNoEqual()}".b64Encode()}"
 
     override fun info() = "$remarks ssr $server:$port"
     override var name: String
@@ -131,7 +131,7 @@ data class Trojan(
     val port: String = ""
 ) : Sub() {
     var remark: String = ""
-    override fun toUri() = "trojan://${"${password}@$server:$port"}#${remark.urlEncode()}"
+    override fun toUri() = "trojan://${"${password}@$server:$port"}#${name.urlEncode()}"
     override fun info() = "$remark trojan $server:$port"
     override var name: String
         get() = remark

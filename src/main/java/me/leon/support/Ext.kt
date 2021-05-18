@@ -1,8 +1,7 @@
 package me.leon.support
 
 import java.io.File
-import java.lang.Exception
-import java.lang.StringBuilder
+import java.lang.Math.ceil
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLDecoder
@@ -10,7 +9,7 @@ import java.net.URLEncoder
 import java.util.*
 
 
-fun String.readText() = File(this).takeIf { it.exists() }?.readText()?:""
+fun String.readText() = File(this).canonicalFile.also { println(it.canonicalPath) }.takeIf { it.exists() }?.readText() ?: ""
 fun String.writeLine(txt: String = "") =
     if (txt.isEmpty()) File(this).writeText("") else File(this).appendText("$txt\n")
 
@@ -71,3 +70,18 @@ fun String.queryParamMapB64() =
                     matchResult.groupValues[2].urlDecode().replace(" ", "+").b64SafeDecode()
             }
         }
+
+
+fun Int.slice(group: Int): MutableList<IntRange> {
+
+    val slice = kotlin.math.ceil(this.toDouble() / group.toDouble()).toInt()
+    return (0 until group).foldIndexed(mutableListOf<IntRange>()) { index, acc, i ->
+        acc.apply {
+            acc.add(slice * index until ((slice * (i + 1)).takeIf { group - 1 != index } ?: this@slice)
+            )
+        }
+    }
+}
+
+
+fun <T> Any?.safeAs(): T? = this as? T

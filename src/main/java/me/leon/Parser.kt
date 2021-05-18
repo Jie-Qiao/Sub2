@@ -76,7 +76,7 @@ object Parser {
             val remark = groupValues[3].urlDecode()
             groupValues[2]?.also {
                 REG_TROJAN.matchEntire(it)?.run {
-                    return Trojan(groupValues[1], groupValues[2], groupValues[3]).apply {
+                    return Trojan(groupValues      [1], groupValues[2], groupValues[3]).apply {
                         this.remark = remark
                     }
                 }
