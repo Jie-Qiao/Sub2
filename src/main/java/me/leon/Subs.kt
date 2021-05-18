@@ -9,6 +9,8 @@ interface Uri {
     fun toUri(): String
     fun info(): String
     var name: String
+    val SERVER: String
+    val serverPort: Int
 }
 
 sealed class Sub : Uri
@@ -19,46 +21,46 @@ object NoSub : Sub() {
         get() = "nosub"
         set(value) {
         }
+    override var serverPort = 80
+    override val SERVER = "nosub"
 
-    fun name() = "nosub"
 }
 
 data class V2ray(
     /**
      * address  服务器
      */
-    val add: String = "",
-    val port: String = "",
+    var add: String = "",
+    var port: String = "",
     /**
      * uuid
      */
-    val id: String = "",
+    var id: String = "",
     /**
      * alertId
      */
-    val aid: String = "0",
-    val scy: String = "auto",
+    var aid: String = "0",
+    var scy: String = "auto",
     /**
      * network
      */
-    val net: String = "tcp",
+    var net: String = "tcp",
 
     /**
      * 伪装域名
      */
-    val host: String = "",
+    var host: String = "",
     /**
      * 伪装路径
      */
-    val path: String = "",
+    var path: String = "",
     /**
      * 伪装类型 tcp/kcp/QUIC 默认none
      */
-    val type: String = "none",
-    val tls: String = "",
-    val sni: String = "",
-
-    ) : Sub() {
+    var type: String = "none",
+    var tls: String = "",
+    var sni: String = "",
+) : Sub() {
     var v: String = "2"
     var ps: String = ""
     override fun toUri() = "vmess://${this.toJson().b64Encode()}"
@@ -68,6 +70,10 @@ data class V2ray(
         set(value) {
             ps = value
         }
+    override var serverPort: Int = 0
+        get() = port.toInt()
+    override val SERVER
+        get() = add
 }
 
 data class SS(
@@ -85,6 +91,10 @@ data class SS(
         set(value) {
             remark = value
         }
+    override val serverPort
+        get() = port.toInt()
+    override val SERVER
+        get() = server
 }
 
 data class SSR(
@@ -108,6 +118,10 @@ data class SSR(
         set(value) {
             remarks = value
         }
+    override val serverPort
+        get() = port.toInt()
+    override val SERVER
+        get() = server
 
 }
 
@@ -124,4 +138,8 @@ data class Trojan(
         set(value) {
             remark = value
         }
+    override val serverPort
+        get() = port.toInt()
+    override val SERVER
+        get() = server
 }

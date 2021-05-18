@@ -20,8 +20,8 @@ class YamlTest {
         val pool2 = "$ROOT\\pools2.txt"
         val speed = "$ROOT\\speedtest.txt"
         val share = "$ROOT\\share.txt"
+        val available = "$ROOT\\available.txt"
     }
-
 
     @Test
     fun yamlTest() {
@@ -72,15 +72,17 @@ class YamlTest {
 
     @Test
     fun speedTest() {
-        val map = Parser.parseFromSub(pool).fold(mutableMapOf<String, Sub>()) { acc, sub ->
-            acc.apply {
-                acc[sub.name] = sub
-            }
+        val map = Parser.parseFromSub(available).also { println(it.size) } .fold(mutableMapOf<String, Sub>()) { acc, sub ->
+            acc.apply { acc[sub.name] = sub }
         }
 //        println(map)
         share.writeLine()
         speed.readLines()
-            .map { it.split("|").run { Pair(this[0], this[1]) } }
+            .map { it.slice(0 until it.lastIndexOf('|')) to  it.slice(it.lastIndexOf('|')+1 until  it.length) }
+            .sortedBy { -it.second.replace("Mb|MB".toRegex(), "").toFloat() }
+//            .forEach {
+//                println(it)
+//            }
             .filter { map[it.first] != null }
             .forEach {
                 map[it.first]?.apply {
