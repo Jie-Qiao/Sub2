@@ -64,7 +64,7 @@ data class Node(
                 port = port.toString(),
                 id = uuid,
                 net = network,
-                tls = tls.toString()
+                tls = if (tls) "true" else ""
             ).apply {
                 path = if (network == "ws") `ws-path` else ""
                 host = if (network == "ws") `ws-headers`["Host"] ?: "" else ""

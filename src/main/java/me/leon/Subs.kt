@@ -55,7 +55,10 @@ data class V2ray(
      */
     var path: String = "",
 
-    var tls: String = "false",
+    /**
+     * 默认false,空串即可
+     */
+    var tls: String = "",
     var sni: String = "",
 ) : Sub() {
     var v: String = "2"

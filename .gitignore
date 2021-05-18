@@ -1,7 +1,7 @@
 # Project exclude paths
 /.gradle/
-/build/
-/build/classes/java/main/
+/build
 /sub/share.txt
 /sub/speedtest.txt
 /.idea
+/out
