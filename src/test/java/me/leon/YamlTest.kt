@@ -7,11 +7,21 @@ import me.leon.support.writeLine
 import org.junit.jupiter.api.Test
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
+import java.io.File
 
 class YamlTest {
-    //        本地节点池
-    val pool = "E:\\github\\Sub\\sub\\pools.txt"
-    val pool2 = "E:\\github\\Sub\\sub\\pools2.txt"
+
+    companion object {
+
+        val ROOT = File("sub").absolutePath
+
+        //        本地节点池
+        val pool = "$ROOT\\pools.txt"
+        val pool2 = "$ROOT\\pools2.txt"
+        val speed = "$ROOT\\speedtest.txt"
+        val share = "$ROOT\\share.txt"
+    }
+
 
     @Test
     fun yamlTest() {
@@ -19,7 +29,6 @@ class YamlTest {
         val curList = Parser.parseFromSub(pool).also {
             println(it.size)
         }
-        var y = "E:\\github\\Sub\\sub\\sub.yml"
 //        val url = "http://buliang0.tk/tool/freeproxy/05-06/clash-27.yml".readFromNet()
 //        val url = "https://suo.yt/E80gdbo".readFromNet()
         val url = "https://www.233660.xyz/clash/proxies".readFromNet()
@@ -41,7 +50,7 @@ class YamlTest {
 
     @Test
     fun sublistParse() {
-        var subs = "E:\\github\\Sub\\sub\\sublist".readLines()
+        var subs = "$ROOT\\sublist".readLines()
         pool2.writeLine()
         println(subs)
         subs.map { sub ->
@@ -59,5 +68,28 @@ class YamlTest {
         Parser.parseFromSub(pool2).also { println(it.size) }.sortedBy { it.toUri() }.map {
             pool.writeLine(it.toUri())
         }
+    }
+
+    @Test
+    fun speedTest() {
+        val map = Parser.parseFromSub(pool).fold(mutableMapOf<String, Sub>()) { acc, sub ->
+            acc.apply {
+                acc[sub.name] = sub
+            }
+        }
+//        println(map)
+        share.writeLine()
+        speed.readLines()
+            .map { it.split("|").run { Pair(this[0], this[1]) } }
+            .filter { map[it.first] != null }
+            .forEach {
+                map[it.first]?.apply {
+                    name =
+                        name.slice(0 until (name.lastIndexOf('|').takeIf { it != -1 } ?: name.length)) + "|" + it.second
+                }?.toUri()?.also {
+                    println(it)
+                    share.writeLine(it)
+                }
+            }
     }
 }

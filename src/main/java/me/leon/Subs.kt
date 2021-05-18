@@ -8,12 +8,19 @@ import me.leon.support.urlEncode
 interface Uri {
     fun toUri(): String
     fun info(): String
+    var name: String
 }
 
 sealed class Sub : Uri
 object NoSub : Sub() {
     override fun toUri() = "nosub"
     override fun info() = "nosub"
+    override var name: String
+        get() = "nosub"
+        set(value) {
+        }
+
+    fun name() = "nosub"
 }
 
 data class V2ray(
@@ -56,6 +63,11 @@ data class V2ray(
     var ps: String = ""
     override fun toUri() = "vmess://${this.toJson().b64Encode()}"
     override fun info() = "$ps vmess $add:$port"
+    override var name: String
+        get() = ps
+        set(value) {
+            ps = value
+        }
 }
 
 data class SS(
@@ -68,6 +80,11 @@ data class SS(
 
     override fun toUri() = "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${remark.urlEncode()}"
     override fun info() = "$remark ss $server:$port"
+    override var name: String
+        get() = remark
+        set(value) {
+            remark = value
+        }
 }
 
 data class SSR(
@@ -86,6 +103,11 @@ data class SSR(
         "ssr://${"$server:$port:$protocol:$method:$obfs:${password.b64Encode()}/?obfsparam=${obfs_param.b64EncodeNoEqual()}&protoparam=${protocol_param.b64EncodeNoEqual()}&remarks=${remarks.b64EncodeNoEqual()}&group=${group.b64EncodeNoEqual()}".b64Encode()}"
 
     override fun info() = "$remarks ssr $server:$port"
+    override var name: String
+        get() = remarks
+        set(value) {
+            remarks = value
+        }
 
 }
 
@@ -97,4 +119,9 @@ data class Trojan(
     var remark: String = ""
     override fun toUri() = "trojan://${"${password}@$server:$port"}#${remark.urlEncode()}"
     override fun info() = "$remark trojan $server:$port"
+    override var name: String
+        get() = remark
+        set(value) {
+            remark = value
+        }
 }

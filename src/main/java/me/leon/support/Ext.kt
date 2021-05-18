@@ -10,7 +10,7 @@ import java.net.URLEncoder
 import java.util.*
 
 
-fun String.readText() = File(this).readText()
+fun String.readText() = File(this).takeIf { it.exists() }?.readText()?:""
 fun String.writeLine(txt: String = "") =
     if (txt.isEmpty()) File(this).writeText("") else File(this).appendText("$txt\n")
 

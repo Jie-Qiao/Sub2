@@ -43,5 +43,6 @@ con8:    https://www.con8.tk/
 
 本地: https://github.com/tindy2013/stairspeedtest-reborn
 
-服务器: http://gz.cloudtest.cc/
-
+服务器:
+- http://gz.cloudtest.cc/
+- http://a.cloudtest.icu/

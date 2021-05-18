@@ -2,13 +2,13 @@ package me.leon
 
 import me.leon.support.*
 import org.junit.jupiter.api.Test
+import java.io.File
 
 
 class ExtTest {
 
     @Test
     fun encode() {
-        println("E:\\gitrepo\\Sub\\src\\main\\java\\me\\leon\\Helo.java".readText())
 //            println("https://blog.csdn.net/oschina_41790905/article/details/79475187".readFromNet())
         println("https://suo.yt/WtbjDPJ".readFromNet())
         println("你好Leon".b64Encode())
@@ -61,4 +61,13 @@ class ExtTest {
         println(q2.queryParamMapB64())
     }
 
+
+    @Test
+    fun fileTest() {
+        println(File("./").canonicalPath)
+        println(this.javaClass.getResource(""))
+        println(this.javaClass.getResource("/"))
+        println(this.javaClass.classLoader.getResource(""))
+        println(this.javaClass.classLoader.getResource("/"))
+    }
 }
