@@ -23,6 +23,7 @@ class YamlTest {
         val speed = "$ROOT\\speedtest.txt"
         val share = "$ROOT\\share.txt"
         val available = "$ROOT\\available.txt"
+        val socketfailed = "$ROOT\\socketfail.txt"
     }
 
     @Test
@@ -104,7 +105,20 @@ class YamlTest {
 
 
     /**
-     * 连通性测试 完成后，进行测速，将测速后的结果复制到 speedtest.txt
+     * 3.生成测试分组，进行网页测速 （先进行筛选pool中可用节点）
+     * 测速地址
+     *  - http://gz.cloudtest.cc/
+     *  - http://a.cloudtest.icu/
+     */
+    @Test
+    fun availableSpeedTest() {
+        Parser.parseFromSub(available).chunked(60).map {
+            it.map (Sub::toUri).also { println(it.joinToString("|")) }
+        }
+    }
+
+    /**
+     *，将测速后的结果复制到 speedtest.txt
      * 最后进行分享链接生成
      */
     @Test

@@ -1,6 +1,11 @@
 package me.leon
 
+import me.leon.support.b64Decode
+import me.leon.support.readFromNet
 import org.junit.jupiter.api.Test
+import java.lang.StringBuilder
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NetworkSubTest {
     @Test
@@ -34,5 +39,21 @@ class NetworkSubTest {
                 it.printStackTrace()
             }
         }
+    }
+
+    @Test
+    fun parseNet() {
+        val key = SimpleDateFormat("yyyyMMdd").format(Date()).repeat(4)
+        "https://ghproxy.com/https://raw.githubusercontent.com/webdao/v2ray/master/nodes.txt".readFromNet()
+            .b64Decode()
+            .foldIndexed(StringBuilder()) { index, acc, c ->
+                acc.also { acc.append((c.code xor key[index % key.length].code).toChar()) }
+            }.also {
+                println(it)
+            }
+            .split("\n")
+            .also {
+                println(it.joinToString("|"))
+            }
     }
 }
