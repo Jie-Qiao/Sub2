@@ -70,6 +70,7 @@ data class Node(
                 host = if (network == "ws") `ws-headers`["Host"] ?: "" else ""
                 ps = this@Node.name
             }
+
 //            {"name":"Relay_🇨🇦CA-🇨🇦CA_30","server":"t3.ssrsub.one","type":"trojan","country":"🇨🇦CA","port":443,"password":"a0Ndyox5","skip-cert-verify":true,"udp":true}
             "trojan" -> Trojan(password, server, port.toString()).apply { this.remark = this@Node.name }
             else -> NoSub
