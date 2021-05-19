@@ -1,5 +1,8 @@
 package me.leon
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.runBlocking
 import me.leon.support.readLines
 import me.leon.support.writeLine
 import org.junit.jupiter.api.Test
@@ -54,6 +57,46 @@ class ConnectTest {
             }
     }
 
+    val dispatch = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 6, "pool")
+
+    @Test
+    fun poolTest2() {
+        var poolSize: Int
+        var resume = false
+        var resumeIndex = 0
+        val lastSub = "".also {
+            if (it.isEmpty()) {
+                YamlTest.available.writeLine()
+            }
+        }
+
+        runBlocking {
+            Parser.parseFromSub(YamlTest.pool)
+                .also { poolSize = it.size }
+                .filterIndexed { index, sub ->
+                    if (sub.info() == lastSub || index == resumeIndex) {
+                        println("${"bypass".takeIf { index != 0 } ?: ""} ${index + 1}/$poolSize ")
+                        resume = true
+                        return@filterIndexed index == 0
+                    }
+                    if (resume) {
+                        println("${index + 1}/$poolSize ${sub.info()}")
+                        true
+                    } else {
+                        false
+                    }
+                }
+                .map { it to async(dispatch) { it.SERVER.connect(it.serverPort,2000) } }
+                .filter { it.second.await() > -1 }
+                .forEach {
+                    println(it.first.info() + ":" + it.second)
+                    YamlTest.available.writeLine(it.first.toUri())
+                }
+        }
+
+
+    }
+
     @Test
     fun poolPingTest() {
         var poolSize: Int
@@ -65,31 +108,31 @@ class ConnectTest {
             }
         }
 
-        Parser.parseFromSub(YamlTest.pool)
-            .also {
-                poolSize = it.size
-            }
-            .asSequence()
-            .filterIndexed { index, sub ->
-
-                if (sub.info() == lastSub || index == resumeIndex) {
-                    println("${"bypass".takeIf { index != 0 } ?: ""} ${index + 1}/$poolSize ")
-                    resume = true
-                    return@filterIndexed index == 0
-                }
-                if (resume) {
-                    println("${index + 1}/$poolSize ${sub.info()}")
-                    true
-                } else {
-                    false
-                }
-            }
-            .map { it to it.SERVER.ping() }
-            .filter { it.second > -1 }
-            .forEach {
-                println(it.first.info() + ":" + it.second)
+       runBlocking {
+           Parser.parseFromSub(YamlTest.pool)
+               .also {
+                   poolSize = it.size
+               }
+               .filterIndexed { index, sub ->
+                   if (sub.info() == lastSub || index == resumeIndex) {
+                       println("${"bypass".takeIf { index != 0 } ?: ""} ${index + 1}/$poolSize ")
+                       resume = true
+                       return@filterIndexed index == 0
+                   }
+                   if (resume) {
+                       println("${index + 1}/$poolSize ${sub.info()}")
+                       true
+                   } else {
+                       false
+                   }
+               }
+               .map { it to async(dispatch) { it.SERVER.ping(2000) } }
+               .filter { it.second.await() > -1 }
+               .forEach {
+                   println(it.first.info() + ":" + it.second)
 //                YamlTest.available.writeLine(it.first.toUri())
-            }
+               }
+       }
     }
 
 }
