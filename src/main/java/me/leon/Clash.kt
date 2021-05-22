@@ -41,6 +41,7 @@ data class Node(
     var sni: String = ""
     var udp: Boolean = false
     var tls: Boolean = false
+    var _index: Int = 0
     var `skip-cert-verify`: Boolean = false
 
     fun node(): Sub? {
