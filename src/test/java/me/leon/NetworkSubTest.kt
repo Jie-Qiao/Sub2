@@ -1,6 +1,8 @@
 package me.leon
 
+import me.leon.support.Sumurai
 import me.leon.support.b64Decode
+import me.leon.support.fromJson
 import me.leon.support.readFromNet
 import org.junit.jupiter.api.Test
 import java.lang.StringBuilder
@@ -54,6 +56,17 @@ class NetworkSubTest {
             .split("\n")
             .also {
                 println(it.joinToString("|"))
+            }
+    }
+
+    @Test
+    fun parseSumaraiVpn() {
+        "https://server.svipvpn.com/opconf.json".readFromNet()
+            .fromJson<Sumurai>()
+            .data.items.flatMap { it.items }
+            .map { it.ovpn.b64Decode() }
+            .forEach {
+                println(it)
             }
     }
 }
