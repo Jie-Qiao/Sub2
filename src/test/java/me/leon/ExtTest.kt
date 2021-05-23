@@ -57,7 +57,8 @@ class ExtTest {
 //            "obfsparam=ZG93bmxvYWQud2luZG93c3VwZGF0ZS5jb20&protoparam=MTQzMDczOkN6OGFPaQ&remarks=6aaZ5rivLUI&group=MQ"
 //        println(q.queryParamMap())
 
-        val q2= "obfsparam=&protoparam=dC5tZS9TU1JTVUI&remarks=UmVsYXlf8J+HqPCfh6ZDQS3wn4eo8J+HpkNBXzQxOSB8IDMuNTNNYg&group="
+        val q2 =
+            "obfsparam=&protoparam=dC5tZS9TU1JTVUI&remarks=UmVsYXlf8J+HqPCfh6ZDQS3wn4eo8J+HpkNBXzQxOSB8IDMuNTNNYg&group="
         println(q2.queryParamMapB64())
     }
 
@@ -75,5 +76,40 @@ class ExtTest {
     fun sliceTest() {
         println(7.slice(3))
         println(9.slice(3))
+    }
+
+    val failIpPorts by lazy {
+        socketfailed.readLines().toHashSet().also { println(it) }
+    }
+    val fails = mutableSetOf<String>()
+
+    @Test
+    fun pingTest() {
+//        "wwws.baidu.com".ping(3000, { ip, _ ->
+//            failIpPorts.contains(ip) || fails.contains(ip)
+//        }) {
+//            println("error $it")
+//            fails.add(it)
+//            socketfailed.writeLine(it)
+//        }.also { println(it) }
+        println("wwws.baidu.com".quickPing())
+        println("wwws.baidu.com".quickPing())
+        println("www.baidu.com".quickPing())
+
+    }
+
+    @Test
+    fun socketTest() {
+//        "wwws.baidu.com".connect(80, 3000, { ip, port ->
+//            failIpPorts.contains(ip) || fails.contains("$ip:$port") || failIpPorts.contains("$ip:$port")
+//        }) {
+//            println("error $it")
+//            fails.add(it)
+//            socketfailed.writeLine(it)
+//        }.also { println(it) }
+        println("wwws.baidu.com".quickConnect(50))
+        println("www.baidu.com".quickConnect(80))
+        println("www.baidu.com".quickConnect(443))
+
     }
 }

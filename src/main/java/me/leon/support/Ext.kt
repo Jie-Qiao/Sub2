@@ -1,15 +1,14 @@
 package me.leon.support
 
+import me.leon.socketfailed
 import java.io.File
-import java.lang.Math.ceil
-import java.net.HttpURLConnection
-import java.net.URL
-import java.net.URLDecoder
-import java.net.URLEncoder
+import java.net.*
 import java.util.*
 
 
-fun String.readText() = File(this).canonicalFile.also { println(it.canonicalPath) }.takeIf { it.exists() }?.readText() ?: ""
+fun String.readText() =
+    File(this).canonicalFile.also { println(it.canonicalPath) }.takeIf { it.exists() }?.readText() ?: ""
+
 fun String.writeLine(txt: String = "") =
     if (txt.isEmpty()) File(this).writeText("") else File(this).appendText("$txt\n")
 
@@ -73,7 +72,6 @@ fun String.queryParamMapB64() =
 
 
 fun Int.slice(group: Int): MutableList<IntRange> {
-
     val slice = kotlin.math.ceil(this.toDouble() / group.toDouble()).toInt()
     return (0 until group).foldIndexed(mutableListOf<IntRange>()) { index, acc, i ->
         acc.apply {
@@ -83,5 +81,83 @@ fun Int.slice(group: Int): MutableList<IntRange> {
     }
 }
 
-
 fun <T> Any?.safeAs(): T? = this as? T
+
+/**
+ * ip + port 测试
+ */
+
+val Nop = { _: String, _: Int -> false }
+fun String.connect(
+    port: Int = 80,
+    timeout: Int = 1000,
+    cache: (ip: String, port: Int) -> Boolean = Nop,
+    exceptionHandler: (info: String) -> Unit = {}
+) =
+    if (cache.invoke(this, port)) {
+        println("quick fail from cache")
+        -1
+    } else {
+        try {
+            var start = System.currentTimeMillis()
+            Socket().connect(InetSocketAddress(this, port), timeout)
+            System.currentTimeMillis() - start
+        } catch (e: Exception) {
+            exceptionHandler.invoke("$this:$port")
+            -1
+        }
+    }
+
+
+/**
+ * ping 测试
+ */
+fun String.ping(
+    timeout: Int = 1000,
+    cache: (ip: String, port: Int) -> Boolean = Nop,
+    exceptionHandler: (info: String) -> Unit = {}
+) =
+    if (cache.invoke(this, -1)) {
+        println("fast failed")
+        -1
+    } else
+        try {
+            var start = System.currentTimeMillis()
+            val reachable = InetAddress.getByName(this).isReachable(timeout)
+            if (reachable) (System.currentTimeMillis() - start)
+            else {
+                println("$this unreachable")
+                exceptionHandler.invoke(this)
+                -1
+            }
+
+        } catch (e: Exception) {
+            println("ping err $this")
+            exceptionHandler.invoke(this)
+            -1
+        }
+
+val failIpPorts by lazy {
+    socketfailed.readLines().toHashSet().also { println(it) }
+}
+val fails = mutableSetOf<String>()
+fun String.quickConnect(
+    port: Int = 80,
+    timeout: Int = 1000
+) = this.connect(port, timeout, { ip, port ->
+    failIpPorts.contains(ip) || fails.contains("$ip:$port") || failIpPorts.contains("$ip:$port")
+}) {
+    println("error $it")
+    fails.add(it)
+    socketfailed.writeLine(it)
+}
+
+fun String.quickPing(
+    timeout: Int = 1000
+) = this.ping(timeout, { ip, _ ->
+    failIpPorts.contains(ip) || fails.contains(ip)
+}) {
+    println("error $it")
+    fails.add(it)
+    socketfailed.writeLine(it)
+}

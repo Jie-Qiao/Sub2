@@ -1,6 +1,5 @@
 package me.leon
 
-import me.leon.YamlTest.Companion.ROOT
 import org.junit.jupiter.api.Test
 
 class LocalFileSubTest {
