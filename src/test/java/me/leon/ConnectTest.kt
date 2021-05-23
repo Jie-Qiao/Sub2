@@ -53,7 +53,6 @@ class ConnectTest {
             }
     }
 
-    val dispatch = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 6, "pool")
 
     @Test
     fun poolTest2() {
@@ -82,7 +81,7 @@ class ConnectTest {
                         false
                     }
                 }
-                .map { it to async(dispatch) { it.SERVER.quickConnect(it.serverPort, 2000) } }
+                .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
                 .forEach {
                     println(it.first.info() + ":" + it.second)
@@ -122,7 +121,7 @@ class ConnectTest {
                         false
                     }
                 }
-                .map { it to async(dispatch) { it.SERVER.quickPing(2000) } }
+                .map { it to async(DISPATCHER) { it.SERVER.quickPing(2000) } }
                 .filter { it.second.await() > -1 }
                 .forEach {
                     println(it.first.info() + ":" + it.second)

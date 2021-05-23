@@ -90,44 +90,4 @@ class YamlTest {
             POOL.writeLine(it.toUri())
         }
     }
-
-
-    /**
-     * 3.生成测试分组，进行网页测速 （先进行筛选pool中可用节点）
-     * 测速地址
-     *  - http://gz.cloudtest.cc/
-     *  - http://a.cloudtest.icu/
-     */
-    @Test
-    fun availableSpeedTest() {
-        Parser.parseFromSub(NODE_OK).chunked(60).map {
-            it.map(Sub::toUri).also { println(it.joinToString("|")) }
-        }
-    }
-
-    /**
-     *，将测速后的结果复制到 speedtest.txt
-     * 最后进行分享链接生成
-     */
-    @Test
-    fun speedTestResultParse() {
-        val map =
-            Parser.parseFromSub(NODE_OK).also { println(it.size) }.fold(mutableMapOf<String, Sub>()) { acc, sub ->
-                acc.apply { acc[sub.name] = sub }
-            }
-        SHARE_NODE.writeLine()
-        SPEED_TEST_RESULT.readLines()
-            .map { it.slice(0 until it.lastIndexOf('|')) to it.slice(it.lastIndexOf('|') + 1 until it.length) }
-            .sortedBy { -it.second.replace("Mb|MB".toRegex(), "").toFloat() }
-            .filter { map[it.first] != null }
-            .forEach {
-                map[it.first]?.apply {
-                    name =
-                        name.slice(0 until (name.lastIndexOf('|').takeIf { it != -1 } ?: name.length)) + "|" + it.second
-                }?.toUri()?.also {
-                    println(it)
-                    SHARE_NODE.writeLine(it)
-                }
-            }
-    }
 }

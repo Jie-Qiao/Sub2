@@ -1,5 +1,6 @@
 package me.leon.support
 
+import kotlinx.coroutines.newFixedThreadPoolContext
 import me.leon.FAIL_IPS
 import java.io.File
 import java.net.*
@@ -161,3 +162,4 @@ fun String.quickPing(
     fails.add(it)
     FAIL_IPS.writeLine(it)
 }
+val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 6, "pool")
