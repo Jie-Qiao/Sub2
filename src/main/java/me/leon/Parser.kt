@@ -16,10 +16,10 @@ object Parser {
     fun parse(uri: String): Sub? {
         REG_SCHEMA.matchEntire(uri)?.run {
             return when (groupValues[1]) {
-                "vmess" -> parseV2ray(uri)
-                "ss" -> parseSs(uri)
-                "ssr" -> parseSsr(uri)
-                "trojan" -> parseTrojan(uri)
+                "vmess" -> parseV2ray(uri.trim())
+                "ss" -> parseSs(uri.trim())
+                "ssr" -> parseSsr(uri.trim())
+                "trojan" -> parseTrojan(uri.trim())
                 else -> NoSub
             }
         }
@@ -88,7 +88,7 @@ object Parser {
     }
 
     fun parseTrojan(uri: String): Trojan? {
-        "parseTrojan ".debug(uri)
+        "parseTrojan".debug(uri)
         REG_SCHEMA_HASH.matchEntire(uri)?.run {
             val remark = groupValues[3].urlDecode()
             "parseTrojan remark".debug(remark)
