@@ -11,7 +11,7 @@ object Parser {
     private val REG_SSR_PARAM = "([^/]+)/\\?(.+)".toRegex()
     private val REG_TROJAN = "([^@]+)@([^:]+):(\\d{1,5})(?:\\?(.+))?".toRegex()
 
-    private var debug = true
+    private var debug = false
 
     fun parse(uri: String): Sub? {
         REG_SCHEMA.matchEntire(uri)?.run {

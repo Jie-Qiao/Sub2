@@ -2539,3 +2539,7 @@ cn2.relay.iplc.pro:52000
 hk1.direct.iplc.pro:52000
 shcn2-04.iplc188.com:10005
 shcn2-04.iplc188.com:10001
+172.96.210.12:503
+5.253.207.83:33992
+ntemp19.boom.party:24000
+cn1.relay.iplc.pro:52006
