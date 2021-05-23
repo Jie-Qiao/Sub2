@@ -63,6 +63,7 @@ data class V2ray(
 ) : Sub() {
     var v: String = "2"
     var ps: String = ""
+
     /**
      * 伪装类型 tcp/kcp/QUIC 默认none
      */
@@ -88,7 +89,9 @@ data class SS(
 ) : Sub() {
     var remark: String = ""
 
-    override fun toUri() = "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${(remark.takeUnless { it.isEmpty() }?:hashCode().toString()).urlEncode()}"
+    override fun toUri() =
+        "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${(remark.takeUnless { it.isEmpty() } ?: hashCode().toString()).urlEncode()}"
+
     override fun info() = "$remark ss $server:$port"
     override var name: String
         get() = remark
@@ -135,13 +138,18 @@ data class Trojan(
     val port: String = ""
 ) : Sub() {
     var remark: String = ""
-    override fun toUri() = "trojan://${"${password}@$server:$port"}#${(remark.takeUnless { it.isEmpty() }?:hashCode().toString()).urlEncode()}"
-    override fun info() = "$remark trojan $server:$port"
+    var query: String = ""
+    override fun toUri() = "trojan://${"${password}@$server:$port$params"}#${name.urlEncode()}"
+    override fun info() =
+        if (query.isNullOrEmpty()) "$name trojan $server:$port" else "$remark trojan $server:$port?$query"
+
     override var name: String
-        get() = remark
+        get() = remark.takeUnless { it.isEmpty() } ?: hashCode().toString()
         set(value) {
             remark = value
         }
+    private val params
+        get() = if (query.isNullOrEmpty()) "" else "?$query"
     override val serverPort
         get() = port.toInt()
     override val SERVER

@@ -24,7 +24,8 @@ class NetworkSubTest {
 //            subUrlSsr,
 //            subUrlTr,
 //            subUrlV2
-            "https://raw.fastgit.org/Leon406/jsdelivr/master/subscribe/ss2"
+            "https://gitee.com/bujilangren/warehouse/raw/master/0523.txt",
+            "https://gitee.com/bujilangren/warehouse/raw/master/2021-5-23-ss&vmess.txt"
         ).forEach {
             kotlin.runCatching {
                 Parser.parseFromSub(it)

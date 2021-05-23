@@ -9,9 +9,9 @@ object Parser {
     private val REG_SCHEMA = "(\\w+)://.*".toRegex()
     private val REG_SS = "([^:]+):([^@]+)@([^:]+):(\\d{1,5})".toRegex()
     private val REG_SSR_PARAM = "([^/]+)/\\?(.+)".toRegex()
-    private val REG_TROJAN = "([^@]+)@([^:]+):(\\d{1,5})".toRegex()
+    private val REG_TROJAN = "([^@]+)@([^:]+):(\\d{1,5})(?:\\?(.+))?".toRegex()
 
-    private var debug = false
+    private var debug = true
 
     fun parse(uri: String): Sub? {
         REG_SCHEMA.matchEntire(uri)?.run {
@@ -29,11 +29,18 @@ object Parser {
 
     fun parseV2ray(uri: String): V2ray? {
         "parseV2ray ".debug(uri)
-        REG_SCHEMA_HASH.matchEntire(uri)?.run {
-            return groupValues[2].b64Decode()
-                .also { "parseV2ray base64 decode: ".debug(it) }
-                .fromJson<V2ray>()
-        } ?: return null
+        try {
+            REG_SCHEMA_HASH.matchEntire(uri)?.run {
+                return groupValues[2].b64Decode()
+                    .also { "parseV2ray base64 decode: ".debug(it) }
+                    .fromJson<V2ray>()
+            } ?: return null
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "parseV2ray err".debug(uri)
+            return null
+        }
+
     }
 
     fun parseSs(uri: String): SS? {
@@ -84,12 +91,14 @@ object Parser {
         "parseTrojan ".debug(uri)
         REG_SCHEMA_HASH.matchEntire(uri)?.run {
             val remark = groupValues[3].urlDecode()
-            "parseTrojan ".debug(remark)
+            "parseTrojan remark".debug(remark)
             groupValues[2].also {
-                "parseTrojan ".debug(it)
+                "parseTrojan data".debug(it)
                 REG_TROJAN.matchEntire(it)?.run {
                     return Trojan(groupValues[1], groupValues[2], groupValues[3]).apply {
                         this.remark = remark
+                        println( "qqq " + groupValues[4])
+                        query = groupValues[4]
                     }
                 }
             }
