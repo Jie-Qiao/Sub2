@@ -22,11 +22,11 @@ class ConnectTest {
         var resumeIndex = 0
         val lastSub = "".also {
             if (it.isEmpty()) {
-                available.writeLine()
+                NODE_OK.writeLine()
             }
         }
 
-        Parser.parseFromSub(pool)
+        Parser.parseFromSub(POOL)
             .also {
                 poolSize = it.size
             }
@@ -49,7 +49,7 @@ class ConnectTest {
             .filter { it.second > -1 }
             .forEach {
                 println(it.first.info() + ":" + it.second)
-                available.writeLine(it.first.toUri())
+                NODE_OK.writeLine(it.first.toUri())
             }
     }
 
@@ -62,12 +62,12 @@ class ConnectTest {
         var resumeIndex = 0
         val lastSub = "".also {
             if (it.isEmpty()) {
-                available.writeLine()
+                NODE_OK.writeLine()
             }
         }
 
         runBlocking {
-            Parser.parseFromSub(pool)
+            Parser.parseFromSub(POOL)
                 .also { poolSize = it.size }
                 .filterIndexed { index, sub ->
                     if (sub.info() == lastSub || index == resumeIndex) {
@@ -86,7 +86,7 @@ class ConnectTest {
                 .filter { it.second.await() > -1 }
                 .forEach {
                     println(it.first.info() + ":" + it.second)
-                    available.writeLine(it.first.toUri())
+                    NODE_OK.writeLine(it.first.toUri())
                 }
         }
 
@@ -100,12 +100,12 @@ class ConnectTest {
         var resumeIndex = 200
         val lastSub = "".also {
             if (it.isEmpty()) {
-                available.writeLine()
+                NODE_OK.writeLine()
             }
         }
 
         runBlocking {
-            Parser.parseFromSub(pool)
+            Parser.parseFromSub(POOL)
                 .also {
                     poolSize = it.size
                 }

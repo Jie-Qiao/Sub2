@@ -79,7 +79,7 @@ class ExtTest {
     }
 
     val failIpPorts by lazy {
-        socketfailed.readLines().toHashSet().also { println(it) }
+        FAIL_IPS.readLines().toHashSet().also { println(it) }
     }
     val fails = mutableSetOf<String>()
 

@@ -1,6 +1,6 @@
 package me.leon.support
 
-import me.leon.socketfailed
+import me.leon.FAIL_IPS
 import java.io.File
 import java.net.*
 import java.util.*
@@ -138,7 +138,7 @@ fun String.ping(
         }
 
 val failIpPorts by lazy {
-    socketfailed.readLines().toHashSet().also { println(it) }
+    FAIL_IPS.readLines().toHashSet().also { println(it) }
 }
 val fails = mutableSetOf<String>()
 fun String.quickConnect(
@@ -149,7 +149,7 @@ fun String.quickConnect(
 }) {
     println("error $it")
     fails.add(it)
-    socketfailed.writeLine(it)
+    FAIL_IPS.writeLine(it)
 }
 
 fun String.quickPing(
@@ -159,5 +159,5 @@ fun String.quickPing(
 }) {
     println("error $it")
     fails.add(it)
-    socketfailed.writeLine(it)
+    FAIL_IPS.writeLine(it)
 }

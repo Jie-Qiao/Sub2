@@ -8,7 +8,6 @@ import me.leon.support.writeLine
 import org.junit.jupiter.api.Test
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
-import java.io.File
 
 class YamlTest {
 
@@ -16,7 +15,7 @@ class YamlTest {
     @Test
     fun yamlLocalTest() {
 
-        with(Yaml(Constructor(Clash::class.java)).load(bihai.readText()) as Clash) {
+        with(Yaml(Constructor(Clash::class.java)).load(BIHAI.readText()) as Clash) {
             println(this.proxies.map(Node::node)
 //                    .filterIsInstance<V2ray>()
                 .joinToString("|") { sub ->
@@ -32,7 +31,7 @@ class YamlTest {
     @Test
     fun yamlTest() {
 
-        val curList = Parser.parseFromSub(pool).also {
+        val curList = Parser.parseFromSub(POOL).also {
             println(it.size)
         }
 //        val url = "http://buliang0.tk/tool/freeproxy/05-06/clash-27.yml".readFromNet()
@@ -66,14 +65,14 @@ class YamlTest {
     @Test
     fun sublistParse() {
         var subs = "$ROOT\\sublist".readLines()
-        pool2.writeLine()
+        POOL_RAW.writeLine()
         println(subs)
         subs.map { sub ->
             Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
         }.flatMap {
             it.map {
                 it.toUri().also {
-                    pool2.writeLine(it)
+                    POOL_RAW.writeLine(it)
                 }
             }
         }
@@ -85,10 +84,10 @@ class YamlTest {
      */
     @Test
     fun pool() {
-        pool.writeLine()
-        pool2.readLines().also { println(it.size) }
-        Parser.parseFromSub(pool2).also { println(it.size) }.sortedBy { it.toUri() }.map {
-            pool.writeLine(it.toUri())
+        POOL.writeLine()
+        POOL_RAW.readLines().also { println(it.size) }
+        Parser.parseFromSub(POOL_RAW).also { println(it.size) }.sortedBy { it.toUri() }.map {
+            POOL.writeLine(it.toUri())
         }
     }
 
@@ -101,7 +100,7 @@ class YamlTest {
      */
     @Test
     fun availableSpeedTest() {
-        Parser.parseFromSub(available).chunked(60).map {
+        Parser.parseFromSub(NODE_OK).chunked(60).map {
             it.map(Sub::toUri).also { println(it.joinToString("|")) }
         }
     }
@@ -113,11 +112,11 @@ class YamlTest {
     @Test
     fun speedTestResultParse() {
         val map =
-            Parser.parseFromSub(available).also { println(it.size) }.fold(mutableMapOf<String, Sub>()) { acc, sub ->
+            Parser.parseFromSub(NODE_OK).also { println(it.size) }.fold(mutableMapOf<String, Sub>()) { acc, sub ->
                 acc.apply { acc[sub.name] = sub }
             }
-        share.writeLine()
-        speed.readLines()
+        SHARE_NODE.writeLine()
+        SPEED_TEST_RESULT.readLines()
             .map { it.slice(0 until it.lastIndexOf('|')) to it.slice(it.lastIndexOf('|') + 1 until it.length) }
             .sortedBy { -it.second.replace("Mb|MB".toRegex(), "").toFloat() }
             .filter { map[it.first] != null }
@@ -127,7 +126,7 @@ class YamlTest {
                         name.slice(0 until (name.lastIndexOf('|').takeIf { it != -1 } ?: name.length)) + "|" + it.second
                 }?.toUri()?.also {
                     println(it)
-                    share.writeLine(it)
+                    SHARE_NODE.writeLine(it)
                 }
             }
     }
