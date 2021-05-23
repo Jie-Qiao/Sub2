@@ -2543,3 +2543,14 @@ shcn2-04.iplc188.com:10001
 5.253.207.83:33992
 ntemp19.boom.party:24000
 cn1.relay.iplc.pro:52006
+51.195.149.30:57478
+ss.uk.sshmax.net:57478
+194.39.127.23:39772
+37.120.148.215:39772
+n06.boom.party:21000
+us1.foxdns.nl:543
+v1-aws-sg-04.tudog.me:80
+a46a5468362dd28b7.awsglobalaccelerator.com:8082
+zhongzhuangazhk2.xiaobaiyun.me:800
+a46a5468362dd28b7.awsglobalaccelerator.com:8082
+a1bcb60fbe21b2d2c.awsglobalaccelerator.com:8082

@@ -97,7 +97,6 @@ object Parser {
                 REG_TROJAN.matchEntire(it)?.run {
                     return Trojan(groupValues[1], groupValues[2], groupValues[3]).apply {
                         this.remark = remark
-                        println( "qqq " + groupValues[4])
                         query = groupValues[4]
                     }
                 }

@@ -5,7 +5,7 @@ https://github.com/clashconfig/online
 https://github.com/coolapijust/cxkv2-
 https://github.com/fly0426/fj
 https://github.com/zyzmzyz/free-nodes
-
+https://github.com/lion12776/kejilion
 ## 节点池
 
 https://233660.xyz/

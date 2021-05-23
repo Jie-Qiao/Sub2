@@ -65,7 +65,7 @@ class NodeCrawler {
                 .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
                 .forEach {
-                    println(it.first.info() + ":" + it.second)
+                    println(it.first.info())
                     NODE_OK.writeLine(it.first.toUri())
                 }
         }
