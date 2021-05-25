@@ -2,10 +2,7 @@ package me.leon
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import me.leon.support.DISPATCHER
-import me.leon.support.quickConnect
-import me.leon.support.readLines
-import me.leon.support.writeLine
+import me.leon.support.*
 import org.junit.jupiter.api.Test
 
 class NodeCrawler {
@@ -26,11 +23,11 @@ class NodeCrawler {
     private fun crawlNodes() {
         val subs = "$ROOT\\sublist".readLines()
         POOL.writeLine()
-        println(subs)
+        println("共有订阅源：${subs.size}")
         subs.map { sub -> Parser.parseFromSub(sub).also { println("$sub ${it.size} ") } }
             .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
                 acc.apply { acc.addAll(linkedHashSet) }
-            }.also {
+            }.sortedBy { it.toUri() }.also {
                 println("共有节点 ${it.size}")
                 POOL.writeLine(it.joinToString("\n") { it.toUri() })
             }
@@ -72,6 +69,26 @@ class NodeCrawler {
                     println(it.first.info())
                     NODE_OK.writeLine(it.first.toUri())
                 }
+        }
+    }
+
+    @Test
+    fun nodeGroup() {
+        NODE_SS.writeLine()
+        NODE_SSR.writeLine()
+        NODE_V2.writeLine()
+        NODE_TR.writeLine()
+        Parser.parseFromSub(NODE_OK).groupBy { it.javaClass }.forEach { t, u ->
+            when (t) {
+                SS::class.java -> NODE_SS.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
+                    .also { println("ss节点: ${u.size}") }
+                SSR::class.java -> NODE_SSR.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
+                    .also { println("ssr节点: ${u.size}") }
+                V2ray::class.java -> NODE_V2.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
+                    .also { println("v2ray节点: ${u.size}") }
+                Trojan::class.java -> NODE_TR.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
+                    .also { println("trojan节点: ${u.size}") }
+            }
         }
     }
 
