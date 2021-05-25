@@ -78,7 +78,7 @@ class NodeCrawler {
         NODE_SSR.writeLine()
         NODE_V2.writeLine()
         NODE_TR.writeLine()
-        Parser.parseFromSub(NODE_OK).groupBy { it.javaClass }.forEach { t, u ->
+        Parser.parseFromSub(NODE_OK).groupBy { it.javaClass }.forEach { (t, u) ->
             when (t) {
                 SS::class.java -> NODE_SS.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
                     .also { println("ss节点: ${u.size}") }
