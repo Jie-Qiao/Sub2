@@ -93,7 +93,7 @@ data class SS(
 
     override fun info() = "$remark ss $server:$port"
     override var name: String
-        get() = remark.takeUnless { it.isEmpty() } ?: "$server:$port-SS-${hashCode()}"
+        get() = remark.takeUnless { it.isEmpty() } ?: "$SERVER:$serverPort-SS-${hashCode()}"
         set(value) {
             remark = value
         }
@@ -147,10 +147,10 @@ data class Trojan(
     var query: String = ""
     override fun toUri() = "trojan://${"${password}@$server:$port$params"}#${name.urlEncode()}"
     override fun info() =
-        if (query.isNullOrEmpty()) "$name trojan $server:$port" else "$remark trojan $server:$port?$query"
+        if (query.isEmpty()) "$name trojan $server:$port" else "$remark trojan $server:$port?$query"
 
     override var name: String
-        get() = remark.takeUnless { it.isEmpty() } ?: "$server:$port-TR-${hashCode()}"
+        get() = remark.takeUnless { it.isEmpty() } ?: "$SERVER:$serverPort-TR-${hashCode()}"
         set(value) {
             remark = value
         }

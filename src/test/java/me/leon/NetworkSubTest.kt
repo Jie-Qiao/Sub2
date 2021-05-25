@@ -1,9 +1,8 @@
 package me.leon
 
-import me.leon.support.Sumurai
-import me.leon.support.b64Decode
-import me.leon.support.fromJson
-import me.leon.support.readFromNet
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import me.leon.support.*
 import org.junit.jupiter.api.Test
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
@@ -22,10 +21,12 @@ class NetworkSubTest {
 
         listOf(
             e,
-//            subUrlSs,
-//            subUrlSsr,
-//            subUrlTr,
-//            subUrlV2
+            subUrl,
+            subUrlSs,
+            subUrl2,
+            subUrlSsr,
+            subUrlTr,
+            subUrlV2
 //            "https://gitee.com/bujilangren/warehouse/raw/master/0523.txt",
 //            "https://gitee.com/bujilangren/warehouse/raw/master/2021-5-23-ss&vmess.txt"
         ).forEach {
@@ -64,12 +65,16 @@ class NetworkSubTest {
 
     @Test
     fun parseSumaraiVpn() {
-        "https://server.svipvpn.com/opconf.json".readFromNet()
-            .fromJson<Sumurai>()
-            .data.items.flatMap { it.items }
-            .map { it.ovpn.b64Decode() }
-            .forEach {
-                println(it)
-            }
+        runBlocking {
+            "https://server.svipvpn.com/opconf.json".readFromNet()
+                .fromJson<Sumurai>()
+                .data.items.flatMap { it.items }
+                .mapNotNull { Parser.parse(it.ovpn.b64Decode()) }
+                .map { it to async(DISPATCHER) { it.SERVER.connect(it.serverPort, 2000) } }
+                .filter { it.second.await() > -1 }
+                .forEach {
+                    println(it.first.toUri())
+                }
+        }
     }
 }

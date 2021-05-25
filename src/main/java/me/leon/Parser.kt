@@ -49,7 +49,7 @@ object Parser {
         REG_SCHEMA_HASH.matchEntire(uri)?.run {
             val remark = groupValues[3].urlDecode()
             "parseSs match".debug(groupValues[2])
-            groupValues[2].b64Decode()?.also {
+            groupValues[2].b64Decode().also {
                 "parseSs b64 decode".debug(it)
                 REG_SS.matchEntire(it)?.run {
                     "parseSs ss match".debug(this.groupValues.toString())
@@ -114,9 +114,7 @@ object Parser {
         return if (data.contains("proxies:"))
             (Yaml(Constructor(Clash::class.java)).load(data.replace("!<[^>]+>".toRegex(), "")) as Clash).proxies
                 .asSequence()
-                .map(Node::node)
-                .filterNotNull()
-
+                .mapNotNull(Node::node)
                 .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
         else
             data
@@ -124,8 +122,8 @@ object Parser {
                 .split("\r\n|\n".toRegex())
                 .asSequence()
                 .filter { it.isNotEmpty() }
-                .map { Pair(it, parse(it)) }
-                .filter { it.second !is NoSub }
+                .mapNotNull { Pair(it, parse(it)) }
+                .filterNot { it.second is NoSub }
                 .fold(linkedSetOf()) { acc, sub ->
                     sub.second?.let { acc.add(it) } ?: kotlin.run {
                         println("parse failed: $sub")
@@ -142,20 +140,18 @@ object Parser {
         return if (data.contains("proxies:"))
         //移除yaml中的标签
             (Yaml(Constructor(Clash::class.java)).load(
-                data.replace("!<[^>]+>".toRegex(), "").also { println(it) }) as Clash).proxies
+                data.replace("!<[^>]+>".toRegex(), "").also { it.debug() }) as Clash).proxies
                 .asSequence()
-                .map(Node::node)
+                .mapNotNull(Node::node)
                 .filterNot { it is NoSub }
-                .filterNotNull()
                 .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
         else
             data.also { "parseFromNetwork".debug(it) }
                 .split("\r\n|\n".toRegex())
                 .asSequence()
                 .filter { it.isNotEmpty() }
-                .map { parse(it.replace("/#", "#")) }
-                .filter { it !is NoSub }
-                .filterNotNull()
+                .mapNotNull { parse(it.replace("/#", "#")) }
+                .filterNot { it is NoSub }
                 .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
     }
 

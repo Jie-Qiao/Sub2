@@ -2,9 +2,7 @@ package me.leon
 
 
 import me.leon.support.readFromNet
-import me.leon.support.readLines
 import me.leon.support.readText
-import me.leon.support.writeLine
 import org.junit.jupiter.api.Test
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
@@ -30,7 +28,6 @@ class YamlTest {
 
     @Test
     fun yamlTest() {
-
         val curList = Parser.parseFromSub(POOL).also {
             println(it.size)
         }
@@ -55,39 +52,6 @@ class YamlTest {
             }
         } else {
             println("no content")
-        }
-    }
-
-    /**
-     *
-     * 1.爬取配置文件的订阅
-     */
-    @Test
-    fun sublistParse() {
-        var subs = "$ROOT\\sublist".readLines()
-        POOL_RAW.writeLine()
-        println(subs)
-        subs.map { sub ->
-            Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
-        }.flatMap {
-            it.map {
-                it.toUri().also {
-                    POOL_RAW.writeLine(it)
-                }
-            }
-        }
-    }
-
-    /**
-     *
-     * 2.去重
-     */
-    @Test
-    fun pool() {
-        POOL.writeLine()
-        POOL_RAW.readLines().also { println(it.size) }
-        Parser.parseFromSub(POOL_RAW).also { println(it.size) }.sortedBy { it.toUri() }.map {
-            POOL.writeLine(it.toUri())
         }
     }
 }

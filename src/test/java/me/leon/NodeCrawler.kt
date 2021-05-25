@@ -16,30 +16,34 @@ class NodeCrawler {
     @Test
     fun crawl() {
         //1.爬取配置文件的订阅
-        var subs = "$ROOT\\sublist".readLines()
-        POOL_RAW.writeLine()
-        println(subs)
-        subs.map { sub ->
-            Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
-        }.flatMap {
-            it.map {
-                it.toUri().also {
-                    POOL_RAW.writeLine(it)
-                }
-            }
-        }
+        crawlNodes()
+        checkNodes()
+    }
 
-        // 2.去重
+    /**
+     * 爬取配置文件数据，并去重写入文件
+     */
+    private fun crawlNodes() {
+        val subs = "$ROOT\\sublist".readLines()
         POOL.writeLine()
-        POOL_RAW.readLines().also { println(it.size) }
-        Parser.parseFromSub(POOL_RAW).also { println(it.size) }.sortedBy { it.toUri() }.map {
-            POOL.writeLine(it.toUri())
-        }
+        println(subs)
+        subs.map { sub -> Parser.parseFromSub(sub).also { println("$sub ${it.size} ") } }
+            .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
+                acc.apply { acc.addAll(linkedHashSet) }
+            }.also {
+                println("共有节点 ${it.size}")
+                POOL.writeLine(it.joinToString("\n") { it.toUri() })
+            }
+    }
 
-        //3.筛选可用节点
+    /**
+     * 节点可用性测试
+     */
+    private fun checkNodes() {
+        //2.筛选可用节点
         var poolSize: Int
         var resume = false
-        var resumeIndex = 0
+        val resumeIndex = 0
         val lastSub = "".also {
             if (it.isEmpty()) {
                 NODE_OK.writeLine()
