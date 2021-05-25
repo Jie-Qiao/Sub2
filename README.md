@@ -31,6 +31,9 @@ https://sspool.herokuapp.com/
 https://sspool.nl/
 https://www.linbaoz.com/
 
+## 节点池配置
+https://github.com/shoujiyanxishe/atu
+
 ## 节点转换
 
 789:      https://sub.789.st/
