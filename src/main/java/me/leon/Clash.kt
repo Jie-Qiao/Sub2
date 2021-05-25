@@ -45,6 +45,8 @@ data class Node(
     var `skip-cert-verify`: Boolean = false
 
     fun node(): Sub? {
+        //兼容某些异常节点池
+        if (server =="NULL") return NoSub
         return when (type) {
             //            {"name":"Pool_🇦🇱AL_04","server":"31.171.154.221","type":"ss","country":"🇦🇱AL","port":39772,"password":"CUndSZnYsPKcu6Kj8THVMBHD","cipher":"aes-256-gcm"}
             "ss" -> SS(cipher, password, server, port.toString()).apply { remark = this@Node.name }

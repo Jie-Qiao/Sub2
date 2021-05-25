@@ -18,9 +18,10 @@ class NetworkSubTest {
         val subUrlV2 = "https://proxy.51798.xyz/vmess/sub"
         val subUrlSsr = "https://proxy.51798.xyz/ssr/sub"
         val subUrlSs = "https://proxy.51798.xyz/sip002/sub"
+        val e = "https://suo.yt/JsRVO5w"
 
         listOf(
-            subUrl2,
+            e,
 //            subUrlSs,
 //            subUrlSsr,
 //            subUrlTr,

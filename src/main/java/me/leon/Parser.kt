@@ -37,6 +37,7 @@ object Parser {
             } ?: return null
         } catch (e: Exception) {
             e.printStackTrace()
+            println(uri)
             "parseV2ray err".debug(uri)
             return null
         }
@@ -111,10 +112,11 @@ object Parser {
         val data = path.readText()
             .b64SafeDecode()
         return if (data.contains("proxies:"))
-            (Yaml(Constructor(Clash::class.java)).load(data) as Clash).proxies
+            (Yaml(Constructor(Clash::class.java)).load(data.replace("!<[^>]+>".toRegex(), "")) as Clash).proxies
                 .asSequence()
                 .map(Node::node)
                 .filterNotNull()
+
                 .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
         else
             data
@@ -138,9 +140,12 @@ object Parser {
             .b64SafeDecode()
 
         return if (data.contains("proxies:"))
-            (Yaml(Constructor(Clash::class.java)).load(data) as Clash).proxies
+        //移除yaml中的标签
+            (Yaml(Constructor(Clash::class.java)).load(
+                data.replace("!<[^>]+>".toRegex(), "").also { println(it) }) as Clash).proxies
                 .asSequence()
                 .map(Node::node)
+                .filterNot { it is NoSub }
                 .filterNotNull()
                 .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
         else

@@ -26,11 +26,9 @@ https://proxy.51798.xyz/
 https://proxy.purel.in/
 https://proxypool-guest997.herokuapp.com/
 https://proxypool.fly.dev/
-https://proxypoolv2.herokuapp.com/
 https://ss.dswang.ga:8443/
 https://sspool.herokuapp.com/
 https://sspool.nl/
-https://upan.tk/
 https://www.linbaoz.com/
 
 ## 节点转换
