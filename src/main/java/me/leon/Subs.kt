@@ -19,8 +19,7 @@ object NoSub : Sub() {
     override fun info() = "nosub"
     override var name: String
         get() = "nosub"
-        set(value) {
-        }
+        set(value) {}
     override var serverPort = 80
     override val SERVER = "nosub"
 
@@ -90,11 +89,11 @@ data class SS(
     var remark: String = ""
 
     override fun toUri() =
-        "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${(remark.takeUnless { it.isEmpty() } ?: hashCode().toString()).urlEncode()}"
+        "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${name.urlEncode()}"
 
     override fun info() = "$remark ss $server:$port"
     override var name: String
-        get() = remark
+        get() = remark.takeUnless { it.isEmpty() } ?: "$server:$port-SS-${hashCode()}"
         set(value) {
             remark = value
         }
@@ -117,7 +116,14 @@ data class SSR(
     var remarks: String = ""
     var group: String = ""
     override fun toUri() =
-        "ssr://${"$server:$port:$protocol:$method:$obfs:${password.b64Encode()}/?obfsparam=${obfs_param.b64EncodeNoEqual()}&protoparam=${protocol_param.b64EncodeNoEqual()}&remarks=${remarks.b64EncodeNoEqual()}&group=${group.b64EncodeNoEqual()}".b64Encode()}"
+        "ssr://${
+            ("$server:$port:$protocol:$method:$obfs:${password.b64Encode()}" +
+                    "/?obfsparam=${obfs_param.b64EncodeNoEqual()}" +
+                    "&protoparam=${protocol_param.b64EncodeNoEqual()}" +
+                    "&remarks=${remarks.b64EncodeNoEqual()}" +
+                    "&group=${group.b64EncodeNoEqual()}")
+                .b64Encode()
+        }"
 
     override fun info() = "$remarks ssr $server:$port"
     override var name: String
@@ -144,7 +150,7 @@ data class Trojan(
         if (query.isNullOrEmpty()) "$name trojan $server:$port" else "$remark trojan $server:$port?$query"
 
     override var name: String
-        get() = remark.takeUnless { it.isEmpty() } ?: hashCode().toString()
+        get() = remark.takeUnless { it.isEmpty() } ?: "$server:$port-TR-${hashCode()}"
         set(value) {
             remark = value
         }
