@@ -162,4 +162,8 @@ fun String.quickPing(
     fails.add(it)
     FAIL_IPS.writeLine(it)
 }
+
 val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 6, "pool")
+
+
+fun String.toFile() = File(this)
