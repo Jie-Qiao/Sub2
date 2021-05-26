@@ -26,7 +26,11 @@ class NodeCrawler {
         println("共有订阅源：${subs.size}")
 
         runBlocking {
-            subs.map { sub ->sub to  async (DISPATCHER){ Parser.parseFromSub(sub).also { println("$sub ${it.size} ") } } }
+            subs.map { sub ->
+                sub to async(DISPATCHER) {
+                    Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
+                }
+            }
                 .map { it.second.await() }
                 .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
                     acc.apply { acc.addAll(linkedHashSet) }
@@ -102,7 +106,7 @@ class NodeCrawler {
 
         Parser.parseFromSub(NODE_OK).groupBy { it.SERVER.ipCountryZh() }
             .forEach { (t, u) ->
-                println(t + u.size)
+                println("$t: ${u.size}")
                 if (t == "UNKNOWN") println(u.map { it.SERVER })
             }
     }
