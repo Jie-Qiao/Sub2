@@ -46,10 +46,13 @@ data class Node(
 
     fun node(): Sub? {
         //兼容某些异常节点池
-        if (server =="NULL") return NoSub
+        if (server == "NULL") return NoSub
         return when (type) {
             //            {"name":"Pool_🇦🇱AL_04","server":"31.171.154.221","type":"ss","country":"🇦🇱AL","port":39772,"password":"CUndSZnYsPKcu6Kj8THVMBHD","cipher":"aes-256-gcm"}
-            "ss" -> SS(cipher, password, server, port.toString()).apply { remark = this@Node.name }
+            "ss" -> SS(cipher, password, server, port.toString()).apply {
+                remark = this@Node.name
+                nation = country
+            }
             "ssr" -> SSR(
                 server,
                 port.toString(),
@@ -59,7 +62,10 @@ data class Node(
                 password,
                 if (obfs == "plain") "" else "",
                 `protocol-param`.takeUnless { it.isEmpty() } ?: `protocol_param`
-            ).apply { remarks = this@Node.name }
+            ).apply {
+                remarks = this@Node.name
+                nation = country
+            }
 //
             "vmess" -> V2ray(
                 aid = alterId,
@@ -72,10 +78,14 @@ data class Node(
                 path = if (network == "ws") `ws-path` else ""
                 host = if (network == "ws") `ws-headers`["Host"] ?: "" else ""
                 ps = this@Node.name
+                nation = country
             }
 
 //            {"name":"Relay_🇨🇦CA-🇨🇦CA_30","server":"t3.ssrsub.one","type":"trojan","country":"🇨🇦CA","port":443,"password":"a0Ndyox5","skip-cert-verify":true,"udp":true}
-            "trojan" -> Trojan(password, server, port.toString()).apply { this.remark = this@Node.name }
+            "trojan" -> Trojan(password, server, port.toString()).apply {
+                this.remark = this@Node.name
+                nation = country
+            }
             else -> NoSub
         }
     }

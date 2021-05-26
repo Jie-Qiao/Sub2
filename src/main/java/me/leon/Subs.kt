@@ -9,6 +9,7 @@ interface Uri {
     fun toUri(): String
     fun info(): String
     var name: String
+    var nation: String
     val SERVER: String
     val serverPort: Int
 }
@@ -19,6 +20,9 @@ object NoSub : Sub() {
     override fun info() = "nosub"
     override var name: String
         get() = "nosub"
+        set(value) {}
+    override var nation: String
+        get() = "N/A"
         set(value) {}
     override var serverPort = 80
     override val SERVER = "nosub"
@@ -68,7 +72,7 @@ data class V2ray(
      */
     var type: String = "none"
     override fun toUri() = "vmess://${this.toJson().b64Encode()}"
-    override fun info() = "$ps vmess $add:$port"
+    override fun info() = "$nation $ps vmess $add:$port"
     override var name: String
         get() = ps
         set(value) {
@@ -78,6 +82,7 @@ data class V2ray(
         get() = port.toInt()
     override val SERVER
         get() = add
+    override var nation: String = ""
 }
 
 data class SS(
@@ -85,13 +90,14 @@ data class SS(
     val pwd: String = "",
     val server: String = "",
     val port: String = "",
+
 ) : Sub() {
     var remark: String = ""
-
+    override var nation: String = ""
     override fun toUri() =
         "ss://${"$method:${pwd}@$server:$port".b64Encode()}#${name.urlEncode()}"
 
-    override fun info() = "$remark ss $server:$port"
+    override fun info() = "$nation $remark ss $server:$port"
     override var name: String
         get() = remark.takeUnless { it.isEmpty() } ?: "$SERVER:$serverPort-SS-${hashCode()}"
         set(value) {
@@ -125,7 +131,7 @@ data class SSR(
                 .b64Encode()
         }"
 
-    override fun info() = "$remarks ssr $server:$port"
+    override fun info() = "$nation $remarks ssr $server:$port"
     override var name: String
         get() = remarks
         set(value) {
@@ -135,6 +141,7 @@ data class SSR(
         get() = port.toInt()
     override val SERVER
         get() = server
+    override var nation: String = ""
 
 }
 
@@ -147,7 +154,7 @@ data class Trojan(
     var query: String = ""
     override fun toUri() = "trojan://${"${password}@$server:$port$params"}#${name.urlEncode()}"
     override fun info() =
-        if (query.isEmpty()) "$name trojan $server:$port" else "$remark trojan $server:$port?$query"
+        if (query.isEmpty()) "$nation $name trojan $server:$port" else "$nation $remark trojan $server:$port?$query"
 
     override var name: String
         get() = remark.takeUnless { it.isEmpty() } ?: "$SERVER:$serverPort-TR-${hashCode()}"
@@ -160,4 +167,5 @@ data class Trojan(
         get() = port.toInt()
     override val SERVER
         get() = server
+    override var nation: String = ""
 }

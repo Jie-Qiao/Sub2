@@ -9,10 +9,18 @@ class LocalFileSubTest {
             ?.joinToString("|") { it.toUri() }
             .also { println(it) }
     }
-  @Test
+
+    @Test
     fun readLocal2() {
         Parser.parseFromSub("$ROOT\\subs.txt")
             ?.joinToString("\n") { it.toUri() }
+            .also { println(it) }
+    }
+
+    @Test
+    fun readLocal3() {
+        Parser.parseFromSub("$ROOT\\bihai.yaml")
+            ?.joinToString("\n") { it.info() }
             .also { println(it) }
     }
 }

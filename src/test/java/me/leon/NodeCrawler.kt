@@ -92,6 +92,16 @@ class NodeCrawler {
         }
     }
 
+    @Test
+    fun nodeNationGroup() {
+
+        Parser.parseFromSub(NODE_OK).groupBy { it.SERVER.ipCountryZh() }
+            .forEach { (t, u) ->
+                println(t + u.size)
+                if (t == "UNKNOWN") println(u.map { it.SERVER })
+            }
+    }
+
     /**
      * 上面筛好节点后,进行第三方或者本地节点测速
      * 进行节点分组
