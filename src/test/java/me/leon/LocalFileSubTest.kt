@@ -1,5 +1,8 @@
 package me.leon
 
+import me.leon.domain.Panda
+import me.leon.support.fromJson
+import me.leon.support.readLines
 import org.junit.jupiter.api.Test
 
 class LocalFileSubTest {
@@ -22,5 +25,17 @@ class LocalFileSubTest {
         Parser.parseFromSub("$ROOT\\bihai.yaml")
             ?.joinToString("\n") { it.info() }
             .also { println(it) }
+    }
+
+    @Test
+    fun parsePanda() {
+        "$ROOT/panda.txt".readLines().map {
+            with(it.fromJson<Panda>()) {
+                SS(authscheme, password, host, port.toString()).apply {
+                    remark = this@with.name
+                }
+            }
+        }
+            .also { println(it.joinToString("|") { it.toUri() }) }
     }
 }

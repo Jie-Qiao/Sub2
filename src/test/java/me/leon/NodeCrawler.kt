@@ -88,14 +88,15 @@ class NodeCrawler {
         NODE_V2.writeLine()
         NODE_TR.writeLine()
         Parser.parseFromSub(NODE_OK).groupBy { it.javaClass }.forEach { (t, u) ->
+            val data = u.joinToString("\n") { it.toUri() }.b64Encode()
             when (t) {
-                SS::class.java -> NODE_SS.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
+                SS::class.java -> NODE_SS.writeLine(data)
                     .also { println("ss节点: ${u.size}") }
-                SSR::class.java -> NODE_SSR.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
+                SSR::class.java -> NODE_SSR.writeLine(data)
                     .also { println("ssr节点: ${u.size}") }
-                V2ray::class.java -> NODE_V2.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
+                V2ray::class.java -> NODE_V2.writeLine(data)
                     .also { println("v2ray节点: ${u.size}") }
-                Trojan::class.java -> NODE_TR.writeLine(u.joinToString("\n") { it.toUri() }.b64Encode())
+                Trojan::class.java -> NODE_TR.writeLine(data)
                     .also { println("trojan节点: ${u.size}") }
             }
         }
@@ -103,7 +104,6 @@ class NodeCrawler {
 
     @Test
     fun nodeNationGroup() {
-
         Parser.parseFromSub(NODE_OK).groupBy { it.SERVER.ipCountryZh() }
             .forEach { (t, u) ->
                 println("$t: ${u.size}")
@@ -129,29 +129,48 @@ class NodeCrawler {
      *，将网站测速后的结果复制到 speedtest.txt
      *  F12 控制台输入以下内容,提取有效节点信息,默认提取速度大于1MB/s的节点
      * <code>
-     *     var rrs=document.querySelectorAll("tr.el-table__row");var ll=[];for(var i=0;i<rrs.length;i++){console.log("____");if(rrs[i].children[4].innerText.indexOf("MB")>0&& Number(rrs[i].children[4].innerText.replace("MB","")) >2){ll.push(rrs[i].children[1].innerText+"|" +rrs[i].children[4].innerText);}};ll.join("\n");
+     *     var rrs=document.querySelectorAll("tr.el-table__row");var ll=[];for(var i=0;i<rrs.length;i++){console.log("____");if(rrs[i].children[4].innerText.indexOf("MB")>0&& Number(rrs[i].children[4].innerText.replace("MB","")) >1){ll.push(rrs[i].children[1].innerText+"|" +rrs[i].children[4].innerText);}};ll.join("\n");
      * </code>
      * 最后进行分享链接生成
      */
     @Test
     fun speedTestResultParse() {
         val map =
-            Parser.parseFromSub(NODE_OK).also { println(it.size) }.fold(mutableMapOf<String, Sub>()) { acc, sub ->
-                acc.apply { acc[sub.name] = sub }
-            }
+            Parser.parseFromSub(NODE_OK)
+                .also { println(it.size) }
+                .fold(mutableMapOf<String, Sub>()) { acc, sub ->
+                    acc.apply { acc[sub.name] = sub }
+                }
         SHARE_NODE.writeLine()
+        NODE_SS2.writeLine()
+        NODE_SSR2.writeLine()
+        NODE_V22.writeLine()
+        NODE_TR2.writeLine()
         SPEED_TEST_RESULT.readLines()
-            .map { it.slice(0 until it.lastIndexOf('|')) to it.slice(it.lastIndexOf('|') + 1 until it.length) }
-            .sortedBy { -it.second.replace("Mb|MB".toRegex(), "").toFloat() }
+            .distinct()
+            .map { it.substringBeforeLast('|') to it.substringAfterLast('|') }
+            .sortedByDescending { it.second.replace("Mb|MB".toRegex(), "").toFloat() }
             .filter { map[it.first] != null }
-            .forEach {
-                map[it.first]?.apply {
-                    name =
-                        name.slice(0 until (name.lastIndexOf('|').takeIf { it != -1 } ?: name.length)) + "|" + it.second
-                }?.toUri()?.also {
-                    println(it)
-                    SHARE_NODE.writeLine(it)
+            .groupBy { map[it.first]!!.javaClass }
+            .forEach { (t, u) ->
+
+                val data = u.joinToString("\n") {
+                    map[it.first]!!.apply {
+                        name = name.substringBeforeLast('|') + "|" + it.second
+                    }.toUri()
+                }
+                    .b64Encode()
+                when (t) {
+                    SS::class.java -> NODE_SS2.writeLine(data)
+                        .also { println("ss节点: ${u.size}") }
+                    SSR::class.java -> NODE_SSR2.writeLine(data)
+                        .also { println("ssr节点: ${u.size}") }
+                    V2ray::class.java -> NODE_V22.writeLine(data)
+                        .also { println("v2ray节点: ${u.size}") }
+                    Trojan::class.java -> NODE_TR2.writeLine(data)
+                        .also { println("trojan节点: ${u.size}") }
                 }
             }
+
     }
 }

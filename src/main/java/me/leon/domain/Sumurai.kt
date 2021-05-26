@@ -1,4 +1,4 @@
-package me.leon.support
+package me.leon.domain
 
 data class Sumurai(
     val code: Int = 0,

@@ -1277,7 +1277,7 @@ rules:
  - DOMAIN-SUFFIX,baikebcs.bdimg.com,🍃 应用净化
  - DOMAIN-SUFFIX,banlv.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,bar.baidu.com,🍃 应用净化
- - DOMAIN-SUFFIX,bdimg.share.baidu.com,🍃 应用净化
+ - DOMAIN-SUFFIX,bdimg.share.txt.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,bdplus.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,btlaunch.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,c.baidu.cn,🍃 应用净化
@@ -1403,7 +1403,7 @@ rules:
  - DOMAIN-SUFFIX,sclick.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,sestat.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,shadu.baidu.com,🍃 应用净化
- - DOMAIN-SUFFIX,share.baidu.com,🍃 应用净化
+ - DOMAIN-SUFFIX,share.txt.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,snippet.pos.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,sobar.baidu.com,🍃 应用净化
  - DOMAIN-SUFFIX,sobartop.baidu.com,🍃 应用净化
