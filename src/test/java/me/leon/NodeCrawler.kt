@@ -24,13 +24,18 @@ class NodeCrawler {
         val subs = "$ROOT\\sublist".readLines()
         POOL.writeLine()
         println("共有订阅源：${subs.size}")
-        subs.map { sub -> Parser.parseFromSub(sub).also { println("$sub ${it.size} ") } }
-            .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
-                acc.apply { acc.addAll(linkedHashSet) }
-            }.sortedBy { it.toUri() }.also {
-                println("共有节点 ${it.size}")
-                POOL.writeLine(it.joinToString("\n") { it.toUri() })
-            }
+
+        runBlocking {
+            subs.map { sub ->sub to  async (DISPATCHER){ Parser.parseFromSub(sub).also { println("$sub ${it.size} ") } } }
+                .map { it.second.await() }
+                .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
+                    acc.apply { acc.addAll(linkedHashSet) }
+                }.sortedBy { it.toUri() }.also {
+                    println("共有节点 ${it.size}")
+                    POOL.writeLine(it.joinToString("\n") { it.toUri() })
+                }
+        }
+
     }
 
     /**
