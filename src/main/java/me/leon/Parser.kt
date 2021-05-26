@@ -5,27 +5,21 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 
 object Parser {
-    private val REG_SCHEMA_HASH = "(\\w+)://([^ #]+)(?:#([^#]+))?".toRegex()
-    private val REG_SCHEMA = "(\\w+)://.*".toRegex()
+    private val REG_SCHEMA_HASH = "(\\w+)://([^ #]+)(?:#([^#]+)?)?".toRegex()
     private val REG_SS = "([^:]+):([^@]+)@([^:]+):(\\d{1,5})".toRegex()
     private val REG_SSR_PARAM = "([^/]+)/\\?(.+)".toRegex()
     private val REG_TROJAN = "([^@]+)@([^:]+):(\\d{1,5})(?:\\?(.+))?".toRegex()
 
     private var debug = false
 
-    fun parse(uri: String): Sub? {
-        REG_SCHEMA.matchEntire(uri)?.run {
-            return when (groupValues[1]) {
-                "vmess" -> parseV2ray(uri.trim())
-                "ss" -> parseSs(uri.trim())
-                "ssr" -> parseSsr(uri.trim())
-                "trojan" -> parseTrojan(uri.trim())
-                else -> NoSub
-            }
+    fun parse(uri: String): Sub? =
+        when (uri.substringBefore(':')) {
+            "vmess" -> parseV2ray(uri.trim())
+            "ss" -> parseSs(uri.trim())
+            "ssr" -> parseSsr(uri.trim())
+            "trojan" -> parseTrojan(uri.trim())
+            else -> NoSub
         }
-        "parse failed $uri ${uri.length}  ${uri.isBlank()}".debug()
-        return NoSub
-    }
 
     fun parseV2ray(uri: String): V2ray? {
         "parseV2ray ".debug(uri)
@@ -126,7 +120,7 @@ object Parser {
                 .filterNot { it.second is NoSub }
                 .fold(linkedSetOf()) { acc, sub ->
                     sub.second?.let { acc.add(it) } ?: kotlin.run {
-                        println("parse failed: $sub")
+                        println("parseFromFileSub failed: $sub")
                     }
                     acc
                 }

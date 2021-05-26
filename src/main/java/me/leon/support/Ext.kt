@@ -165,3 +165,6 @@ fun String.quickPing(
 }
 
 val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 6, "pool")
+
+
+fun String.toFile() = File(this)
