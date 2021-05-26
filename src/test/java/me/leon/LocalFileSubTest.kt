@@ -1,6 +1,10 @@
 package me.leon
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import me.leon.domain.Panda
+import me.leon.support.DISPATCHER
+import me.leon.support.connect
 import me.leon.support.fromJson
 import me.leon.support.readLines
 import org.junit.jupiter.api.Test
@@ -29,13 +33,17 @@ class LocalFileSubTest {
 
     @Test
     fun parsePanda() {
-        "$ROOT/panda.txt".readLines().map {
-            with(it.fromJson<Panda>()) {
-                SS(authscheme, password, host, port.toString()).apply {
-                    remark = this@with.name
+        runBlocking {
+            "$ROOT/panda.txt".readLines().map {
+                with(it.fromJson<Panda>()) {
+                    SS(authscheme, password, host, port.toString()).apply {
+                        remark = this@with.alternate
+                    }
                 }
-            }
+            }.map { it to async(DISPATCHER) { it.server.connect(it.port.toInt()) } }
+                .filter { it.second.await() > 0 }
+                .map { it.first }
+                .also { println(it.joinToString("\n") { it.toUri() }) }
         }
-            .also { println(it.joinToString("\n") { it.toUri() }) }
     }
 }
