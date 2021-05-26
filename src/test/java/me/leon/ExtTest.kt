@@ -29,7 +29,7 @@ class ExtTest {
     fun ssTest() {
         val url =
             "ss://YWVzLTI1Ni1nY206bjh3NFN0bmJWRDlkbVhZbjRBanQ4N0VBQDE1NC4xMjcuNTAuMTM4OjMxNTcy#(%e5%b7%b2%e5%9d%9a%e6%8c%ba5%e5%a4%a9)%e5%8d%97%e9%9d%9e%e3%80%90%e5%88%86%e4%ba%ab%e6%9d%a5%e8%87%aaYoutube%e4%b8%8d%e8%89%af%e6%9e%97%e3%80%91"
-       val url2 =
+        val url2 =
             "ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpyNFRlRXQ1YkswVURAc3MuY2Euc3NobWF4Lm5ldDoxNDQz"
         println(Parser.parseSs(url2)?.toUri())
     }
