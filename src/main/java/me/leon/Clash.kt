@@ -4,8 +4,10 @@ package me.leon
 data class Clash(
     var port: Int = 7890,
     var `socks-port`: Int = 7891,
+    var `redir-port`: Int = 0,
     var `allow-lan`: Boolean = false,
     var `log-level`: String = "info",
+    var secret: String = "",
     var `external-controller`: String = "info",
     var mode: String = "Rule",
     var `proxy-groups`: List<Group> = mutableListOf(),
@@ -37,6 +39,7 @@ data class Node(
     var `plugin-opts`: LinkedHashMap<String, String> = linkedMapOf()
     var `ws-path`: String = ""
     var `obfs-param`: String = ""
+    var obfs_param: String = ""
     var plugin: String = ""
     var sni: String = ""
     var udp: Boolean = false
@@ -60,7 +63,7 @@ data class Node(
                 cipher,
                 obfs,
                 password,
-                if (obfs == "plain") "" else "",
+                if (obfs == "plain") "" else `obfs-param`.takeIf { it.isNotEmpty() } ?: obfs_param,
                 `protocol-param`.takeUnless { it.isEmpty() } ?: `protocol_param`
             ).apply {
                 remarks = this@Node.name
