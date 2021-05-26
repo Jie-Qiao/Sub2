@@ -11,8 +11,10 @@ import java.util.*
 class NetworkSubTest {
     @Test
     fun subParse() {
-        val subUrl = "https://cloudfront-cdn-hk-iplc1.com/sub/r/wqzCu8Kvw57Dk8OFw4ZnwqDCtsK3w4HCvMOcw53DgcK-Y8OQw6XCtQ==/"
-        val subUrl2 = "https://paste.gg/p/anonymous/9f5941d417334473bbc104b4322b30b8/files/2171ef53e3cf41ffbe3201756231cc86/raw"
+        val subUrl =
+            "https://cloudfront-cdn-hk-iplc1.com/sub/r/wqzCu8Kvw57Dk8OFw4ZnwqDCtsK3w4HCvMOcw53DgcK-Y8OQw6XCtQ==/"
+        val subUrl2 =
+            "https://paste.gg/p/anonymous/9f5941d417334473bbc104b4322b30b8/files/2171ef53e3cf41ffbe3201756231cc86/raw"
         val subUrlTr = "https://proxy.51798.xyz/trojan/sub"
         val subUrlV2 = "https://proxy.51798.xyz/vmess/sub"
         val subUrlSsr = "https://proxy.51798.xyz/ssr/sub"
@@ -65,6 +67,12 @@ class NetworkSubTest {
 
     @Test
     fun parseSumaraiVpn() {
+        val speed = SPEED_TEST_RESULT.readLines().fold(mutableMapOf<String, String>()) { acc, s ->
+            acc.apply {
+                acc[s.substringBeforeLast('|')] = s.substringAfterLast('|')
+            }
+        }.also { println(it) }
+
         runBlocking {
             "https://server.svipvpn.com/opconf.json".readFromNet()
                 .fromJson<Sumurai>()
@@ -72,8 +80,11 @@ class NetworkSubTest {
                 .mapNotNull { Parser.parse(it.ovpn.b64Decode()) }
                 .map { it to async(DISPATCHER) { it.SERVER.connect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
+                .filter { speed.keys.contains(it.first.name) }
                 .forEach {
-                    println(it.first.toUri())
+                    println(it.first.apply {
+                        name = name.substringBeforeLast('|') + "|" + speed[name]
+                    }.toUri())
                 }
         }
     }

@@ -4,11 +4,12 @@ import kotlinx.coroutines.newFixedThreadPoolContext
 import me.leon.FAIL_IPS
 import java.io.File
 import java.net.*
+import java.nio.charset.Charset
 import java.util.*
 
 
-fun String.readText() =
-    File(this).canonicalFile.also { println(it.canonicalPath) }.takeIf { it.exists() }?.readText() ?: ""
+fun String.readText(charset: Charset = Charsets.UTF_8) =
+    File(this).canonicalFile.also { println(it.canonicalPath) }.takeIf { it.exists() }?.readText(charset) ?: ""
 
 fun String.writeLine(txt: String = "") =
     if (txt.isEmpty()) File(this).writeText("") else File(this).appendText("$txt\n")
@@ -162,4 +163,5 @@ fun String.quickPing(
     fails.add(it)
     FAIL_IPS.writeLine(it)
 }
+
 val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 6, "pool")
