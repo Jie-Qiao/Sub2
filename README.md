@@ -58,7 +58,7 @@
 
 ## 本项目订阅
 
-- ss https://raw.fastgit.org/Leon406/Sub/master/sub/ss
-- ssr https://raw.fastgit.org/Leon406/Sub/master/sub/ssr
-- v2ray https://raw.fastgit.org/Leon406/Sub/master/sub/v2
-- trojan  https://raw.fastgit.org/Leon406/Sub/master/sub/tr
+- ss https://raw.fastgit.org/Leon406/Sub/master/sub/share/ss
+- ssr https://raw.fastgit.org/Leon406/Sub/master/sub/share/ssr
+- v2ray https://raw.fastgit.org/Leon406/Sub/master/sub/share/v2
+- trojan  https://raw.fastgit.org/Leon406/Sub/master/sub/share/tr

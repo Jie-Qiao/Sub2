@@ -141,7 +141,6 @@ class NodeCrawler {
                 .fold(mutableMapOf<String, Sub>()) { acc, sub ->
                     acc.apply { acc[sub.name] = sub }
                 }
-        SHARE_NODE.writeLine()
         NODE_SS2.writeLine()
         NODE_SSR2.writeLine()
         NODE_V22.writeLine()
@@ -153,7 +152,6 @@ class NodeCrawler {
             .filter { map[it.first] != null }
             .groupBy { map[it.first]!!.javaClass }
             .forEach { (t, u) ->
-
                 val data = u.joinToString("\n") {
                     map[it.first]!!.apply {
                         name = name.substringBeforeLast('|') + "|" + it.second
@@ -171,6 +169,5 @@ class NodeCrawler {
                         .also { println("trojan节点: ${u.size}") }
                 }
             }
-
     }
 }

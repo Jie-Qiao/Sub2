@@ -36,6 +36,6 @@ class LocalFileSubTest {
                 }
             }
         }
-            .also { println(it.joinToString("|") { it.toUri() }) }
+            .also { println(it.joinToString("\n") { it.toUri() }) }
     }
 }
