@@ -20,16 +20,16 @@ class NetworkSubTest {
         val subUrlV2 = "https://proxy.51798.xyz/vmess/sub"
         val subUrlSsr = "https://proxy.51798.xyz/ssr/sub"
         val subUrlSs = "https://proxy.51798.xyz/sip002/sub"
-        val e = "https://suo.yt/JsRVO5w"
+        val e = "https://gitee.com/bujilangren/warehouse/raw/master/0529.txt"
 
         listOf(
             e,
-            subUrl,
-            subUrlSs,
-            subUrl2,
-            subUrlSsr,
-            subUrlTr,
-            subUrlV2
+//            subUrl,
+//            subUrlSs,
+//            subUrl2,
+//            subUrlSsr,
+//            subUrlTr,
+//            subUrlV2
 //            "https://gitee.com/bujilangren/warehouse/raw/master/0523.txt",
 //            "https://gitee.com/bujilangren/warehouse/raw/master/2021-5-23-ss&vmess.txt"
         ).forEach {

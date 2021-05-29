@@ -10,7 +10,7 @@ object Parser {
     private val REG_SSR_PARAM = "([^/]+)/\\?(.+)".toRegex()
     private val REG_TROJAN = "([^@]+)@([^:]+):(\\d{1,5})(?:\\?(.+))?".toRegex()
 
-    private var debug = false
+    var debug = false
 
     fun parse(uri: String): Sub? =
         when (uri.substringBefore(':')) {
@@ -43,7 +43,13 @@ object Parser {
         REG_SCHEMA_HASH.matchEntire(uri)?.run {
             val remark = groupValues[3].urlDecode()
             "parseSs match".debug(groupValues[2])
-            groupValues[2].b64Decode().also {
+            var decoded = groupValues[2].takeUnless { it.contains("@") }?.b64Decode()
+                //兼容异常
+                ?: with(groupValues[2]) {
+                    "${substringBefore('@').b64Decode()}${substring(indexOf('@'))}"
+                        .also { "parseSs b64 format correct".debug("___$it") }
+                }
+            decoded.also {
                 "parseSs b64 decode".debug(it)
                 REG_SS.matchEntire(it)?.run {
                     "parseSs ss match".debug(this.groupValues.toString())
