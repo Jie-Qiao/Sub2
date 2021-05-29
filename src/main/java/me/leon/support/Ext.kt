@@ -6,6 +6,7 @@ import java.io.File
 import java.net.*
 import java.nio.charset.Charset
 import java.util.*
+import kotlin.system.measureTimeMillis
 
 
 fun String.readText(charset: Charset = Charsets.UTF_8) =
@@ -101,9 +102,9 @@ fun String.connect(
         -1
     } else {
         try {
-            var start = System.currentTimeMillis()
-            Socket().connect(InetSocketAddress(this, port), timeout)
-            System.currentTimeMillis() - start
+            measureTimeMillis {
+                Socket().connect(InetSocketAddress(this, port), timeout)
+            }
         } catch (e: Exception) {
             exceptionHandler.invoke("$this:$port")
             -1
@@ -124,7 +125,7 @@ fun String.ping(
         -1
     } else
         try {
-            var start = System.currentTimeMillis()
+            val start = System.currentTimeMillis()
             val reachable = InetAddress.getByName(this).isReachable(timeout)
             if (reachable) (System.currentTimeMillis() - start)
             else {
