@@ -72,7 +72,7 @@ data class V2ray(
      */
     var type: String = "none"
     override fun toUri() = "vmess://${this.toJson().b64Encode()}"
-    override fun info() = "$nation $ps vmess $add:$port"
+    override fun info() = "$nation $name vmess $add:$port"
     override var name: String
         get() = ps
         set(value) {
@@ -126,7 +126,7 @@ data class SSR(
             ("$server:$port:$protocol:$method:$obfs:${password.b64Encode()}" +
                     "/?obfsparam=${obfs_param.b64EncodeNoEqual()}" +
                     "&protoparam=${protocol_param.b64EncodeNoEqual()}" +
-                    "&remarks=${remarks.b64EncodeNoEqual()}" +
+                    "&remarks=${name.b64EncodeNoEqual()}" +
                     "&group=${group.b64EncodeNoEqual()}")
                 .b64Encode()
         }"

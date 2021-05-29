@@ -50,6 +50,34 @@ class NetworkSubTest {
         }
     }
 
+    /**
+     * 去除推广
+     */
+    @Test
+    fun subRemarkModify() {
+//        val e = "https://zyzmzyz.netlify.app/Clash.yml"
+        val e = "D:\\360极速浏览器下载/Clash.yml"
+
+        listOf(e)
+            .forEach {
+                kotlin.runCatching {
+                    Parser.parseFromSub(it)
+                        .joinToString(
+//                        "|",
+                            "\r\n"
+                        ) {
+                            it.apply { name = name.replace("\\([^)]+\\)".toRegex(), "") }.info()
+                        }
+                        .also {
+                            println("___________")
+                            println(it)
+                        }
+                }.onFailure {
+                    it.printStackTrace()
+                }
+            }
+    }
+
     @Test
     fun parseNet() {
         val key = SimpleDateFormat("yyyyMMdd").format(Date()).repeat(4)

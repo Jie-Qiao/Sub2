@@ -56,6 +56,11 @@
 - [碧海大佬](https://sub.bihai.ml/)
 - [肥羊转换](https://sub.mcwy.cloud/)
 - [边缘]( https://bianyuan.xyz/)
+- [weleven11](https://sub.weleven11.com/)
+- [github acl4ssr-sub](https://acl4ssr-sub.github.io/)
+- [subcon.dlj.tf](https://subcon.dlj.tf/)
+- [subconv](https://subconv.ml/)
+- [sub v1](https://sub.v1.mk/)
 
 ## 节点测速
 
