@@ -70,11 +70,33 @@
   - http://gz.cloudtest.cc/
   - http://a.cloudtest.icu/
 
-
-
 ## 本项目生成订阅
 
 - ss https://raw.fastgit.org/Leon406/Sub/master/sub/share/ss
 - ssr https://raw.fastgit.org/Leon406/Sub/master/sub/share/ssr
 - v2ray https://raw.fastgit.org/Leon406/Sub/master/sub/share/v2
 - trojan  https://raw.fastgit.org/Leon406/Sub/master/sub/share/tr
+
+## 使用软件
+
+| 平台                    | 软件                                                         | 支持协议                                                     |
+| ----------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Windows                 | [shadowsocks-windows](https://github.com/shadowsocks/shadowsocks-windows/releases) | SS                                                           |
+| Windows                 | [ShadowsocksR-Windows](https://github.com/HMBSbige/ShadowsocksR-Windows/releases) | SSR                                                          |
+| Windows                 | [V2rayN](https://github.com/2dust/v2rayN/releases)           | SS、Trojan、Vmess、VLESS                                     |
+| Windows                 | [Clash CFW  **(推荐)**](https://github.com/Fndroid/clash_for_windows_pkg/releases) | SS、SSR、Trojan、Vmess、VLESS                                |
+| Windows                 | [Clash.Net](https://github.com/ClashDotNetFramework/ClashDotNetFramework/releases/) | SS、SSR、Trojan、Vmess、VLESS                                |
+| Windows                 | [WinXray](https://github.com/TheMRLL/winxray/releases)       | SS、SSR、Trojan、V2ray（Vmess、VLESS）Xray                   |
+| Linux / Windows / macOS | [Qv2ray](https://github.com/Qv2ray/Qv2ray/releases)          | VMess / VLESS / SSR / Trojan / Trojan-Go/ NaiveProxy /HTTP(S) / SOCKS5 |
+| macOS                   | [ClashX](https://github.com/yichengchen/clashX/releases)     | SS、SSR、Trojan、V2ray                                       |
+| macOS                   | [V2rayU](https://github.com/yanue/V2rayU/releases)           | SS、SSR、Trojan、V2ray                                       |
+| Android                 | [shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android/releases) | SS                                                           |
+| Android                 | [ShadowsocksR-Android](https://github.com/HMBSbige/ShadowsocksR-Android/releases) | SSR                                                          |
+| Android                 | [V2rayNG](https://github.com/2dust/v2rayNG/releases)         | SS、Trojan、V2ray（Vmess、VLESS）、Xray                      |
+| Android                 | [[ClashForAndroid   **(推荐)**](https://github.com/Kr328/ClashForAndroid)](https://github.com/Kr328/ClashForAndroid/releases) | SS、SSR、Trojan、Vmess、VLESS                                |
+| Android                 | [SSRAY](https://github.com/xxf098/shadowsocksr-v2ray-trojan-android/releases) | SSR、V2ray、Trojan                                           |
+| Android                 | [SagerNet](https://github.com/SagerNet/SagerNet/releases)    | VMess / VLESS / SSR / Trojan / Trojan-Go/ NaiveProxy / HTTP(S) / SOCKS5 |
+| IOS                     | Shadowrocket 小火箭  IOS非国区购买                           | SS、SSR、Trojan、V2ray、VLESS                                |
+| IOS                     | Quantumult  IOS非国区购买                                    | SS、SSR、Trojan、V2ray                                       |
+| IOS                     | QuantumultX  IOS非国区购买                                   | SS、SSR、Trojan、V2ray                                       |
+
