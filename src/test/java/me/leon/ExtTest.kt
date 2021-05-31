@@ -1,5 +1,6 @@
 package me.leon
 
+import me.leon.domain.Lanzou
 import me.leon.support.*
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -93,5 +94,26 @@ class ExtTest {
         println("wwws.baidu.com".quickConnect(50))
         println("www.baidu.com".quickConnect(80))
         println("www.baidu.com".quickConnect(443))
+    }
+
+    @Test
+    fun lanzouDirectLink() {
+        val url = "https://www.lanzoux.com/iGqn3f7k4zg"
+
+        url.readFromNet().run { "(/fn\\?\\w{6,})\" frameborder".toRegex().find(this)!!.groupValues[1] }.also {
+               "https://www.lanzoux.com/$it".readFromNet().also {
+                 val sign =  "(?:pdownload|postdown) = '(\\w+)'".toRegex().find(it)!!.groupValues[1]
+                   "https://www.lanzoux.com/ajaxm.php".post(mutableMapOf(
+                       "action" to "downprocess",
+                       "signs" to "?ctdf",
+                       "sign" to sign,
+                       "ves" to "1",
+                       "websign" to "",
+                       "websignkey" to "u211",
+                   )).fromJson<Lanzou>().run {
+                       println("${dom}/file/${this.url}")
+                   }
+               }
+        }
     }
 }

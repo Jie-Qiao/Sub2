@@ -2,7 +2,9 @@ package me.leon.support
 
 import kotlinx.coroutines.newFixedThreadPoolContext
 import me.leon.FAIL_IPS
+import java.io.DataOutputStream
 import java.io.File
+import java.lang.StringBuilder
 import java.net.*
 import java.nio.charset.Charset
 import java.util.*
@@ -20,6 +22,8 @@ fun String.readFromNet() = try {
     String(
         (URL(this)
             .openConnection().apply {
+//                setRequestProperty("Referer", "https://pc.woozooo.com/mydisk.php")
+                setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9")
                 setRequestProperty(
                     "user-agent",
                     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"
@@ -169,3 +173,41 @@ val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcess
 
 
 fun String.toFile() = File(this)
+
+fun String.post(params: MutableMap<String, String>)=
+
+    try {
+        val  p =  params.keys.foldIndexed(StringBuilder()) { index, acc, s ->
+            acc.also {
+                acc.append("${"&".takeUnless { index == 0 } ?: ""}$s=${params[s]}")
+            }
+        }.toString()
+        String(
+            URL(this)
+                .openConnection().safeAs<HttpURLConnection>()?.apply {
+                    requestMethod = "POST"
+                    setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+                    setRequestProperty("Referer", "https://pc.woozooo.com/mydisk.php")
+                    setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9")
+                    setRequestProperty("Content-Length", "${p.toByteArray().size}")
+                    setRequestProperty(
+                        "user-agent",
+                        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"
+                    )
+                    useCaches = false
+                    doInput = true
+                    doOutput = true
+
+                    DataOutputStream(outputStream).use {
+                        it.writeBytes(p)
+                    }
+                }?.takeIf {
+//            println("$this __ ${it.responseCode}")
+                    it.responseCode == 200
+                }?.inputStream?.readBytes() ?: "".toByteArray()
+        )
+    } catch (e: Exception) {
+        println("$this read err ${e.message}")
+        ""
+    }
+
