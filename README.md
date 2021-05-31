@@ -7,7 +7,7 @@
 - https://github.com/zyzmzyz/free-nodes
 - https://github.com/lion12776/kejilion
 - https://github.com/freebaipiao/freebaipiao
-- https://gitee.com/bujilangren/warehouse
+- [不良人](https://github.com/bujilangren/cangku/)
 - https://gitee.com/xihuancaoni/dotpclinks
 - https://github.com/colatiger/v2ray-nodes
 - https://github.com/freefq/free
