@@ -109,11 +109,11 @@ class NetworkSubTest {
                 .mapNotNull { Parser.parse(it.ovpn.b64Decode()) }
                 .map { it to async(DISPATCHER) { it.SERVER.connect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
-                .filter { speed.keys.contains(it.first.name) }
+//                .filter { speed.keys.contains(it.first.name) }
                 .forEach {
-                    println(it.first.apply {
-                        name = name.substringBeforeLast('|') + "|" + speed[name]
-                    }.toUri())
+                    println(it.first
+//                        .apply { name = name.substringBeforeLast('|') + "|" + speed[name] }
+                        .toUri())
                 }
         }
     }
