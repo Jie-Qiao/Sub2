@@ -53,10 +53,8 @@ class IpFilterTest {
                     it.removeAll(okIps)
                     it.addAll(failIps)
                 }
-                .filterNot {
-                    it.contains(":") && failIps.contains(it.substringBeforeLast(":"))
-                        .also { if (it) println("filter $it") }
-                }.sorted()
+                .filterNot { it.contains(":") && failIps.contains(it.substringBeforeLast(":")) }
+                .sorted()
                 .also {
                     FAIL_IPS.writeLine()
                     FAIL_IPS.writeLine(it.joinToString("\n"))
