@@ -21,7 +21,9 @@ class NodeCrawler {
      * 爬取配置文件数据，并去重写入文件
      */
     private fun crawlNodes() {
-        val subs = "$ROOT\\sublist".readLines()
+        val subs1 = "$ROOT\\sublist".readLines()
+        val subs2 = "$ROOT\\sublist_tmp".readLines()
+        val subs = subs1 + subs2
         POOL.writeLine()
         println("共有订阅源：${subs.size}")
 
@@ -74,8 +76,9 @@ class NodeCrawler {
                 }
                 .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
+                .also { println("有效节点数量 ${it.size}") }
                 .forEach {
-                    println(it.first.info())
+//                    println(it.first.info())
                     NODE_OK.writeLine(it.first.toUri())
                 }
         }

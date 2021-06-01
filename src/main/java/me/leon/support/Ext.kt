@@ -102,7 +102,7 @@ fun String.connect(
     exceptionHandler: (info: String) -> Unit = {}
 ) =
     if (cache.invoke(this, port)) {
-        println("quick fail from cache")
+//        println("quick fail from cache")
         -1
     } else {
         try {
@@ -154,7 +154,7 @@ fun String.quickConnect(
 ) = this.connect(port, timeout, { ip, port ->
     failIpPorts.contains(ip) || fails.contains("$ip:$port") || failIpPorts.contains("$ip:$port")
 }) {
-    println("error $it")
+//    println("error $it")
     fails.add(it)
     FAIL_IPS.writeLine(it)
 }
