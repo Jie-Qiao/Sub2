@@ -1,4 +1,4 @@
-## 订阅链接
+##  <span id="top">订阅链接</span>
 
 - https://github.com/JACKUSR2089/v2ray-subscribed
 - https://github.com/clashconfig/online
@@ -99,4 +99,10 @@
 | IOS                     | Shadowrocket 小火箭  IOS非国区购买                           | SS、SSR、Trojan、V2ray、VLESS                                |
 | IOS                     | Quantumult  IOS非国区购买                                    | SS、SSR、Trojan、V2ray                                       |
 | IOS                     | QuantumultX  IOS非国区购买                                   | SS、SSR、Trojan、V2ray                                       |
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/Leon406/Sub.svg)](https://starchart.cc/Leon406/Sub)
+
+[回到顶部](#top)
 
