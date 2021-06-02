@@ -12,7 +12,7 @@ import kotlin.system.measureTimeMillis
 
 
 fun String.readText(charset: Charset = Charsets.UTF_8) =
-    File(this).canonicalFile.also { println(it.canonicalPath) }.takeIf { it.exists() }?.readText(charset) ?: ""
+    File(this).canonicalFile.takeIf { it.exists() }?.readText(charset) ?: ""
 
 fun String.writeLine(txt: String = "") =
     if (txt.isEmpty()) File(this).writeText("") else File(this).appendText("$txt\n")
@@ -23,6 +23,8 @@ fun String.readFromNet() = try {
         (URL(this)
             .openConnection().apply {
 //                setRequestProperty("Referer", "https://pc.woozooo.com/mydisk.php")
+                connectTimeout = 10000
+                readTimeout = 10000
                 setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9")
                 setRequestProperty(
                     "user-agent",

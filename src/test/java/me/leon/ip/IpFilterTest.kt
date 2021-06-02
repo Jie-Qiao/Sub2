@@ -1,9 +1,9 @@
 package me.leon.ip
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import me.leon.FAIL_IPS
-import me.leon.support.ping
-import me.leon.support.readLines
-import me.leon.support.writeLine
+import me.leon.support.*
 import org.junit.jupiter.api.Test
 import kotlin.system.measureTimeMillis
 
@@ -61,5 +61,28 @@ class IpFilterTest {
                     println("after ${it.size}")
                 }
         }.also { println("time $it ms") }
+    }
+
+    @Test
+    fun deleteOkIps() {
+        val total = mutableListOf<String>()
+        runBlocking {
+            FAIL_IPS.readLines()
+                .also {
+                    total.addAll(it)
+                    println("before ${it.size}")
+                }
+                .filterNot { it.contains(":") }
+                .also { println("") }
+                .map { it to async(DISPATCHER) { it.connect() } }
+                .filter { it.second.await() > -1 }
+                .forEach {
+                    println(it.first)
+                    total.remove(it.first)
+                }
+        }
+        println("after ${total.size}")
+        FAIL_IPS.writeLine()
+        FAIL_IPS.writeLine(total.joinToString("\n"))
     }
 }

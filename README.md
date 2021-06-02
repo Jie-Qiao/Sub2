@@ -11,8 +11,8 @@
 - https://gitee.com/xihuancaoni/dotpclinks
 - https://github.com/colatiger/v2ray-nodes
 - https://github.com/freefq/free
-- https://github.com//skywolf627/VmessActions
-- [huaxinCLU/NodeSpider](https://github.com/huaxinCLUB/NodeSpider)
+- https://github.com/skywolf627/VmessActions
+- [huaxinCLU/NodeSpider](https://github.com/huaxinCLUB/NodeSpider)s
 - [pojiezhiyuanjun/freev2](https://github.com/pojiezhiyuanjun/freev2)  
 - https://github.com/adiwzx/freenode
 
