@@ -2,6 +2,8 @@ package me.leon.ip
 
 import me.leon.FAIL_IPS
 import me.leon.GeoParser.cityReader
+import me.leon.ipCityZh
+import me.leon.ipCountryEn
 import me.leon.ipCountryZh
 import me.leon.support.readLines
 import me.leon.support.toInetAddress
@@ -14,9 +16,10 @@ class GeoTest {
     @Test
     fun geoParse() {
 
-        val ipAddress = "128.101.101.101".toInetAddress()
+        val ipAddress = "128.101.101.101"
 
-        val response = cityReader.city(ipAddress)
+        val response = cityReader.city(ipAddress.toInetAddress())
+        println(response)
 
         response.country.run {
             println("country isoCode: $isoCode name: $name name-zh: ${names["zh-CN"]}")
@@ -29,7 +32,9 @@ class GeoTest {
         }
 
         println(ipAddress.ipCountryZh())
-        println(ipAddress.ipCountryZh())
+        println(ipAddress.ipCountryEn())
+        println(ipAddress.ipCityZh())
+        println(ipAddress.ipCountryEn())
 
     }
 

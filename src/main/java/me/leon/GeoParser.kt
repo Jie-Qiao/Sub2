@@ -2,6 +2,7 @@ package me.leon
 
 import com.maxmind.db.CHMCache
 import com.maxmind.geoip2.DatabaseReader
+import me.leon.GeoParser.cityReader
 import me.leon.GeoParser.countryReader
 import me.leon.support.toFile
 import me.leon.support.toInetAddress
@@ -30,10 +31,24 @@ fun String.ipCountryZh() = try {
 }
 
 fun InetAddress.ipCountryZh() = kotlin.runCatching { countryReader.country(this).country.names["zh-CN"] }
-    .onFailure { "UNKNOWN" }
+    .onFailure { "UNKNOWN" }.getOrNull()
 
 fun String.ipCountryEn() = kotlin.runCatching { countryReader.country(this.toInetAddress()).country.isoCode }
-    .onFailure { "UNKNOWN" }
+    .onFailure { "UNKNOWN" }.getOrNull()
 
 fun InetAddress.ipCountryEn() = kotlin.runCatching { countryReader.country(this).country.isoCode }
-    .onFailure { "UNKNOWN" }
+    .onFailure { "UNKNOWN" }.getOrNull()
+
+fun String.ipCityZh() = kotlin.runCatching {
+    cityReader.city(this.toInetAddress()).run {
+          mostSpecificSubdivision.names["zh-CN"]?:country.names["zh-CN"]
+    }
+}
+    .onFailure { "UNKNOWN" }.getOrNull()
+
+fun String.ipCityEn() = kotlin.runCatching {
+    cityReader.city(this.toInetAddress()).run {
+        mostSpecificSubdivision.names["en"]?:country.names["en"]
+    }
+}
+    .onFailure { "UNKNOWN" }.getOrNull()
