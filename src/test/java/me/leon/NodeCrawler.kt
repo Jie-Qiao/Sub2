@@ -161,7 +161,10 @@ class NodeCrawler {
             .forEach { (t, u) ->
                 val data = u.joinToString("\n") {
                     map[it.first]!!.apply {
-                        name = SERVER.ipCityZh() + "_" + name.substringBeforeLast('|') + "|" + it.second
+                        with(SERVER.ipCityZh()) {
+                            name = (this?.takeUnless { name.contains(it) }?.run { this+"_" }
+                                ?: "") + (name.substringBeforeLast('|') + "|" + it.second)
+                        }
 
                     }.also { println(it.name) }.toUri()
                 }
