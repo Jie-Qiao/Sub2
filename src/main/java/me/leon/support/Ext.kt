@@ -15,7 +15,7 @@ fun String.readText(charset: Charset = Charsets.UTF_8) =
     File(this).canonicalFile.takeIf { it.exists() }?.readText(charset) ?: ""
 
 fun String.writeLine(txt: String = "") =
-    if (txt.isEmpty()) File(this).writeText("") else File(this).appendText("$txt\n")
+    if (txt.isEmpty()) File(this).also { if (!it.parentFile.exists()) it.parentFile.mkdirs() }.writeText("") else File(this).appendText("$txt\n")
 
 fun String.readLines() = File(this).readLines()
 fun String.readFromNet() = try {

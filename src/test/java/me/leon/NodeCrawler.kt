@@ -148,10 +148,10 @@ class NodeCrawler {
                 .fold(mutableMapOf<String, Sub>()) { acc, sub ->
                     acc.apply { acc[sub.name] = sub }
                 }
-//        NODE_SS2.writeLine()
-//        NODE_SSR2.writeLine()
-//        NODE_V22.writeLine()
-//        NODE_TR2.writeLine()
+        NODE_SS2.writeLine()
+        NODE_SSR2.writeLine()
+        NODE_V22.writeLine()
+        NODE_TR2.writeLine()
         SPEED_TEST_RESULT.readLines()
             .distinct()
             .map { it.substringBeforeLast('|') to it.substringAfterLast('|') }
@@ -166,16 +166,16 @@ class NodeCrawler {
                     }.also { println(it.name) }.toUri()
                 }
                     .b64Encode()
-//                when (t) {
-//                    SS::class.java -> NODE_SS2.writeLine(data)
-//                        .also { println("ss节点: ${u.size}") }
-//                    SSR::class.java -> NODE_SSR2.writeLine(data)
-//                        .also { println("ssr节点: ${u.size}") }
-//                    V2ray::class.java -> NODE_V22.writeLine(data)
-//                        .also { println("v2ray节点: ${u.size}") }
-//                    Trojan::class.java -> NODE_TR2.writeLine(data)
-//                        .also { println("trojan节点: ${u.size}") }
-//                }
+                when (t) {
+                    SS::class.java -> NODE_SS2.writeLine(data)
+                        .also { println("ss节点: ${u.size}") }
+                    SSR::class.java -> NODE_SSR2.writeLine(data)
+                        .also { println("ssr节点: ${u.size}") }
+                    V2ray::class.java -> NODE_V22.writeLine(data)
+                        .also { println("v2ray节点: ${u.size}") }
+                    Trojan::class.java -> NODE_TR2.writeLine(data)
+                        .also { println("trojan节点: ${u.size}") }
+                }
             }
     }
 }
