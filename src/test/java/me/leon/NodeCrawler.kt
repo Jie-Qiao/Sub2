@@ -123,9 +123,13 @@ class NodeCrawler {
      */
     @Test
     fun availableSpeedTest() {
-        Parser.parseFromSub(NODE_OK).chunked(60).map {
-            it.map(Sub::toUri).also { println(it.joinToString("|")) }
-        }
+        Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
+            .chunked(400)
+            .mapIndexed { index, list ->
+                list.map(Sub::toUri)
+                    .subList(375.takeIf { index == 0 } ?: 78, list.size)
+                    .also { println(it.joinToString("|")) }
+            }
     }
 
     /**
@@ -157,7 +161,7 @@ class NodeCrawler {
             .forEach { (t, u) ->
                 val data = u.joinToString("\n") {
                     map[it.first]!!.apply {
-                        name = SERVER.ipCityZh()+ "_" + name.substringBeforeLast('|') + "|" + it.second
+                        name = SERVER.ipCityZh() + "_" + name.substringBeforeLast('|') + "|" + it.second
 
                     }.also { println(it.name) }.toUri()
                 }
