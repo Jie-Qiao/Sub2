@@ -56,7 +56,7 @@ class NetworkSubTest {
     @Test
     fun subRemarkModify() {
 //        val e = "https://zyzmzyz.netlify.app/Clash.yml"
-        val e = "D:\\360极速浏览器下载/Clash.yml"
+        val e = "https://www.linbaoz.com/clash/proxies"
 
         listOf(e)
             .forEach {

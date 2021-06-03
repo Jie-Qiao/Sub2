@@ -10,7 +10,6 @@ import java.nio.charset.Charset
 import java.util.*
 import kotlin.system.measureTimeMillis
 
-
 fun String.readText(charset: Charset = Charsets.UTF_8) =
     File(this).canonicalFile.takeIf { it.exists() }?.readText(charset) ?: ""
 
@@ -36,6 +35,7 @@ fun String.readFromNet() = try {
         }?.inputStream?.readBytes() ?: "".toByteArray()
     )
 } catch (e: Exception) {
+    e.printStackTrace()
     println("$this read err ${e.message}")
     ""
 }

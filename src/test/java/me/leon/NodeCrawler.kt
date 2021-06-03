@@ -15,6 +15,7 @@ class NodeCrawler {
         //1.爬取配置文件的订阅
         crawlNodes()
         checkNodes()
+        nodeGroup()
     }
 
     /**

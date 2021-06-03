@@ -3,12 +3,46 @@ package me.leon
 import me.leon.support.*
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
+import java.security.SecureRandom
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 object Parser {
     private val REG_SCHEMA_HASH = "(\\w+)://([^ #]+)(?:#([^#]+)?)?".toRegex()
     private val REG_SS = "([^:]+):([^@]+)@([^:]+):(\\d{1,5})".toRegex()
     private val REG_SSR_PARAM = "([^/]+)/\\?(.+)".toRegex()
     private val REG_TROJAN = "([^@]+)@([^:]+):(\\d{1,5})(?:\\?(.+))?".toRegex()
+
+    init {
+
+        System.setProperty("jdk.tls.client.protocols", "TLSv1.2")
+        //信任过期证书
+        val trustAllCerts: Array<TrustManager> = arrayOf(object : X509TrustManager {
+            @Throws(CertificateException::class)
+            override fun checkClientTrusted(chain: Array<X509Certificate?>?, authType: String?) {
+            }
+
+            @Throws(CertificateException::class)
+            override fun checkServerTrusted(chain: Array<X509Certificate?>?, authType: String?) {
+            }
+
+            override fun getAcceptedIssuers(): Array<X509Certificate> {
+                return arrayOf()
+            }
+        })
+        // Install the all-trusting trust manager
+        try {
+            val sc: SSLContext = SSLContext.getInstance("TLS")
+            sc.init(null, trustAllCerts, SecureRandom())
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     var debug = false
 
