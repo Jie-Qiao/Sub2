@@ -11,8 +11,15 @@ data class Clash(
     var `external-controller`: String = "info",
     var mode: String = "Rule",
     var `proxy-groups`: List<Group> = mutableListOf(),
+    var dns: DNS = DNS(),
     var proxies: List<Node> = mutableListOf(),
     var rules: List<String> = mutableListOf(),
+)
+
+data class DNS(var enable:Boolean = false,
+               var listen:String = "",
+               var nameserver:List<String> = mutableListOf(),
+               var fallback:List<String> = mutableListOf()
 )
 
 data class Node(

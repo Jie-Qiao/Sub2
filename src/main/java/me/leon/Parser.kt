@@ -44,7 +44,7 @@ object Parser {
             val remark = groupValues[3].urlDecode()
             "parseSs match".debug(groupValues[2])
             var decoded = groupValues[2].takeUnless { it.contains("@") }?.b64Decode()
-                //兼容异常
+            //兼容异常
                 ?: with(groupValues[2]) {
                     "${substringBefore('@').b64Decode()}${substring(indexOf('@'))}"
                         .also { "parseSs b64 format correct".debug("___$it") }
@@ -137,22 +137,29 @@ object Parser {
         val data = url.readFromNet()
             .b64SafeDecode()
 
-        return if (data.contains("proxies:"))
-        //移除yaml中的标签
-            (Yaml(Constructor(Clash::class.java)).load(
-                data.replace("!<[^>]+>".toRegex(), "").also { it.debug() }) as Clash).proxies
-                .asSequence()
-                .mapNotNull(Node::node)
-                .filterNot { it is NoSub }
-                .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
-        else
-            data.also { "parseFromNetwork".debug(it) }
-                .split("\r\n|\n".toRegex())
-                .asSequence()
-                .filter { it.isNotEmpty() }
-                .mapNotNull { parse(it.replace("/#", "#")) }
-                .filterNot { it is NoSub }
-                .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
+        return try {
+            if (data.contains("proxies:"))
+            //移除yaml中的标签
+                (Yaml(Constructor(Clash::class.java)).load(
+                    data.replace("!<[^>]+>".toRegex(), "").also {
+                        it.debug()
+                    }) as Clash).proxies
+                    .asSequence()
+                    .mapNotNull(Node::node)
+                    .filterNot { it is NoSub }
+                    .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
+            else
+                data.also { "parseFromNetwork".debug(it) }
+                    .split("\r\n|\n".toRegex())
+                    .asSequence()
+                    .filter { it.isNotEmpty() }
+                    .mapNotNull { parse(it.replace("/#", "#")) }
+                    .filterNot { it is NoSub }
+                    .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
+        } catch (ex: Exception) {
+            println("failed______ $url")
+            linkedSetOf()
+        }
     }
 
     fun parseFromSub(uri: String) =

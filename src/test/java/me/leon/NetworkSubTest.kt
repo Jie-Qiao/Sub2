@@ -81,7 +81,8 @@ class NetworkSubTest {
     @Test
     fun parseNet() {
         val key = SimpleDateFormat("yyyyMMdd").format(Date()).repeat(4)
-        "https://ghproxy.com/https://raw.githubusercontent.com/webdao/v2ray/master/nodes.txt".readFromNet()
+        "https://ghproxy.com/https://raw.githubusercontent.com/webdao/v2ray/master/nodes.txt"
+            .readFromNet()
             .b64Decode()
             .foldIndexed(StringBuilder()) { index, acc, c ->
                 acc.also { acc.append((c.code xor key[index % key.length].code).toChar()) }
