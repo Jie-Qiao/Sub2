@@ -125,10 +125,10 @@ class NodeCrawler {
     @Test
     fun availableSpeedTest() {
         Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
-            .chunked(400)
+            .chunked(130)
             .mapIndexed { index, list ->
                 list.map(Sub::toUri)
-                    .subList(375.takeIf { index == 0 } ?: 78, list.size)
+                    .subList(0.takeIf { index == 0 } ?: 80, list.size)
                     .also { println(it.joinToString("|")) }
             }
     }
