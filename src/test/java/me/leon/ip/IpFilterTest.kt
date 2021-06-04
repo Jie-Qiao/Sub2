@@ -10,6 +10,12 @@ import kotlin.system.measureTimeMillis
 class IpFilterTest {
 
     @Test
+    fun reTestFailIps() {
+        failIp()
+        deleteOkIps()
+    }
+
+    @Test
     fun failIp() {
         val okIps = mutableListOf<String>()
         val failIps = mutableListOf<String>()
