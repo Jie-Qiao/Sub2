@@ -16,7 +16,7 @@ fun String.readText(charset: Charset = Charsets.UTF_8) =
 fun String.writeLine(txt: String = "") =
     if (txt.isEmpty()) File(this).also { if (!it.parentFile.exists()) it.parentFile.mkdirs() }.writeText("") else File(this).appendText("$txt\n")
 
-fun String.readLines() = File(this).readLines()
+fun String.readLines() = File(this).takeIf { it.exists() }?.readLines()?: mutableListOf()
 fun String.readFromNet() = try {
     String(
         (URL(this)

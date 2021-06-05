@@ -79,6 +79,17 @@ class NetworkSubTest {
     }
 
     @Test
+    fun load() {
+       "http://pan-yz.chaoxing.com/download/downloadfile?fleid=607981566887628800&puid=137229880".readFromNet()
+           .also { println(it) }
+           .split("\r\n|\n".toRegex())
+           .forEach {
+           println(it)
+       }
+    }
+
+
+    @Test
     fun parseNet() {
         val key = SimpleDateFormat("yyyyMMdd").format(Date()).repeat(4)
         "https://ghproxy.com/https://raw.githubusercontent.com/webdao/v2ray/master/nodes.txt"

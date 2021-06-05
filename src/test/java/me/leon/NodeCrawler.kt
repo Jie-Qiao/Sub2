@@ -23,8 +23,9 @@ class NodeCrawler {
      */
     private fun crawlNodes() {
         val subs1 = "$ROOT\\pool\\subpool".readLines()
-        val subs2 = "$ROOT\\pool\\tmp_sub".readLines()
-        val subs = subs1 + subs2
+        val subs2 = "$ROOT\\pool\\subs".readLines()
+        val subs3 = "$SHARE2\\tmp".readLines()
+        val subs = subs1 + subs2 + subs3
         POOL.writeLine()
         println("共有订阅源：${subs.size}")
 
@@ -124,13 +125,14 @@ class NodeCrawler {
      */
     @Test
     fun availableSpeedTest() {
-        Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
-            .chunked(130)
-            .mapIndexed { index, list ->
-                list.map(Sub::toUri)
-                    .subList(0.takeIf { index == 0 } ?: 80, list.size)
-                    .also { println(it.joinToString("|")) }
-            }
+
+//        Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
+//            .chunked(130)
+//            .mapIndexed { index, list ->
+//                list.map(Sub::toUri)
+//                    .subList(0.takeIf { index == 0 } ?: 80, list.size)
+//                    .also { println(it.joinToString("|")) }
+//            }
     }
 
     /**
@@ -163,7 +165,7 @@ class NodeCrawler {
                 val data = u.joinToString("\n") {
                     map[it.first]!!.apply {
                         with(SERVER.ipCityZh()) {
-                            name = (this?.takeUnless { name.contains(it) }?.run { this+"_" }
+                            name = (this?.takeUnless { name.contains(it) }?.run { this + "_" }
                                 ?: "") + (name.substringBeforeLast('|') + "|" + it.second)
                         }
 
