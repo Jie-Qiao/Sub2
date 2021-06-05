@@ -44,10 +44,12 @@
 - https://www.linbaoz.com/
 - https://zz.guicloud.xyz/
 
-## 节点池配置
+## 节点池配置 
 - https://github.com/shoujiyanxishe/atu
 
-## 节点转换
+> ​有服务器的可自行搭建 [proxypool](https://github.com/Leon406/proxypool)  配置参考上面etproxypool
+
+## <span id="subCon">订阅转换</span>
 
 - [789](https://sub.789.st/)
 - [つつの]( https://sub.tsutsu.cc/)  
@@ -64,18 +66,20 @@
 
 ## 节点测速
 
-- 本地: https://github.com/tindy2013/stairspeedtest-reborn
+- [本地测速](https://github.com/tindy2013/stairspeedtest-reborn)
 
-- 服务器:
-  - http://gz.cloudtest.cc/
-  - http://a.cloudtest.icu/
+- 在线测速
+  - [品云](http://gz.cloudtest.cc/)
+  - [a.cloudtest.icu](http://a.cloudtest.icu/) 
 
-## 本项目生成订阅
+## 本项目生成base64订阅
 
-- ss https://raw.fastgit.org/Leon406/Sub/master/sub/share/ss
-- ssr https://raw.fastgit.org/Leon406/Sub/master/sub/share/ssr
-- v2ray https://raw.fastgit.org/Leon406/Sub/master/sub/share/v2
-- trojan  https://raw.fastgit.org/Leon406/Sub/master/sub/share/tr
+- [ss](https://raw.fastgit.org/Leon406/Sub/master/sub/share/ss) 
+- [ssr](https://raw.fastgit.org/Leon406/Sub/master/sub/share/ssr) 
+- [v2ray](https://raw.fastgit.org/Leon406/Sub/master/sub/share/v2) 
+- [trojan](https://raw.fastgit.org/Leon406/Sub/master/sub/share/tr)  
+
+> 如需多个订阅,不同格式,请自行使用[订阅转换](#subCon)进行转换
 
 ## 使用软件
 
