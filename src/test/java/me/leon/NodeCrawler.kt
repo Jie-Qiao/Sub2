@@ -4,10 +4,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import me.leon.support.*
 import org.junit.jupiter.api.Test
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NodeCrawler {
 
     val nodeInfo = "$ROOT\\info.md"
+    val customInfo = "(https://bit.ly/3w0nZ60)"
 
     /**
      * 1.爬取配置文件对应链接的节点,并去重
@@ -16,7 +19,7 @@ class NodeCrawler {
     @Test
     fun crawl() {
         //1.爬取配置文件的订阅
-//        crawlNodes()
+        crawlNodes()
         checkNodes()
         nodeGroup()
     }
@@ -82,12 +85,17 @@ class NodeCrawler {
                 }
                 .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
-                .also { println("有效节点数量 ${it.size}".also {
-                    nodeInfo.writeLine("**$it**")
-                }) }
+                .also {
+                    println("有效节点数量 ${it.size}".also {
+                        nodeInfo.writeLine(
+                            "更新时间${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(System.currentTimeMillis()))}\r\n" +
+                                    "**$it**"
+                        )
+                    })
+                }
                 .forEach {
 //                    println(it.first.info())
-                    NODE_OK.writeLine(it.first.toUri())
+                    NODE_OK.writeLine(it.first.apply { name += customInfo }.toUri())
                 }
         }
     }
@@ -105,11 +113,11 @@ class NodeCrawler {
                 SS::class.java -> NODE_SS.writeLine(data)
                     .also { println("ss节点: ${u.size}".also { nodeInfo.writeLine("- $it") }) }
                 SSR::class.java -> NODE_SSR.writeLine(data)
-                    .also { println("ssr节点: ${u.size}".also { nodeInfo.writeLine("- $it") })  }
+                    .also { println("ssr节点: ${u.size}".also { nodeInfo.writeLine("- $it") }) }
                 V2ray::class.java -> NODE_V2.writeLine(data)
-                    .also { println("v2ray节点: ${u.size}".also { nodeInfo.writeLine("- $it") })  }
+                    .also { println("v2ray节点: ${u.size}".also { nodeInfo.writeLine("- $it") }) }
                 Trojan::class.java -> NODE_TR.writeLine(data)
-                    .also { println("trojan节点: ${u.size}".also { nodeInfo.writeLine("- $it") })  }
+                    .also { println("trojan节点: ${u.size}".also { nodeInfo.writeLine("- $it") }) }
             }
         }
     }
@@ -133,13 +141,13 @@ class NodeCrawler {
     @Test
     fun availableSpeedTest() {
 
-//        Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
-//            .chunked(130)
-//            .mapIndexed { index, list ->
-//                list.map(Sub::toUri)
-//                    .subList(0.takeIf { index == 0 } ?: 80, list.size)
-//                    .also { println(it.joinToString("|")) }
-//            }
+        Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
+            .chunked(130)
+            .mapIndexed { index, list ->
+                list.map(Sub::toUri)
+                    .subList(0.takeIf { index == 0 } ?: 80, list.size)
+                    .also { println(it.joinToString("|")) }
+            }
     }
 
     /**
