@@ -6,6 +6,9 @@ import me.leon.support.*
 import org.junit.jupiter.api.Test
 
 class NodeCrawler {
+
+    val nodeInfo = "$ROOT\\info.md"
+
     /**
      * 1.爬取配置文件对应链接的节点,并去重
      * 2.同时进行可用性测试 tcping
@@ -13,7 +16,7 @@ class NodeCrawler {
     @Test
     fun crawl() {
         //1.爬取配置文件的订阅
-        crawlNodes()
+//        crawlNodes()
         checkNodes()
         nodeGroup()
     }
@@ -50,6 +53,7 @@ class NodeCrawler {
      * 节点可用性测试
      */
     private fun checkNodes() {
+        nodeInfo.writeLine()
         //2.筛选可用节点
         var poolSize: Int
         var resume = false
@@ -78,7 +82,9 @@ class NodeCrawler {
                 }
                 .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
-                .also { println("有效节点数量 ${it.size}") }
+                .also { println("有效节点数量 ${it.size}".also {
+                    nodeInfo.writeLine("**$it**")
+                }) }
                 .forEach {
 //                    println(it.first.info())
                     NODE_OK.writeLine(it.first.toUri())
@@ -92,17 +98,18 @@ class NodeCrawler {
         NODE_SSR.writeLine()
         NODE_V2.writeLine()
         NODE_TR.writeLine()
+
         Parser.parseFromSub(NODE_OK).groupBy { it.javaClass }.forEach { (t, u) ->
             val data = u.joinToString("\n") { it.toUri() }.b64Encode()
             when (t) {
                 SS::class.java -> NODE_SS.writeLine(data)
-                    .also { println("ss节点: ${u.size}") }
+                    .also { println("ss节点: ${u.size}".also { nodeInfo.writeLine("- $it") }) }
                 SSR::class.java -> NODE_SSR.writeLine(data)
-                    .also { println("ssr节点: ${u.size}") }
+                    .also { println("ssr节点: ${u.size}".also { nodeInfo.writeLine("- $it") })  }
                 V2ray::class.java -> NODE_V2.writeLine(data)
-                    .also { println("v2ray节点: ${u.size}") }
+                    .also { println("v2ray节点: ${u.size}".also { nodeInfo.writeLine("- $it") })  }
                 Trojan::class.java -> NODE_TR.writeLine(data)
-                    .also { println("trojan节点: ${u.size}") }
+                    .also { println("trojan节点: ${u.size}".also { nodeInfo.writeLine("- $it") })  }
             }
         }
     }

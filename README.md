@@ -47,7 +47,7 @@
 ## 节点池配置 
 - https://github.com/shoujiyanxishe/atu
 
-> ​有服务器的可自行搭建 [proxypool](https://github.com/Leon406/proxypool)  配置参考上面etproxypool
+> 有服务器的可自行搭建 [proxypool](https://github.com/Leon406/proxypool)  配置参考上面etproxypool
 
 ## <span id="subCon">订阅转换</span>
 
@@ -72,7 +72,7 @@
   - [品云](http://gz.cloudtest.cc/)
   - [a.cloudtest.icu](http://a.cloudtest.icu/) 
 
-## 本项目生成base64订阅
+## 本项目生成base64订阅 [节点详情](./sub/info.md)
 
 - [ss](https://raw.fastgit.org/Leon406/Sub/master/sub/share/ss) 
 - [ssr](https://raw.fastgit.org/Leon406/Sub/master/sub/share/ssr) 
