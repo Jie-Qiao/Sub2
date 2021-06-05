@@ -22,8 +22,8 @@ class NodeCrawler {
      * 爬取配置文件数据，并去重写入文件
      */
     private fun crawlNodes() {
-        val subs1 = "$ROOT\\sublist".readLines()
-        val subs2 = "$ROOT\\sublist_tmp".readLines()
+        val subs1 = "$ROOT\\pool\\subpool".readLines()
+        val subs2 = "$ROOT\\pool\\tmp_sub".readLines()
         val subs = subs1 + subs2
         POOL.writeLine()
         println("共有订阅源：${subs.size}")

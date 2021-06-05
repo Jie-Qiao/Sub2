@@ -16,10 +16,14 @@ data class Clash(
     var rules: List<String> = mutableListOf(),
 )
 
-data class DNS(var enable:Boolean = false,
-               var listen:String = "",
-               var nameserver:List<String> = mutableListOf(),
-               var fallback:List<String> = mutableListOf()
+data class DNS(
+    var enable: Boolean = false,
+    var ipv6: Boolean = false,
+    var listen: String = "",
+    var `enhanced-mode`: String = "",
+    var `fake-ip-range`: String = "",
+    var nameserver: List<String> = mutableListOf(),
+    var fallback: List<String> = mutableListOf()
 )
 
 data class Node(

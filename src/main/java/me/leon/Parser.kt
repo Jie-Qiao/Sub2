@@ -59,7 +59,7 @@ object Parser {
         "parseV2ray ".debug(uri)
         try {
             REG_SCHEMA_HASH.matchEntire(uri)?.run {
-                return groupValues[2].b64Decode()
+                return groupValues[2].b64SafeDecode()
                     .also { "parseV2ray base64 decode: ".debug(it) }
                     .fromJson<V2ray>()
             } ?: return null
@@ -192,6 +192,7 @@ object Parser {
                     .fold(linkedSetOf()) { acc, sub -> acc.also { acc.add(sub) } }
         } catch (ex: Exception) {
             println("failed______ $url")
+            ex.printStackTrace()
             linkedSetOf()
         }
     }
