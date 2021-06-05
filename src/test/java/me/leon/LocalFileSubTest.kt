@@ -24,12 +24,9 @@ class LocalFileSubTest {
             .also { println(it) }
     }
 
-
-
     @Test
     fun readLocal3() {
         Parser.parseFromSub("$ROOT\\bihai.yaml")
-
             ?.joinToString("\n") { it.info() }
             .also { println(it) }
     }

@@ -11,6 +11,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
+
 object Parser {
     private val REG_SCHEMA_HASH = "(\\w+)://([^ #]+)(?:#([^#]+)?)?".toRegex()
     private val REG_SS = "([^:]+):([^@]+)@([^:]+):(\\d{1,5})".toRegex()
@@ -18,8 +19,6 @@ object Parser {
     private val REG_TROJAN = "([^@]+)@([^:]+):(\\d{1,5})(?:\\?(.+))?".toRegex()
 
     init {
-
-        System.setProperty("jdk.tls.client.protocols", "TLSv1.2")
         //信任过期证书
         val trustAllCerts: Array<TrustManager> = arrayOf(object : X509TrustManager {
             @Throws(CertificateException::class)
@@ -36,12 +35,18 @@ object Parser {
         })
         // Install the all-trusting trust manager
         try {
-            val sc: SSLContext = SSLContext.getInstance("TLS")
+            val sc: SSLContext = SSLContext.getInstance("SSL")
             sc.init(null, trustAllCerts, SecureRandom())
+            val sslsc = sc.serverSessionContext
+            sslsc.sessionTimeout = 0
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
+            HttpsURLConnection.setDefaultHostnameVerifier { _, _ ->
+                true
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        println("________________")
     }
 
     var debug = false

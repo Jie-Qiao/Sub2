@@ -56,9 +56,13 @@ class NetworkSubTest {
     @Test
     fun subRemarkModify() {
 //        val e = "https://zyzmzyz.netlify.app/Clash.yml"
-        val e = "https://www.linbaoz.com/clash/proxies"
-
-        listOf(e)
+//        val e = "https://www.linbaoz.com/clash/proxies"
+        Parser.debug
+        listOf(
+            "https://fu.stgod.com/clash/proxies",
+            "https://free.mengbai.cf/clash/proxies",
+            "https://emby.luoml.eu.org/clash/proxies",
+        )
             .forEach {
                 kotlin.runCatching {
                     Parser.parseFromSub(it)

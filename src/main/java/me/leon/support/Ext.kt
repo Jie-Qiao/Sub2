@@ -22,8 +22,8 @@ fun String.readFromNet() = try {
         (URL(this)
             .openConnection().apply {
 //                setRequestProperty("Referer", "https://pc.woozooo.com/mydisk.php")
-                connectTimeout = 10000
-                readTimeout = 10000
+                connectTimeout = 30000
+                readTimeout = 30000
                 setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9")
                 setRequestProperty(
                     "user-agent",
