@@ -10,7 +10,7 @@ import java.util.*
 class NodeCrawler {
 
     val nodeInfo = "$ROOT\\info.md"
-    val customInfo = "(https://bit.ly/3w0nZ60)"
+    val customInfo = "(https://github.com/Leon406/Sub)| "
 
     /**
      * 1.爬取配置文件对应链接的节点,并去重
@@ -93,9 +93,10 @@ class NodeCrawler {
                         )
                     })
                 }
-                .forEach {
+                .forEachIndexed { index, pair ->
 //                    println(it.first.info())
-                    NODE_OK.writeLine(it.first.apply { name += customInfo }.toUri())
+                    NODE_OK.writeLine(pair.first.apply { name = name.takeUnless { index == 0 } ?:  customInfo +name }
+                        .toUri())
                 }
         }
     }

@@ -40,7 +40,6 @@ fun String.readFromNet() = try {
     ""
 }
 
-
 fun String.b64Decode() = String(Base64.getDecoder().decode(this))
 fun String.b64SafeDecode() =
     if (this.contains(":")) this

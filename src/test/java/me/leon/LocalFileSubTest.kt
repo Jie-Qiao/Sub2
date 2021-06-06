@@ -34,7 +34,7 @@ class LocalFileSubTest {
     @Test
     fun readLocal4() {
         Parser.parseFromSub(NODE_OK)
-//            .filter { it.info().contains("http") }
+            .filter { it.info().contains("http") }
             ?.joinToString("\n") { it.name }
             .also { println(it) }
     }
