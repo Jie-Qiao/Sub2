@@ -11,6 +11,7 @@ class NodeCrawler {
 
     val nodeInfo = "$ROOT\\info.md"
     val customInfo = "(https://github.com/Leon406/Sub) "
+    val REG_AD = """\([^)]{5,}\)|https://www.mattkaydiary.com|tg@freebaipiao""".toRegex()
 
     /**
      * 1.爬取配置文件对应链接的节点,并去重
@@ -44,7 +45,7 @@ class NodeCrawler {
                 .map { it.second.await() }
                 .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
                     acc.apply { acc.addAll(linkedHashSet) }
-                }.sortedBy { it.toUri() }.also {
+                }.sortedBy { it.apply { name = name.replace(REG_AD,"") }.toUri() }.also {
                     println("共有节点 ${it.size}")
                     POOL.writeLine(it.joinToString("\n") { it.toUri() })
                 }
