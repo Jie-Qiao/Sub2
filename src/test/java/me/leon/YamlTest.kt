@@ -31,9 +31,7 @@ class YamlTest {
         val curList = Parser.parseFromSub(POOL).also {
             println(it.size)
         }
-//        val url = "http://buliang0.tk/tool/freeproxy/05-06/clash-27.yml".readFromNet()
-//        val url = "https://suo.yt/E80gdbo".readFromNet()
-//        val url = "https://www.233660.xyz/clash/proxies".readFromNet()
+
         var url =
             "https://pub-api-1.bianyuan.xyz/sub?target=clash&url=https%3A%2F%2Ffzusrs.xyz%2F%2Flink%2FtOHiqgwTT7OkFiDR%3Fsub%3D3%26extend%3D1&insert=false&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true".readFromNet()
 //        println("__ $url")

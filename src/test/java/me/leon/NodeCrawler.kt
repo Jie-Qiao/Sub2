@@ -9,9 +9,9 @@ import java.util.*
 
 class NodeCrawler {
 
-    val nodeInfo = "$ROOT\\info.md"
-    val customInfo = "(https://github.com/Leon406/Sub) "
-    val REG_AD = """\([^)]{5,}\)|https://www.mattkaydiary.com|tg@freebaipiao""".toRegex()
+    private val nodeInfo = "$ROOT\\info.md"
+    private val customInfo = "(https://github.com/Leon406/Sub) "
+    private val REG_AD = """\([^)]{5,}\)|https://www.mattkaydiary.com|tg@freebaipiao""".toRegex()
 
     /**
      * 1.爬取配置文件对应链接的节点,并去重
@@ -45,7 +45,8 @@ class NodeCrawler {
                 .map { it.second.await() }
                 .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
                     acc.apply { acc.addAll(linkedHashSet) }
-                }.sortedBy { it.apply { name = name.replace(REG_AD,"") }.toUri() }.also {
+                }.sortedBy { it.apply { name = name.replace(REG_AD, "") }.toUri() }
+                .also {
                     println("共有节点 ${it.size}")
                     POOL.writeLine(it.joinToString("\n") { it.toUri() })
                 }
@@ -59,31 +60,9 @@ class NodeCrawler {
     private fun checkNodes() {
         nodeInfo.writeLine()
         //2.筛选可用节点
-        var poolSize: Int
-        var resume = false
-        val resumeIndex = 0
-        val lastSub = "".also {
-            if (it.isEmpty()) {
-                NODE_OK.writeLine()
-            }
-        }
-
+        NODE_OK.writeLine()
         runBlocking {
             Parser.parseFromSub(POOL)
-                .also { poolSize = it.size }
-                .filterIndexed { index, sub ->
-                    if (sub.info() == lastSub || index == resumeIndex) {
-                        println("${"bypass".takeIf { index != 0 } ?: ""} ${index + 1}/$poolSize ")
-                        resume = true
-                        return@filterIndexed index == 0
-                    }
-                    if (resume) {
-                        println("${index + 1}/$poolSize ${sub.info()}")
-                        true
-                    } else {
-                        false
-                    }
-                }
                 .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
                 .also {
@@ -94,10 +73,7 @@ class NodeCrawler {
                         )
                     })
                 }
-                .forEach {
-//                    println(it.first.info())
-                    NODE_OK.writeLine(it.first.toUri())
-                }
+                .also { NODE_OK.writeLine(it.joinToString("\n") { it.first.toUri() }) }
         }
     }
 
@@ -109,9 +85,7 @@ class NodeCrawler {
         NODE_TR.writeLine()
 
         Parser.parseFromSub(NODE_OK).groupBy { it.javaClass }.forEach { (t, u) ->
-            u.firstOrNull()
-                ?.run { name = customInfo + name }
-            println(u.first().info())
+            u.firstOrNull()?.run { name = customInfo + name }.also { println(it) }
             val data = u.joinToString("\n") { it.toUri() }.b64Encode()
             when (t) {
                 SS::class.java -> NODE_SS.writeLine(data)
