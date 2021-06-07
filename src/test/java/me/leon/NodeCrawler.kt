@@ -35,7 +35,6 @@ class NodeCrawler {
         val subs = subs1 + subs2 + subs3
         POOL.writeLine()
         println("共有订阅源：${subs.size}")
-
         runBlocking {
             subs.map { sub ->
                 sub to async(DISPATCHER) {
@@ -51,7 +50,6 @@ class NodeCrawler {
                     POOL.writeLine(it.joinToString("\n") { it.toUri() })
                 }
         }
-
     }
 
     /**
@@ -176,5 +174,40 @@ class NodeCrawler {
                         .also { println("trojan节点: ${u.size}") }
                 }
             }
+    }
+
+
+    /**
+     * 查询节点来源
+     */
+    @Test
+    fun findSource() {
+        var filter = { sub: Sub -> sub.SERVER.contains("straycloud.xyz") }
+        val subs1 = "$ROOT\\pool\\subpool".readLines()
+        val subs2 = "$ROOT\\pool\\subs".readLines()
+        val subs3 = "$SHARE2\\tmp".readLines()
+        val subs = subs1 + subs2 + subs3
+        println("共有订阅源：${subs.size}")
+        runBlocking {
+            subs.map { sub ->
+                sub to async(DISPATCHER) {
+                    Parser.parseFromSub(sub).also {
+                        println("$sub ${it.size} ")
+                        it.filter(filter)?.also {
+                            if (it.isNotEmpty()) {
+                                println(">>>> $sub")
+                            }
+                        }
+                    }
+                }
+            }
+                .map { it.second.await() }
+                .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
+                    acc.apply { acc.addAll(linkedHashSet) }
+                }.sortedBy { it.apply { name = name.replace(REG_AD, "") }.toUri() }
+                .also {
+                    println("共有节点 ${it.size}")
+                }
+        }
     }
 }

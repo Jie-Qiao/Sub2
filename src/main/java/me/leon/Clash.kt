@@ -1,6 +1,9 @@
 package me.leon
 
-
+/**
+ * Clash完整配置
+ * https://github.com/Dreamacro/clash/wiki/configuration
+ */
 data class Clash(
     var port: Int = 7890,
     var `socks-port`: Int = 7891,
@@ -14,7 +17,16 @@ data class Clash(
     var dns: DNS = DNS(),
     var proxies: List<Node> = mutableListOf(),
     var rules: List<String> = mutableListOf(),
-)
+){
+    var `tproxy-port`: Int = 0
+    var `mixed-port`: Int = 0
+    var `bind-address`: String = ""
+    var `interface-name`: String = ""
+    var `external-ui`: String = ""
+    var authentication:  List<String> = mutableListOf()
+    var hosts:  List<LinkedHashMap<String,String>> = mutableListOf()
+    var ipv6: Boolean = false
+}
 
 data class DNS(
     var enable: Boolean = false,
@@ -23,6 +35,7 @@ data class DNS(
     var `enhanced-mode`: String = "",
     var `fake-ip-range`: String = "",
     var nameserver: List<String> = mutableListOf(),
+    var `default-nameserver`: List<String> = mutableListOf(),
     var fallback: List<String> = mutableListOf()
 )
 
