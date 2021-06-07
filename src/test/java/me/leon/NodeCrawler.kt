@@ -55,7 +55,8 @@ class NodeCrawler {
     /**
      * 节点可用性测试
      */
-    private fun checkNodes() {
+    @Test
+    fun checkNodes() {
         nodeInfo.writeLine()
         //2.筛选可用节点
         NODE_OK.writeLine()
@@ -66,7 +67,7 @@ class NodeCrawler {
                 .also {
                     println("有效节点数量 ${it.size}".also {
                         nodeInfo.writeLine(
-                            "更新时间${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(System.currentTimeMillis()))}\r\n" +
+                            "更新时间${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(System.currentTimeMillis()))}\r\n\r\n" +
                                     "**$it**"
                         )
                     })
@@ -83,7 +84,7 @@ class NodeCrawler {
         NODE_TR.writeLine()
 
         Parser.parseFromSub(NODE_OK).groupBy { it.javaClass }.forEach { (t, u) ->
-            u.firstOrNull()?.run { name = customInfo + name }.also { println(it) }
+            u.firstOrNull()?.run { name = customInfo + name }
             val data = u.joinToString("\n") { it.toUri() }.b64Encode()
             when (t) {
                 SS::class.java -> NODE_SS.writeLine(data)
