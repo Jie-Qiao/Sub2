@@ -40,7 +40,7 @@ class IpFilterTest {
                                 println(p.second)
                             } else {
                                 if (okIps.contains(p.first) || failIps.contains(p.first)) {
-                                    println("已存在")
+//                                    println("已存在")
                                     return@forEach
                                 }
                                 if (p.first.ping(2000) > -1)
