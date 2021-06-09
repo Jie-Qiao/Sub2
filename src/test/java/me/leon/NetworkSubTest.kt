@@ -85,7 +85,7 @@ class NetworkSubTest {
     @Test
     fun sub() {
         val l1 = Parser.parseFromSub("https://etproxypool.ga/clash/proxies")
-        val l2 = Parser.parseFromSub("https://zhaoip.cf/clash/proxies")
+        val l2 = Parser.parseFromSub("https://suo.yt/v9UsfNr")
         val combine = l1 + l2
         val l1Only = combine -l2
         val l2Only = combine -l1

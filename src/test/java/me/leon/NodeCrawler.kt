@@ -6,12 +6,16 @@ import me.leon.support.*
 import org.junit.jupiter.api.Test
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashSet
+import kotlin.collections.LinkedHashSet
 
 class NodeCrawler {
 
     private val nodeInfo = "$ROOT\\info.md"
     private val customInfo = "(https://github.com/Leon406/Sub) "
     private val REG_AD = """\([^)]{5,}\)|https://www.mattkaydiary.com|tg@freebaipiao""".toRegex()
+
+    private val maps = linkedMapOf<String, LinkedHashSet<Sub>>()
 
     /**
      * 1.爬取配置文件对应链接的节点,并去重
@@ -41,9 +45,10 @@ class NodeCrawler {
                     Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
                 }
             }
-                .map { it.second.await() }
+                .map { it.first to it.second.await() }
                 .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
-                    acc.apply { acc.addAll(linkedHashSet) }
+                    maps[linkedHashSet.first] = linkedHashSet.second
+                    acc.apply { acc.addAll(linkedHashSet.second) }
                 }.sortedBy { it.apply { name = name.replace(REG_AD, "") }.toUri() }
                 .also {
                     println("共有节点 ${it.size}")
@@ -60,8 +65,9 @@ class NodeCrawler {
         nodeInfo.writeLine()
         //2.筛选可用节点
         NODE_OK.writeLine()
+        val ok: HashSet<Sub>;
         runBlocking {
-            Parser.parseFromSub(POOL)
+            ok = Parser.parseFromSub(POOL)
                 .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
                 .also {
@@ -72,7 +78,16 @@ class NodeCrawler {
                         )
                     })
                 }
-                .also { NODE_OK.writeLine(it.joinToString("\n") { it.first.toUri() }) }
+                .map { it.first }
+                .toHashSet()
+                .also { NODE_OK.writeLine(it.joinToString("\n") { it.toUri() }) }
+        }
+
+        println("节点分布: ")
+        maps.forEach { (t, u) ->
+            (ok - (ok - u)).also {
+                println("$t ${it.size}/${u.size}")
+            }
         }
     }
 
