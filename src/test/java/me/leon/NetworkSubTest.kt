@@ -58,9 +58,10 @@ class NetworkSubTest {
 //        val e = "https://www.linbaoz.com/clash/proxies"
         Parser.debug
         listOf(
-            "https://fu.stgod.com/clash/proxies",
-            "https://free.mengbai.cf/clash/proxies",
-            "https://emby.luoml.eu.org/clash/proxies",
+//            "https://fu.stgod.com/clash/proxies",
+//            "https://free.mengbai.cf/clash/proxies",
+//            "https://emby.luoml.eu.org/clash/proxies",
+            "https://paste.ee/r/UAGsg/0",
         )
             .forEach {
                 kotlin.runCatching {
