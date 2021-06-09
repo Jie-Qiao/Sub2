@@ -83,6 +83,19 @@ class NetworkSubTest {
     }
 
     @Test
+    fun sub() {
+        val l1 = Parser.parseFromSub("https://etproxypool.ga/clash/proxies")
+        val l2 = Parser.parseFromSub("https://zhaoip.cf/clash/proxies")
+        val combine = l1 + l2
+        val l1Only = combine -l2
+        val l2Only = combine -l1
+        val share = l1 -l1Only
+        println("共享 ${ share.size}")
+        println("l1 ${l1.size} 独有 ${ l1Only.size}")
+        println("l2 ${l2.size} 独有 ${ l2Only.size}")
+    }
+
+    @Test
     fun load() {
        "http://pan-yz.chaoxing.com/download/downloadfile?fleid=607981566887628800&puid=137229880".readFromNet()
            .also { println(it) }
