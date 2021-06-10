@@ -23,8 +23,6 @@ dependencies {
 //    implementation 'com.maxmind.db:maxmind-db:1.2.0'
     //for yaml 1.2
 //    implementation "org.snakeyaml:snakeyaml-engine:2.3"
-    //parse mmdb
-    implementation 'com.maxmind.geoip2:geoip2:2.15.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
