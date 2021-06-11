@@ -170,7 +170,7 @@ fun String.quickPing(
     FAIL_IPS.writeLine(it)
 }
 
-val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 6, "pool")
+val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 2, "pool")
 
 
 fun String.toFile() = File(this)

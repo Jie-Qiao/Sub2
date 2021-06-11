@@ -17,14 +17,14 @@ data class Clash(
     var dns: DNS = DNS(),
     var proxies: List<Node> = mutableListOf(),
     var rules: List<String> = mutableListOf(),
-){
+) {
     var `tproxy-port`: Int = 0
     var `mixed-port`: Int = 0
     var `bind-address`: String = ""
     var `interface-name`: String = ""
     var `external-ui`: String = ""
-    var authentication:  List<String> = mutableListOf()
-    var hosts:  List<LinkedHashMap<String,String>> = mutableListOf()
+    var authentication: List<String> = mutableListOf()
+    var hosts: List<LinkedHashMap<String, String>> = mutableListOf()
     var ipv6: Boolean = false
 }
 
@@ -52,7 +52,6 @@ data class Node(
     var alterId: String = "",
     var network: String = "",
     var `protocol-param`: String = "",
-    var `protocol_param`: String = "",
     var server: String = "",
     var servername: String = "",
 
@@ -70,7 +69,9 @@ data class Node(
     var tls: Boolean = false
     var _index: Int = 0
     var `skip-cert-verify`: Boolean = false
-
+    var `protocol_param`: String = ""
+    var protocolparam: String = ""
+    var obfsparam: String = ""
     fun node(): Sub? {
         //兼容某些异常节点池
         if (server == "NULL") return NoSub
@@ -87,8 +88,8 @@ data class Node(
                 cipher,
                 obfs,
                 password,
-                if (obfs == "plain") "" else `obfs-param`.takeIf { it.isNotEmpty() } ?: obfs_param,
-                `protocol-param`.takeUnless { it.isEmpty() } ?: `protocol_param`
+                if (obfs == "plain") "" else `obfs-param` + obfs_param + obfsparam,
+                `protocol-param` + `protocol_param` + protocolparam
             ).apply {
                 remarks = this@Node.name
                 nation = country
