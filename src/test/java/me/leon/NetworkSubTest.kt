@@ -61,7 +61,7 @@ class NetworkSubTest {
 //            "https://fu.stgod.com/clash/proxies",
 //            "https://free.mengbai.cf/clash/proxies",
 //            "https://emby.luoml.eu.org/clash/proxies",
-            "https://paste.ee/r/UAGsg/0",
+            "https://proxy.yugogo.xyz/vmess/sub",
         )
             .forEach {
                 kotlin.runCatching {
