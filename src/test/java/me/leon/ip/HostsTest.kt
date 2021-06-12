@@ -3,7 +3,6 @@ package me.leon.ip
 import me.leon.SHARE
 import me.leon.domain.Host
 import me.leon.support.readFromNet
-import me.leon.support.readLines
 import me.leon.support.writeLine
 import org.junit.jupiter.api.Test
 
@@ -49,7 +48,33 @@ class HostsTest {
     }
 
     // https://raw.fastgit.org/googlehosts/hosts/master/hosts-files/hosts
+    // 需要单独走无污染 dns,获取最新的ip
+    @Test
     fun whitelist() {
+        listOf(
+            "https://raw.fastgit.org/googlehosts/hosts/master/hosts-files/hosts",
+        ).flatMap {
+            it.readFromNet()
+                .split("\n|\r\n".toRegex())
+                .map { it.trim() }
+                .filterNot { it.isEmpty() || it.startsWith("#") }
+                .map {
+                    it.split("\\s+".toRegex())
+                        .run {
+                            Host(this[1]).apply {
+                                ip = this@run[0]
+                            }
+                        }
+                }
+                .filterNot { it.domain.contains("#") }
+                .also { println(it.size) }
+        }.distinct()
+            .sortedBy { it.domain }
+            .also {
+                println(it.size)
+                "$SHARE/whitehost".writeLine()
+                "$SHARE/whitehost".writeLine(it.joinToString("\n"))
+            }
 
     }
 }

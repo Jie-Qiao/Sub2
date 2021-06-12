@@ -28,16 +28,17 @@ class YamlTest {
 
     @Test
     fun yamlTest() {
-        val curList = Parser.parseFromSub(POOL).also {
-            println(it.size)
-        }
+//        val curList = Parser.parseFromSub(POOL).also {
+//            println(it.size)
+//        }
 
         var url =
             "https://pub-api-1.bianyuan.xyz/sub?target=clash&url=https%3A%2F%2Ffzusrs.xyz%2F%2Flink%2FtOHiqgwTT7OkFiDR%3Fsub%3D3%26extend%3D1&insert=false&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true".readFromNet()
 //        println("__ $url")
         url =
 //            "https://raw.githubusercontent.com/freebaipiao/freebaipiao/main/freebaipiao.yaml"
-            "https://update.glados-config.org/clash/85156/042d344/56490/glados.yaml"
+//            "https://update.glados-config.org/clash/85156/042d344/56490/glados.yaml"
+            "https://raw.fastgit.org/AzadNetCH/Clash/main/AzadNet.yml"
             .readFromNet()
         if (url.isNotEmpty()) {
             with(Yaml(Constructor(Clash::class.java)).load(url) as Clash) {

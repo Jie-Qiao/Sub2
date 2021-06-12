@@ -2,6 +2,7 @@ package me.leon
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import me.leon.ip.IpFilterTest
 import me.leon.support.*
 import org.junit.jupiter.api.Test
 import java.text.SimpleDateFormat
@@ -27,6 +28,8 @@ class NodeCrawler {
         crawlNodes()
         checkNodes()
         nodeGroup()
+
+        IpFilterTest().reTestFailIps()
     }
 
     /**
