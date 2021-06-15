@@ -41,9 +41,11 @@ class NodeCrawler {
         val subs3 = "$SHARE2\\tmp".readLines()
         val subs = subs1 + subs2 + subs3
         POOL.writeLine()
-        println("共有订阅源：${subs.size}")
+
         runBlocking {
-            subs.map { sub ->
+            subs.filterNot { it.startsWith("#") }
+                .also {  println("共有订阅源：${it.size}") }
+                .map { sub ->
                 sub to async(DISPATCHER) {
                     Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
                 }
