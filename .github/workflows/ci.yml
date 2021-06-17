@@ -31,6 +31,7 @@ jobs:
       - name: show kotlin version
         run: kotlin -version
       - run: chmod  777 ./gradlew
+      - run: ls -l
       - name: execute gradle test
         run: ./gradlew --info :test --tests "me.leon.NodeCrawler.crawl"
 

@@ -36,6 +36,7 @@ class NodeCrawler {
      * 爬取配置文件数据，并去重写入文件
      */
     private fun crawlNodes() {
+        println("path $ROOT")
         val subs1 = "$ROOT\\pool\\subpool".readLines()
         val subs2 = "$ROOT\\pool\\subs".readLines()
         val subs3 = "$SHARE2\\tmp".readLines()
