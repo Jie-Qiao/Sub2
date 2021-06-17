@@ -26,8 +26,7 @@ class NodeCrawler {
         crawlNodes()
         checkNodes()
         nodeGroup()
-
-        IpFilterTest().reTestFailIps()
+//        IpFilterTest().reTestFailIps()
     }
 
     /**
