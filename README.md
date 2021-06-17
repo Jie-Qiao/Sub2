@@ -8,9 +8,8 @@
 - https://github.com/lion12776/kejilion
 - [freebaipiao](https://github.com/freebaipiao/freebaipiao)
 - [不良人](https://github.com/bujilangren/cangku/)
-- https://gitee.com/xihuancaoni/dotpclinks
 - https://github.com/colatiger/v2ray-nodes
-- https://github.com/freefq/free
+- ::star:https://github.com/freefq/free
 - https://github.com/skywolf627/VmessActions
 - [huaxinCLU/NodeSpider](https://github.com/huaxinCLUB/NodeSpider)s
 - [pojiezhiyuanjun/freev2](https://github.com/pojiezhiyuanjun/freev2)  
@@ -21,14 +20,12 @@
 - http://60.205.189.25/
 - http://8.136.5.236
 - https://233660.xyz/
-- https://6166888.xyz/
-- https://ditan.ml/
+- [bihai](https://proxies.bihai.cf)
 - http://emby.luoml.eu.org
 - :star: 推荐​ https://etproxypool.ga/   
 - https://fq.lonxin.net/
 - https://free.dswang.ga/
 - https://free.kingfu.cf/
-- https://free.mengbai.cf/
 - https://free886.herokuapp.com/
 - https://fu.stgod.com/
 - https://hello.stgod.com/
@@ -51,7 +48,6 @@
 
 ## <span id="subCon">订阅转换</span>
 
-- [789](https://sub.789.st/)
 - [つつの]( https://sub.tsutsu.cc/)  
 - [con8](https://www.con8.tk/)
 - [品云](https://id9.cc/)
