@@ -33,19 +33,33 @@ class NodeCrawler {
      * 爬取配置文件数据，并去重写入文件
      */
     private fun crawlNodes() {
-        println("path $ROOT")
         val subs1 = "$ROOT/pool/subpool".readLines()
         val subs2 = "$ROOT/pool/subs".readLines()
-        val subs3 = "$SHARE2/tmp".readLines()
-        val subs = subs1 + subs2 + subs3
+        val unavailable = "$ROOT/pool/unavailable".readLines()
+//        val subs3 = "$SHARE2/tmp".readLines()
+        val sublist = "$ROOT/pool/sublists".readLines()
+        val subs3 = sublist.map { it.readFromNet() }.flatMap { it.split("\r\n|\n".toRegex()) }.distinct()
+            .also { println("before ${it.size}") }
+            .filterNot { unavailable.contains(it) || it.startsWith("#") || it.trim().isEmpty() }
+            .also {
+                println(it)
+                println("after ${it.size}")
+            }
+        val subs = (subs1 + subs2 + subs3).toHashSet()
+
         POOL.writeLine()
 
         runBlocking {
-            subs.filterNot { it.startsWith("#") }
+            subs.filterNot { it.startsWith("#") || it.trim().isEmpty() }
                 .also { println("共有订阅源：${it.size}") }
                 .map { sub ->
                     sub to async(DISPATCHER) {
-                        Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
+                        try {
+                            Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
+                        } catch (e: Exception) {
+                            println("___parse failed $sub  ${e.message}")
+                            linkedSetOf<Sub>()
+                        }
                     }
                 }
                 .map { it.first to it.second.await() }
