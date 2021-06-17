@@ -7,8 +7,6 @@ import me.leon.support.*
 import org.junit.jupiter.api.Test
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashSet
-import kotlin.collections.LinkedHashSet
 
 class NodeCrawler {
 
@@ -37,20 +35,20 @@ class NodeCrawler {
      */
     private fun crawlNodes() {
         println("path $ROOT")
-        val subs1 = "$ROOT\\pool\\subpool".readLines()
-        val subs2 = "$ROOT\\pool\\subs".readLines()
-        val subs3 = "$SHARE2\\tmp".readLines()
+        val subs1 = "$ROOT/pool/subpool".readLines()
+        val subs2 = "$ROOT/pool/subs".readLines()
+        val subs3 = "$SHARE2/tmp".readLines()
         val subs = subs1 + subs2 + subs3
         POOL.writeLine()
 
         runBlocking {
             subs.filterNot { it.startsWith("#") }
-                .also {  println("共有订阅源：${it.size}") }
+                .also { println("共有订阅源：${it.size}") }
                 .map { sub ->
-                sub to async(DISPATCHER) {
-                    Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
+                    sub to async(DISPATCHER) {
+                        Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
+                    }
                 }
-            }
                 .map { it.first to it.second.await() }
                 .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
                     maps[linkedHashSet.first] = linkedHashSet.second
@@ -66,7 +64,7 @@ class NodeCrawler {
     /**
      * 节点可用性测试
      */
-    @Test
+
     fun checkNodes() {
         nodeInfo.writeLine()
         //2.筛选可用节点
@@ -97,7 +95,6 @@ class NodeCrawler {
         }
     }
 
-    @Test
     fun nodeGroup() {
         NODE_SS.writeLine()
         NODE_SSR.writeLine()
@@ -202,12 +199,11 @@ class NodeCrawler {
     /**
      * 查询节点来源
      */
-    @Test
     fun findSource() {
         var filter = { sub: Sub -> sub.SERVER.contains("straycloud.xyz") }
-        val subs1 = "$ROOT\\pool\\subpool".readLines()
-        val subs2 = "$ROOT\\pool\\subs".readLines()
-        val subs3 = "$SHARE2\\tmp".readLines()
+        val subs1 = "$ROOT/pool/subpool".readLines()
+        val subs2 = "$ROOT/pool/subs".readLines()
+        val subs3 = "$SHARE2/tmp".readLines()
         val subs = subs1 + subs2 + subs3
         println("共有订阅源：${subs.size}")
         runBlocking {
