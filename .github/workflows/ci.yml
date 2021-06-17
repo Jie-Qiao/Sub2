@@ -24,12 +24,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - uses: fwilhe2/setup-kotlin@main
-        with:
-          install-native: true
       # Runs a single command using the runners shell
-      - name: show kotlin version
-        run: kotlin -version
       - run: chmod  777 ./gradlew
       - run: ls -l
       - name: execute gradle test
