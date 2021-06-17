@@ -31,6 +31,7 @@ jobs:
       - name: show kotlin version
         run: kotlin -version
 
+      - run: ls -l
       # execute gradle test
       - name: execute gradle test
         run: ./gradlew test --tests me.leon.NodeCrawler.crawl
