@@ -211,7 +211,7 @@ class NodeCrawler {
                 sub to async(DISPATCHER) {
                     Parser.parseFromSub(sub).also {
                         println("$sub ${it.size} ")
-                        it.filter(filter)?.also {
+                        it.filter(filter).also {
                             if (it.isNotEmpty()) {
                                 println(">>>> $sub")
                             }
