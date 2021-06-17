@@ -12,9 +12,9 @@ object GeoParser {
     //register at https://www.maxmind.com/, and download your file,you also can download from https://leon.lanzoui.com/i4XoWph8yaj
     // todo change it
 
-    private const val geoDir = "C:\\Users\\Leon\\Desktop\\geo"
-    private val dbFile = "$geoDir\\GeoLite2-City.mmdb".toFile()
-    private val dbCountryFile = "$geoDir\\GeoLite2-Country.mmdb".toFile()
+    private const val geoDir = "C:/Users/Leon/Desktop/geo"
+    private val dbFile = "$geoDir/GeoLite2-City.mmdb".toFile()
+    private val dbCountryFile = "$geoDir/GeoLite2-Country.mmdb".toFile()
 
     val cityReader: DatabaseReader by lazy {
         DatabaseReader.Builder(dbFile).withCache(CHMCache()).build()
