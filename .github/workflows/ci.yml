@@ -30,16 +30,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: show kotlin version
         run: kotlin -version
-
-      - run: ls -l
       - run: chmod  777 ./gradlew
-      - run: ls -l
-      # execute gradle test
       - name: execute gradle test
-        run: ./gradlew test --tests me.leon.NodeCrawler.crawl
+        run: ./gradlew --info :test --tests "me.leon.NodeCrawler.crawl"
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
