@@ -9,8 +9,6 @@ import org.yaml.snakeyaml.constructor.Constructor
 
 class YamlTest {
 
-
-    @Test
     fun yamlLocalTest() {
 
         with(Yaml(Constructor(Clash::class.java)).load(BIHAI.readText()) as Clash) {

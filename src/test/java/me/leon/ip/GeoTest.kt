@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test
 class GeoTest {
 
 
-    @Test
     fun geoParse() {
 
         val ipAddress = "128.101.101.101"
