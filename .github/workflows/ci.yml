@@ -28,5 +28,6 @@ jobs:
       - run: ls -l
       - name: execute gradle test
         run: ./gradlew  :test --tests "me.leon.NodeCrawler.crawl"
+      - run: git config --global user.email "deadogone@gmail.com" &&git config --global user.name "github-ci"
       - run: chmod  777 ./up.sh && ./up.sh
 
