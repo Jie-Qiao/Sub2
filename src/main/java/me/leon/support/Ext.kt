@@ -7,6 +7,7 @@ import java.io.File
 import java.lang.StringBuilder
 import java.net.*
 import java.nio.charset.Charset
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.system.measureTimeMillis
 
@@ -213,4 +214,12 @@ fun String.post(params: MutableMap<String, String>) =
         println("$this read err ${e.message}")
         ""
     }
+
+fun Any.timeStamp(timeZone: String = "Asia/Shanghai"): String {
+    val instance = Calendar.getInstance()
+    TimeZone.setDefault(TimeZone.getTimeZone(timeZone))
+    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(
+        instance.time
+    )
+}
 

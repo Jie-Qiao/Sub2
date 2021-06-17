@@ -76,7 +76,7 @@ class NodeCrawler {
                 .also {
                     println("有效节点数量 ${it.size}".also {
                         nodeInfo.writeLine(
-                            "更新时间${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date(System.currentTimeMillis()))}\r\n\r\n" +
+                            "更新时间${timeStamp()}\r\n\r\n" +
                                     "**$it**"
                         )
                     })
