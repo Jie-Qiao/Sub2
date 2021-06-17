@@ -28,5 +28,6 @@ jobs:
       - run: chmod  777 ./gradlew
       - run: ls -l
       - name: execute gradle test
-        run: ./gradlew --info :test --tests "me.leon.NodeCrawler.crawl"
+        run: ./gradlew  :test --tests "me.leon.NodeCrawler.crawl"
+      - run: chmod  777 ./up.sh && ./up.sh
 

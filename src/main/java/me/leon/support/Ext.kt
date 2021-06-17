@@ -14,9 +14,11 @@ fun String.readText(charset: Charset = Charsets.UTF_8) =
     File(this).canonicalFile.takeIf { it.exists() }?.readText(charset) ?: ""
 
 fun String.writeLine(txt: String = "") =
-    if (txt.isEmpty()) File(this).also { if (!it.parentFile.exists()) it.parentFile.mkdirs() }.writeText("") else File(this).appendText("$txt\n")
+    if (txt.isEmpty()) File(this).also { if (!it.parentFile.exists()) it.parentFile.mkdirs() }.writeText("") else File(
+        this
+    ).appendText("$txt\n")
 
-fun String.readLines() = File(this).takeIf { it.exists() }?.readLines()?: mutableListOf()
+fun String.readLines() = File(this).takeIf { it.exists() }?.readLines() ?: mutableListOf()
 fun String.readFromNet() = try {
     String(
         (URL(this)
@@ -170,15 +172,15 @@ fun String.quickPing(
     FAIL_IPS.writeLine(it)
 }
 
-val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() , "pool")
+val DISPATCHER = newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors() * 2, "pool")
 
 
 fun String.toFile() = File(this)
 
-fun String.post(params: MutableMap<String, String>)=
+fun String.post(params: MutableMap<String, String>) =
 
     try {
-        val  p =  params.keys.foldIndexed(StringBuilder()) { index, acc, s ->
+        val p = params.keys.foldIndexed(StringBuilder()) { index, acc, s ->
             acc.also {
                 acc.append("${"&".takeUnless { index == 0 } ?: ""}$s=${params[s]}")
             }
