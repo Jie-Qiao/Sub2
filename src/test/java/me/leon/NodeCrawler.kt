@@ -11,8 +11,11 @@ import java.util.*
 class NodeCrawler {
 
     private val nodeInfo = "$ROOT/info.md"
-    private val customInfo = "(防失效节点发布地址 https://github.com/Leon406/Sub) "
-    private val REG_AD = """\([^)]{5,}\)|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
+    private val customInfo = "(防失效 https://github.com/Leon406/Sub) "
+    private val REG_AD =
+        """flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
+    private val REG_AD_REPALCE =
+        """海绵云机场 https://fzusrs.xyz|\[free-ss.site]www.kernels.bid|https://gfwservice.xyz|请订阅-KingFu景福@YouTuBe-自动抓取海量免费节点-https://free.kingfu.cf|网址：fly.xxl123.fun \| TG：t.me/flyXXL12345""".toRegex()
 
     private val maps = linkedMapOf<String, LinkedHashSet<Sub>>()
 
@@ -58,7 +61,7 @@ class NodeCrawler {
                             Parser.parseFromSub(sub).also { println("$sub ${it.size} ") }
                         } catch (e: Exception) {
                             println("___parse failed $sub  ${e.message}")
-                            linkedSetOf<Sub>()
+                            linkedSetOf()
                         }
                     }
                 }
@@ -66,7 +69,12 @@ class NodeCrawler {
                 .fold(linkedSetOf<Sub>()) { acc, linkedHashSet ->
                     maps[linkedHashSet.first] = linkedHashSet.second
                     acc.apply { acc.addAll(linkedHashSet.second) }
-                }.sortedBy { it.apply { name = name.replace(REG_AD, "") }.toUri() }
+                }.sortedBy {
+                    it.apply {
+                        name = name.replace(REG_AD, "")
+                            .replace(REG_AD_REPALCE, customInfo)
+                    }.toUri()
+                }
                 .also {
                     println("共有节点 ${it.size}")
                     POOL.writeLine(it.joinToString("\n") { it.toUri() })
@@ -128,6 +136,15 @@ class NodeCrawler {
                     .also { println("trojan节点: ${u.size}".also { nodeInfo.writeLine("- $it") }) }
             }
         }
+    }
+
+    @Test
+    fun removeAdd() {
+        Parser.parseFromSub(NODE_OK)
+            .map { it.also { it.name = it.name.replace(REG_AD, "").replace(REG_AD_REPALCE, customInfo) } }
+            .forEach {
+                println(it.name)
+            }
     }
 
     @Test
