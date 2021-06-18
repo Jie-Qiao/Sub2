@@ -7,7 +7,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   schedule:
     # 定时任务
-    - cron: '0 0/3 * * *'
+    - cron: '0 0/1 * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,7 +25,6 @@ jobs:
       - uses: actions/checkout@v2
       # Runs a single command using the runners shell
       - run: chmod  777 ./gradlew
-      - run: ls -l
       - name: execute gradle test
         run: ./gradlew  :test --tests "me.leon.NodeCrawler.crawl"
       - run: git config --global user.email "deadogone@gmail.com" &&git config --global user.name "github-ci"
