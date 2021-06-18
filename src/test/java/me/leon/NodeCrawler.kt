@@ -11,7 +11,7 @@ import java.util.*
 class NodeCrawler {
 
     private val nodeInfo = "$ROOT/info.md"
-    private val customInfo = "(防失效 https://github.com/Leon406/Sub) "
+    private val customInfo = "防失效github.com/Leon406/Sub "
     private val REG_AD =
         """flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
     private val REG_AD_REPALCE =
@@ -165,7 +165,6 @@ class NodeCrawler {
      */
     @Test
     fun availableSpeedTest() {
-
         Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
             .chunked(130)
             .mapIndexed { index, list ->

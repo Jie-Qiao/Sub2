@@ -75,7 +75,6 @@ fun String.queryParamMapB64() =
         .findAll(this)
         ?.fold(mutableMapOf<String, String>()) { acc, matchResult ->
             acc.apply {
-//                println(matchResult.groupValues[2].urlDecode().b64SafeDecode())
                 acc[matchResult.groupValues[1]] =
                     matchResult.groupValues[2].urlDecode().replace(" ", "+").b64SafeDecode()
             }
@@ -84,7 +83,7 @@ fun String.queryParamMapB64() =
 
 fun Int.slice(group: Int): MutableList<IntRange> {
     val slice = kotlin.math.ceil(this.toDouble() / group.toDouble()).toInt()
-    return (0 until group).foldIndexed(mutableListOf<IntRange>()) { index, acc, i ->
+    return (0 until group).foldIndexed(mutableListOf()) { index, acc, i ->
         acc.apply {
             acc.add(slice * index until ((slice * (i + 1)).takeIf { group - 1 != index } ?: this@slice)
             )
