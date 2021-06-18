@@ -206,7 +206,7 @@ object Parser {
         when {
             uri.startsWith("http") -> parseFromNetwork(uri)
             uri.startsWith("/") -> parseFromFileSub(uri)
-            else -> parseFromFileSub(uri)
+            else -> linkedSetOf()
         }
 
     fun String.debug(extra: String = "") {

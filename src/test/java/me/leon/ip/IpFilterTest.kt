@@ -15,8 +15,7 @@ class IpFilterTest {
         deleteOkIps()
     }
 
-    @Test
-    fun failIp() {
+    private fun failIp() {
         val okIps = mutableListOf<String>()
         val failIps = mutableListOf<String>()
         val total = mutableListOf<String>()
@@ -69,8 +68,7 @@ class IpFilterTest {
         }.also { println("time $it ms") }
     }
 
-    @Test
-    fun deleteOkIps() {
+    private fun deleteOkIps() {
         val total = mutableListOf<String>()
         runBlocking {
             FAIL_IPS.readLines()
