@@ -30,6 +30,7 @@ class GeoTest {
             println("city: $city , postal: $postal  location: $location")
         }
 
+
         println(ipAddress.ipCountryZh())
         println(ipAddress.ipCountryEn())
         println(ipAddress.ipCityZh())

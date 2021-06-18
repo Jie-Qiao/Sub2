@@ -12,7 +12,7 @@ class NodeCrawler {
 
     private val nodeInfo = "$ROOT/info.md"
     private val customInfo = "(防失效节点发布地址 https://github.com/Leon406/Sub) "
-    private val REG_AD = """\([^)]{5,}\)|https://www.mattkaydiary.com|tg@freebaipiao""".toRegex()
+    private val REG_AD = """\([^)]{5,}\)|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
 
     private val maps = linkedMapOf<String, LinkedHashSet<Sub>>()
 

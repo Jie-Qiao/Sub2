@@ -43,15 +43,15 @@ class IpFilterTest {
 //                                    println("已存在")
                                     return@forEach
                                 }
-                                if (p.first.ping(2000) > -1)
+                                if (p.first.ping(1000) > -1)
                                     okIps.add(p.first)
                                 else println(p.second.also { failIps.add(p.first) })
                             }
                         }
                 }
 
-            println(failIps)
-            println(okIps)
+//            println(failIps)
+//            println(okIps)
             total
                 .toHashSet()
                 .also {
@@ -79,7 +79,6 @@ class IpFilterTest {
                     println("before ${it.size}")
                 }
                 .filterNot { it.contains(":") }
-                .also { println("") }
                 .map { it to async(DISPATCHER) { it.connect() } }
                 .filter { it.second.await() > -1 }
                 .forEach {
