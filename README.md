@@ -48,25 +48,25 @@
 
 ## <span id="subCon">订阅转换</span>
 
-- [つつの]( https://sub.tsutsu.cc/){:target="_blank"}
-- [con8](https://www.con8.tk/){:target="_blank"}
-- [品云](https://id9.cc/){:target="_blank"}
-- [碧海大佬](https://sub.bihai.ml/){:target="_blank"}
-- [肥羊转换](https://sub.mcwy.cloud/){:target="_blank"}
-- [边缘]( https://bianyuan.xyz/){:target="_blank"}
-- [weleven11](https://sub.weleven11.com/){:target="_blank"}
-- [github acl4ssr-sub](https://acl4ssr-sub.github.io/){:target="_blank"}
-- [subcon.dlj.tf](https://subcon.dlj.tf/){:target="_blank"}
-- [subconv](https://subconv.ml/){:target="_blank"}
-- [sub v1](https://sub.v1.mk/){:target="_blank"}
+- [つつの]( https://sub.tsutsu.cc/)
+- [con8](https://www.con8.tk/)
+- [品云](https://id9.cc/)
+- [碧海大佬](https://sub.bihai.ml/)
+- [肥羊转换](https://sub.mcwy.cloud/)
+- [边缘]( https://bianyuan.xyz/)
+- [weleven11](https://sub.weleven11.com/)
+- [github acl4ssr-sub](https://acl4ssr-sub.github.io/)
+- [subcon.dlj.tf](https://subcon.dlj.tf/)
+- [subconv](https://subconv.ml/)
+- [sub v1](https://sub.v1.mk/)
 
 ## 节点测速
 
-- [本地测速](https://github.com/tindy2013/stairspeedtest-reborn){target="_blank"}
+- [本地测速](https://github.com/tindy2013/stairspeedtest-reborn)
 
 - 在线测速
-  - [品云](http://gz.cloudtest.cc/){target="_blank"}
-  - [a.cloudtest.icu](http://a.cloudtest.icu/) {:target="_blank"}
+  - [品云](http://gz.cloudtest.cc/)
+  - [a.cloudtest.icu](http://a.cloudtest.icu/) 
 
 ## 本项目生成base64订阅 [节点详情](./sub/info.md)  ![ci](https://github.com/Leon406/Sub/actions/workflows/ci.yml/badge.svg)
 
