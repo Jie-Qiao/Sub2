@@ -12,7 +12,7 @@
 - :star:https://github.com/freefq/free
 - https://github.com/skywolf627/VmessActions
 - [huaxinCLU/NodeSpider](https://github.com/huaxinCLUB/NodeSpider)s
-- [pojiezhiyuanjun/freev2](https://github.com/pojiezhiyuanjun/freev2){:target="_blank"}  
+- [pojiezhiyuanjun/freev2](https://github.com/pojiezhiyuanjun/freev2) 
 - https://github.com/adiwzx/freenode
 
 ## 节点池
