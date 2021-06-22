@@ -1,4 +1,4 @@
-<script>var links = document.links; for(var i =0, linkLength = links.length;i<linkLength;i++){if(links[i].hostname !=window.location.hostname){links[i].target= '_blank';}} </script>
+<script>var links = document.links; for(var i =0, linkLength = links.length;i&lt;linkLength;i++){if(links[i].hostname !=window.location.hostname){links[i].target= '_blank';}} </script>
 ##  <span id="top">订阅链接</span>
 
 - https://github.com/JACKUSR2089/v2ray-subscribed
