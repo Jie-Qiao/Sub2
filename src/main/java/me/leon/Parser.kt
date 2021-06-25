@@ -46,7 +46,6 @@ object Parser {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        println("________________")
     }
 
     var debug = false

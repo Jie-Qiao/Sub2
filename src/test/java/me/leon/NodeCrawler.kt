@@ -35,7 +35,8 @@ class NodeCrawler {
     /**
      * 爬取配置文件数据，并去重写入文件
      */
-    private fun crawlNodes() {
+    @Test
+     fun crawlNodes() {
         val subs1 = "$ROOT/pool/subpool".readLines()
         val subs2 = "$ROOT/pool/subs".readLines()
         val unavailable = "$ROOT/pool/unavailable".readLines()
@@ -77,9 +78,8 @@ class NodeCrawler {
                         name = name.replace(REG_AD, "")
                             .replace(REG_AD_REPALCE, customInfo)
                     }.toUri()
-                }.also { print("共有节点 ${it.size}") }
-                .chunked(5000)
-                .forEach {
+                }
+                .also {
                     POOL.writeLine(it.joinToString("\n") { it.toUri() })
                 }
 
@@ -92,7 +92,6 @@ class NodeCrawler {
 
     @Test
     fun checkNodes() {
-        println(POOL.toFile().absolutePath)
         nodeInfo.writeLine()
         //2.筛选可用节点
         NODE_OK.writeLine()
@@ -101,6 +100,7 @@ class NodeCrawler {
             ok = Parser.parseFromSub(POOL)
                 .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
                 .filter { it.second.await() > -1 }
+                .also {   println("333") }
                 .also {
                     println("有效节点数量 ${it.size}".also {
                         nodeInfo.writeLine(

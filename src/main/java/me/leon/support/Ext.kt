@@ -148,7 +148,7 @@ fun String.ping(
         }
 
 val failIpPorts by lazy {
-    FAIL_IPS.readLines().toHashSet().also { println(it) }
+    FAIL_IPS.readLines().toHashSet()
 }
 val fails = mutableSetOf<String>()
 fun String.quickConnect(
