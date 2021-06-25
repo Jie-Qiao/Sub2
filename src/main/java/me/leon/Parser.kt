@@ -206,6 +206,7 @@ object Parser {
         when {
             uri.startsWith("http") -> parseFromNetwork(uri)
             uri.startsWith("/") -> parseFromFileSub(uri)
+            "^[A-Za-z]:".toRegex().find(uri) != null -> parseFromFileSub(uri)
             else -> linkedSetOf()
         }
 

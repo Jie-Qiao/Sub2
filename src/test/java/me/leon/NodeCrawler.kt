@@ -48,10 +48,13 @@ class NodeCrawler {
                 println(it)
                 println("after ${it.size}")
             }
-        val subs = (subs1 + subs2 + subs3).toHashSet()
+        val subs = (subs1 + subs2 + subs3)
+            .filterNot {
+                unavailable.contains(it)
+            }.toHashSet()
+
 
         POOL.writeLine()
-
         runBlocking {
             subs.filterNot { it.trim().startsWith("#") || it.trim().isEmpty() }
                 .also { println("共有订阅源：${it.size}") }
@@ -74,11 +77,12 @@ class NodeCrawler {
                         name = name.replace(REG_AD, "")
                             .replace(REG_AD_REPALCE, customInfo)
                     }.toUri()
-                }
-                .also {
-                    println("共有节点 ${it.size}")
+                }.also { print("共有节点 ${it.size}") }
+                .chunked(5000)
+                .forEach {
                     POOL.writeLine(it.joinToString("\n") { it.toUri() })
                 }
+
         }
     }
 
@@ -86,11 +90,13 @@ class NodeCrawler {
      * 节点可用性测试
      */
 
+    @Test
     fun checkNodes() {
+        println(POOL.toFile().absolutePath)
         nodeInfo.writeLine()
         //2.筛选可用节点
         NODE_OK.writeLine()
-        val ok: HashSet<Sub>;
+        val ok: HashSet<Sub>
         runBlocking {
             ok = Parser.parseFromSub(POOL)
                 .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
