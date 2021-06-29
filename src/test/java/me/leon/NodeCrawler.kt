@@ -13,9 +13,9 @@ class NodeCrawler {
     private val nodeInfo = "$ROOT/info.md"
     private val customInfo = "防失效github.com/Leon406/Sub "
     private val REG_AD =
-        """顺丰资源Youtube ?|@vpnhat|NB云\|-|TG@peekfun|\{彩虹云}|flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
+        """Youtube- MiDnight来了|adi\|\d{4} *- *|顺丰资源You[tT]ube[ |]?|@vpnhat|NB云\|-|TG@peekfun|\{彩虹云}|flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
     private val REG_AD_REPALCE =
-        """海绵云机场 https://fzusrs.xyz|\[free-ss.site]www.kernels.bid|https://gfwservice.xyz|请订阅-KingFu景福@YouTuBe-自动抓取海量免费节点-https://free.kingfu.cf|网址：fly.xxl123.fun \| TG：t.me/flyXXL12345""".toRegex()
+        """翻墙党fanqiangdang.com|海绵云机场 https://fzusrs.xyz|\[free-ss.site]www.kernels.bid|https://gfwservice.xyz|请订阅-KingFu景福@YouTuBe-自动抓取海量免费节点-https://free.kingfu.cf|白嫖机场：fly.xxl123.fun \| """.toRegex()
 
     private val maps = linkedMapOf<String, LinkedHashSet<Sub>>()
 
