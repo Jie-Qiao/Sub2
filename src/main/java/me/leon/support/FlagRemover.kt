@@ -31,3 +31,5 @@ object FlagRemover {
         return tmp
     }
 }
+
+fun String.removeFlags() = FlagRemover.remove(this)

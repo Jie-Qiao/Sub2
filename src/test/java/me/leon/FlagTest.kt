@@ -2,6 +2,7 @@ package me.leon
 
 import me.leon.support.FlagRemover
 import me.leon.support.readLines
+import me.leon.support.removeFlags
 import org.junit.jupiter.api.Test
 
 class FlagTest {
@@ -21,7 +22,7 @@ class FlagTest {
 
         Parser.parseFromSub(NODE_OK)
             .map {
-                println("${it.name} ${FlagRemover.remove(it.name)}")
+                println("${it.name} ${it.name.removeFlags()}")
             }
 //            .forEach { println(it) }
 

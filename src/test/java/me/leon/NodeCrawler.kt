@@ -13,9 +13,9 @@ class NodeCrawler {
     private val nodeInfo = "$ROOT/info.md"
     private val customInfo = "防失效github.com/Leon406/Sub "
     private val REG_AD =
-        """flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
+        """顺丰资源Youtube ?|@vpnhat|NB云\|-|TG@peekfun|\{彩虹云}|flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
     private val REG_AD_REPALCE =
-        """NB云|-|TG@peekfun|海绵云机场 https://fzusrs.xyz|\[free-ss.site]www.kernels.bid|https://gfwservice.xyz|请订阅-KingFu景福@YouTuBe-自动抓取海量免费节点-https://free.kingfu.cf|网址：fly.xxl123.fun \| TG：t.me/flyXXL12345""".toRegex()
+        """海绵云机场 https://fzusrs.xyz|\[free-ss.site]www.kernels.bid|https://gfwservice.xyz|请订阅-KingFu景福@YouTuBe-自动抓取海量免费节点-https://free.kingfu.cf|网址：fly.xxl123.fun \| TG：t.me/flyXXL12345""".toRegex()
 
     private val maps = linkedMapOf<String, LinkedHashSet<Sub>>()
 
@@ -75,7 +75,7 @@ class NodeCrawler {
                     acc.apply { acc.addAll(linkedHashSet.second) }
                 }.sortedBy {
                     it.apply {
-                        name = name.replace(REG_AD, "")
+                        name = name.removeFlags().replace(REG_AD, "")
                             .replace(REG_AD_REPALCE, customInfo)
                     }.toUri()
                 }
@@ -147,7 +147,8 @@ class NodeCrawler {
     @Test
     fun removeAd() {
         Parser.parseFromSub(NODE_OK)
-            .map { it.also { it.name = it.name.replace(REG_AD, "").replace(REG_AD_REPALCE, customInfo) } }
+            .map { it.also { it.name = it.name.removeFlags().replace(REG_AD, "")
+                .replace(REG_AD_REPALCE, customInfo) } }
             .forEach {
                 println(it.name)
             }
