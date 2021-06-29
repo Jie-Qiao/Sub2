@@ -15,7 +15,7 @@ class NodeCrawler {
     private val REG_AD =
         """flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
     private val REG_AD_REPALCE =
-        """海绵云机场 https://fzusrs.xyz|\[free-ss.site]www.kernels.bid|https://gfwservice.xyz|请订阅-KingFu景福@YouTuBe-自动抓取海量免费节点-https://free.kingfu.cf|网址：fly.xxl123.fun \| TG：t.me/flyXXL12345""".toRegex()
+        """NB云|-|TG@peekfun|海绵云机场 https://fzusrs.xyz|\[free-ss.site]www.kernels.bid|https://gfwservice.xyz|请订阅-KingFu景福@YouTuBe-自动抓取海量免费节点-https://free.kingfu.cf|网址：fly.xxl123.fun \| TG：t.me/flyXXL12345""".toRegex()
 
     private val maps = linkedMapOf<String, LinkedHashSet<Sub>>()
 
@@ -172,10 +172,10 @@ class NodeCrawler {
     @Test
     fun availableSpeedTest() {
         Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
-            .chunked(130)
+            .chunked(200)
             .mapIndexed { index, list ->
                 list.map(Sub::toUri)
-                    .subList(0.takeIf { index == 0 } ?: 80, list.size)
+                    .subList(0.takeIf { index == 0 } ?: 0, list.size)
                     .also { println(it.joinToString("|")) }
             }
     }
@@ -201,6 +201,7 @@ class NodeCrawler {
         NODE_V22.writeLine()
         NODE_TR2.writeLine()
         SPEED_TEST_RESULT.readLines()
+            .asSequence()
             .distinct()
             .map { it.substringBeforeLast('|') to it.substringAfterLast('|') }
             .sortedByDescending { it.second.replace("Mb|MB".toRegex(), "").toFloat() }
