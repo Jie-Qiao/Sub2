@@ -74,7 +74,7 @@ data class V2ray(
     override fun toUri() = "vmess://${this.toJson().b64Encode()}"
     override fun info() = "$nation $name vmess $add:$port"
     override var name: String
-        get() = ps
+        get() = ps.takeUnless { it.isEmpty() } ?: "$SERVER:$serverPort-V2-${hashCode()}"
         set(value) {
             ps = value
         }
@@ -133,7 +133,7 @@ data class SSR(
 
     override fun info() = "$nation $remarks ssr $server:$port"
     override var name: String
-        get() = remarks
+        get() = remarks.takeUnless { it.isEmpty() } ?: "$SERVER:$serverPort-SSR-${hashCode()}"
         set(value) {
             remarks = value
         }

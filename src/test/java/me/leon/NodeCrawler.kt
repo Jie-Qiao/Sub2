@@ -13,7 +13,7 @@ class NodeCrawler {
     private val nodeInfo = "$ROOT/info.md"
     private val customInfo = "防失效github.com/Leon406/Sub "
     private val REG_AD =
-        """Youtube- MiDnight来了|adi\|\d{4} *- *|顺丰资源You[tT]ube[ |]?|@vpnhat|NB云\|-|TG@peekfun|\{彩虹云}|flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
+        """ new\b|Youtube- MiDnight来了|adi\|\d{4} *- *|顺丰资源You[tT]ube[ |]?|@vpnhat|NB云\|-|TG@peekfun|\{彩虹云}|flyxxl赞助|\([^)]{5,}\)|（.*）|节点更新 ?https?://.+|@SSRSUB-|-付费推荐:.+/ssrsub|https://www.mattkaydiary.com|tg@freebaipiao|@github.com/colatiger-|github.com/freefq - """.toRegex()
     private val REG_AD_REPALCE =
         """翻墙党fanqiangdang.com|海绵云机场 https://fzusrs.xyz|\[free-ss.site]www.kernels.bid|https://gfwservice.xyz|请订阅-KingFu景福@YouTuBe-自动抓取海量免费节点-https://free.kingfu.cf|白嫖机场：fly.xxl123.fun \| """.toRegex()
 
@@ -173,6 +173,14 @@ class NodeCrawler {
     @Test
     fun availableSpeedTest() {
         Parser.parseFromSub(NODE_OK).filterIsInstance<V2ray>()
+            .map {
+                if (it.name.isEmpty()) println(it.toUri())
+                it
+            }
+//            .mapIndexed { i,item->
+//                if (item.name == "adi|0622 - 罗马尼亚 71")
+//                    println(i)
+//                item.name }
             .chunked(200)
             .mapIndexed { index, list ->
                 list.map(Sub::toUri)
@@ -211,11 +219,11 @@ class NodeCrawler {
             .forEach { (t, u) ->
                 val data = u.joinToString("\n") {
                     map[it.first]!!.apply {
-                        with(SERVER.ipCityZh()) {
-                            name = (this?.takeUnless { name.contains(it) }?.run { this + "_" }
-                                ?: "") + (name.substringBeforeLast('|') + "|" + it.second)
-                        }
-
+                        name = name.replace(REG_AD, "").removeFlags().substringBeforeLast('|') + "|" + it.second
+//                        with(SERVER.ipCityZh()) {
+//                            name = (this?.takeUnless { name.removeFlags().contains(it) }?.run { this + "_" }
+//                                ?: "") + (name.removeFlags().substringBeforeLast('|') + "|" + it.second)
+//                        }
                     }.also { println(it.name) }.toUri()
                 }
                     .b64Encode()

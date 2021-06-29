@@ -3,8 +3,8 @@ package me.leon.support
 import me.leon.ROOT
 
 object FlagRemover {
-    val flagMaps = linkedMapOf<String, String>()
-    val flagReg by lazy {
+    private val flagMaps = linkedMapOf<String, String>()
+    private val flagReg by lazy {
         "$ROOT/flags.txt".readLines()
             .map {
                 with(it.split("|")) {
@@ -12,7 +12,9 @@ object FlagRemover {
                     flagMaps[this[1]] = this[2]
                     Triple(this[0], this[1], this[2])
                 }
-            }.joinToString("|") { "(${it.first}) *(?:${it.second})?" }.also { println(it) }.toRegex()
+            }.joinToString("|") { "(${it.first}) *(?:${it.second})?" }
+//            .also { println(it) }
+            .toRegex()
     }
 
 
