@@ -35,22 +35,19 @@ class IpFilterTest {
                 .also { map ->
                     map[true].also { println("带端口节点数量 ${it?.size}") }?.map { it.substringBeforeLast(':') to it }
                         ?.forEach { p ->
-                            if (map[false]?.contains(p.first) == true) {
-                                println(p.second)
-                            } else {
-                                if (okIps.contains(p.first) || failIps.contains(p.first)) {
+                            if (okIps.contains(p.first) || failIps.contains(p.first)) {
 //                                    println("已存在")
-                                    return@forEach
-                                }
+                                return@forEach
+                            }
                                 if (p.first.ping(1000) > -1)
                                     okIps.add(p.first)
                                 else println(p.second.also { failIps.add(p.first) })
-                            }
                         }
                 }
 
-//            println(failIps)
-//            println(okIps)
+            println(failIps)
+            println("_______")
+            println(okIps)
             total
                 .toHashSet()
                 .also {
