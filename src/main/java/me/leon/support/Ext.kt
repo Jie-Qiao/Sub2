@@ -104,7 +104,7 @@ fun String.connect(
     cache: (ip: String, port: Int) -> Boolean = Nop,
     exceptionHandler: (info: String) -> Unit = {}
 ) =
-    if (!contains(".") || cache.invoke(this, port)) {
+    if (!contains(".") || port < 0 || cache.invoke(this, port)) {
 //        println("quick fail from cache")
         -1
     } else {

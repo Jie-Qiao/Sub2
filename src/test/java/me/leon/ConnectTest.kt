@@ -34,6 +34,7 @@ class ConnectTest {
             Parser.parseFromSub(POOL)
                 .map { it to async(DISPATCHER) { it.SERVER.quickPing(2000) } }
                 .filter { it.second.await() > -1 }
+                .also { println(it.size) }
                 .forEach {
                     println(it.first.info() + ":" + it.second)
                 }

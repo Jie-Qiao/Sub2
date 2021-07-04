@@ -11,29 +11,24 @@ import java.util.*
 class NetworkSubTest {
     @Test
     fun subParse() {
-        val subUrl =
-            "https://cloudfront-cdn-hk-iplc1.com/sub/r/wqzCu8Kvw57Dk8OFw4ZnwqDCtsK3w4HCvMOcw53DgcK-Y8OQw6XCtQ==/"
-        val subUrl2 =
-            "https://paste.gg/p/anonymous/9f5941d417334473bbc104b4322b30b8/files/2171ef53e3cf41ffbe3201756231cc86/raw"
-        val subUrlTr = "https://proxy.51798.xyz/trojan/sub"
-        val subUrlV2 = "https://proxy.51798.xyz/vmess/sub"
-        val subUrlSsr = "https://proxy.51798.xyz/ssr/sub"
-        val subUrlSs = "https://proxy.51798.xyz/sip002/sub"
-        val e = "https://gitee.com/bujilangren/warehouse/raw/master/0529.txt"
+        val e = "https://raw.fastgit.org/Leon406/Sub/master/sub/share/tr"
+        runBlocking {
+            Parser.parseFromSub(e)
+                .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 1000) } }
+                .filter { it.second.await() > -1 }
+                .also { println(it.size) }
+                .forEach {
+                    println(it.first.info() + ":" + it.second)
+                }
+        }
 
         listOf(
             e,
-//            subUrl,
-//            subUrlSs,
-//            subUrl2,
-//            subUrlSsr,
-//            subUrlTr,
-//            subUrlV2
-//            "https://gitee.com/bujilangren/warehouse/raw/master/0523.txt",
-//            "https://gitee.com/bujilangren/warehouse/raw/master/2021-5-23-ss&vmess.txt"
         ).forEach {
             kotlin.runCatching {
                 Parser.parseFromSub(it)
+                    .also { println(it.size) }
+
                     .joinToString(
 //                        "|",
                         "\r\n",
@@ -87,22 +82,22 @@ class NetworkSubTest {
         val l1 = Parser.parseFromSub("https://etproxypool.ga/clash/proxies")
         val l2 = Parser.parseFromSub("https://suo.yt/v9UsfNr")
         val combine = l1 + l2
-        val l1Only = combine -l2
-        val l2Only = combine -l1
-        val share = l1 -l1Only
-        println("共享 ${ share.size}")
-        println("l1 ${l1.size} 独有 ${ l1Only.size}")
-        println("l2 ${l2.size} 独有 ${ l2Only.size}")
+        val l1Only = combine - l2
+        val l2Only = combine - l1
+        val share = l1 - l1Only
+        println("共享 ${share.size}")
+        println("l1 ${l1.size} 独有 ${l1Only.size}")
+        println("l2 ${l2.size} 独有 ${l2Only.size}")
     }
 
     @Test
     fun load() {
-       "http://pan-yz.chaoxing.com/download/downloadfile?fleid=607981566887628800&puid=137229880".readFromNet()
-           .also { println(it) }
-           .split("\r\n|\n".toRegex())
-           .forEach {
-           println(it)
-       }
+        "http://pan-yz.chaoxing.com/download/downloadfile?fleid=607981566887628800&puid=137229880".readFromNet()
+            .also { println(it) }
+            .split("\r\n|\n".toRegex())
+            .forEach {
+                println(it)
+            }
     }
 
 
@@ -140,9 +135,11 @@ class NetworkSubTest {
                 .filter { it.second.await() > -1 }
 //                .filter { speed.keys.contains(it.first.name) }
                 .forEach {
-                    println(it.first
+                    println(
+                        it.first
 //                        .apply { name = name.substringBeforeLast('|') + "|" + speed[name] }
-                        .toUri())
+                            .toUri()
+                    )
                 }
         }
     }
