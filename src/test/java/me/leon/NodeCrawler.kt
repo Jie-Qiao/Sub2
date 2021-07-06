@@ -147,6 +147,46 @@ class NodeCrawler {
         }
     }
 
+    /**
+     * 本地筛选节点
+     */
+    @Test
+    fun localUse() {
+        runBlocking {
+            Parser.parseFromSub(POOL)
+                .also {
+                    println("总共数量 ${it.size}")
+                }
+                .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
+                .filter { it.second.await() > -1 }
+                .also {
+                    println("有效节点数量 ${it.size}")
+                }
+                .map { it.first }
+                .toHashSet()
+                .also { NODE_OK.writeLine(it.joinToString("\n") { it.toUri() }) }
+            NODE_SS2.writeLine()
+            NODE_SSR2.writeLine()
+            NODE_V22.writeLine()
+            NODE_TR2.writeLine()
+
+            Parser.parseFromSub(NODE_OK).groupBy { it.javaClass }.forEach { (t, u) ->
+                u.firstOrNull()?.run { name = customInfo + name }
+                val data = u.joinToString("\n") { it.toUri() }.b64Encode()
+                when (t) {
+                    SS::class.java -> NODE_SS2.writeLine(data)
+                        .also { println("ss节点: ${u.size}") }
+                    SSR::class.java -> NODE_SSR2.writeLine(data)
+                        .also { println("ssr节点: ${u.size}") }
+                    V2ray::class.java -> NODE_V22.writeLine(data)
+                        .also { println("v2ray节点: ${u.size}") }
+                    Trojan::class.java -> NODE_TR2.writeLine(data)
+                        .also { println("trojan节点: ${u.size}") }
+                }
+            }
+        }
+    }
+
     @Test
     fun removeAd() {
         Parser.parseFromSub(NODE_OK)
