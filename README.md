@@ -71,14 +71,14 @@
 
 ## 本项目生成base64订阅 [节点详情](./sub/info.md)  ![ci](https://github.com/Leon406/Sub/actions/workflows/ci.yml/badge.svg)
 
-github服务器筛选:
+github服务器筛选(每天自动更新):
 
 - [ss](https://raw.fastgit.org/Leon406/Sub/master/sub/share/ss)
 - [ssr](https://raw.fastgit.org/Leon406/Sub/master/sub/share/ssr)
 - [v2ray](https://raw.fastgit.org/Leon406/Sub/master/sub/share/v2)
 - [trojan](https://raw.fastgit.org/Leon406/Sub/master/sub/share/tr)
 
-本地服务器筛选(不经常更新)
+本地服务器筛选(不定时更新),可自行clone项目,执行localFilter.bat生成
 
 - [本地ss](https://raw.fastgit.org/Leon406/Sub/master/sub/share/private/ss)
 - [本地ssr](https://raw.fastgit.org/Leon406/Sub/master/sub/share/private/ssr)
@@ -94,8 +94,7 @@ github服务器筛选:
 | Windows                 | [shadowsocks-windows](https://github.com/shadowsocks/shadowsocks-windows/releases) | SS                                                           |
 | Windows                 | [ShadowsocksR-Windows](https://github.com/HMBSbige/ShadowsocksR-Windows/releases) | SSR                                                          |
 | Windows                 | [V2rayN](https://github.com/2dust/v2rayN/releases)           | SS、Trojan、Vmess、VLESS                                     |
-| Windows                 | [Clash CFW  **(
-推荐)**](https://github.com/Fndroid/clash_for_windows_pkg/releases) | SS、SSR、Trojan、Vmess、VLESS                                |
+| Windows                 | [Clash CFW  **(推荐)**](https://github.com/Fndroid/clash_for_windows_pkg/releases) | SS、SSR、Trojan、Vmess、VLESS                                |
 | Windows                 | [Clash.Net](https://github.com/ClashDotNetFramework/ClashDotNetFramework/releases/) | SS、SSR、Trojan、Vmess、VLESS                                |
 | Windows                 | [WinXray](https://github.com/TheMRLL/winxray/releases)       | SS、SSR、Trojan、V2ray（Vmess、VLESS）Xray                   |
 | Linux / Windows / macOS | [Qv2ray](https://github.com/Qv2ray/Qv2ray/releases)          | VMess / VLESS / SSR / Trojan / Trojan-Go/ NaiveProxy /HTTP(S) / SOCKS5 |
@@ -104,8 +103,7 @@ github服务器筛选:
 | Android                 | [shadowsocks-android](https://github.com/shadowsocks/shadowsocks-android/releases) | SS                                                           |
 | Android                 | [ShadowsocksR-Android](https://github.com/HMBSbige/ShadowsocksR-Android/releases) | SSR                                                          |
 | Android                 | [V2rayNG](https://github.com/2dust/v2rayNG/releases)         | SS、Trojan、V2ray（Vmess、VLESS）、Xray                      |
-| Android                 | [ClashForAndroid  **(
-推荐)**](https://github.com/Kr328/ClashForAndroid/releases) | SS、SSR、Trojan、Vmess、VLESS                                |
+| Android                 | [ClashForAndroid  **(推荐)**](https://github.com/Kr328/ClashForAndroid/releases) | SS、SSR、Trojan、Vmess、VLESS                                |
 | Android                 | [SSRAY](https://github.com/xxf098/shadowsocksr-v2ray-trojan-android/releases) | SSR、V2ray、Trojan                                           |
 | Android                 | [SagerNet](https://github.com/SagerNet/SagerNet/releases)    | VMess / VLESS / SSR / Trojan / Trojan-Go/ NaiveProxy / HTTP(S) / SOCKS5 |
 | IOS                     | Shadowrocket 小火箭 IOS非国区购买                           | SS、SSR、Trojan、V2ray、VLESS                                |
