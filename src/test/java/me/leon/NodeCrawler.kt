@@ -158,7 +158,7 @@ class NodeCrawler {
                 .also {
                     println("总共数量 ${it.size}")
                 }
-                .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 2000) } }
+                .map { it to async(DISPATCHER) { it.SERVER.quickConnect(it.serverPort, 1000) } }
                 .filter { it.second.await() > -1 }
                 .also {
                     println("有效节点数量 ${it.size}")
