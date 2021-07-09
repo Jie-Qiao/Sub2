@@ -153,6 +153,7 @@ class NodeCrawler {
     @Test
     fun localUse() {
         runBlocking {
+            NODE_OK.writeLine()
             Parser.parseFromSub(POOL)
                 .also {
                     println("总共数量 ${it.size}")
